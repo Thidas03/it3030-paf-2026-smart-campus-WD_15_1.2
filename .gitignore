@@ -1,0 +1,16 @@
+# General
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+dist/
+
+# Java / Maven
+target/
+*.log
+
+# Env
+.env
+*.env.local
+
