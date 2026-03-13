@@ -1,14 +1,14 @@
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 
-// Node target: Backend Operations Center
-const API_BASE = "http://localhost:8081/api/resources";
+// The endpoint on the Spring Boot backend
+const RESOURCE_URL = "/resources";
 
 const resourceService = {
-  getAllResources: () => axios.get(API_BASE),
-  getResourceById: (id) => axios.get(`${API_BASE}/${id}`),
-  createResource: (data) => axios.post(API_BASE, data),
-  updateResource: (id, data) => axios.put(`${API_BASE}/${id}`, data),
-  deleteResource: (id) => axios.delete(`${API_BASE}/${id}`)
+  getAllResources: () => axiosClient.get(RESOURCE_URL),
+  getResourceById: (id) => axiosClient.get(`${RESOURCE_URL}/${id}`),
+  createResource: (data) => axiosClient.post(RESOURCE_URL, data),
+  updateResource: (id, data) => axiosClient.put(`${RESOURCE_URL}/${id}`, data),
+  deleteResource: (id) => axiosClient.delete(`${RESOURCE_URL}/${id}`)
 };
 
 export default resourceService;

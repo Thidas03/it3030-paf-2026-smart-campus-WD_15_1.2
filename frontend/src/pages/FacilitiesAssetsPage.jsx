@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { LayoutGrid, List, Plus, PackageSearch, Sparkles, Zap } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { LayoutGrid, List, Plus, PackageSearch, RefreshCw, Layers, Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
 import resourceService from '../services/resourceService';
 import ResourceTable from '../components/ResourceTable';
 import ResourceCard from '../components/ResourceCard';
 import ResourceFormModal from '../components/ResourceFormModal';
 import ResourceFilter from '../components/ResourceFilter';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const FacilitiesAssetsPage = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('table');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
+  const [resourceToDelete, setResourceToDelete] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -27,27 +31,36 @@ const FacilitiesAssetsPage = () => {
     try {
       setLoading(true);
       const response = await resourceService.getAllResources();
-      setResources(response.data);
+      setResources(response.data || []);
     } catch (error) {
        console.error('API Error:', error);
-       toast.error('Unable to connect to the smart campus node. Please ensure the backend is running on port 8081.', {
-         duration: 5000,
-         icon: '⚡'
+       toast.error('Failed to sync resources from the server.', {
+         duration: 4000,
+         style: { background: '#1e293b', color: '#f1f5f9', border: '1px solid #334155' }
        });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Initialize permanent deletion of this asset record?')) {
-      try {
-        await resourceService.deleteResource(id);
-        toast.success('Asset decentralized successfully');
-        fetchResources();
-      } catch (error) {
-        toast.error('De-linking failed');
-      }
+  const handleDeleteClick = (id) => {
+    const resource = resources.find(r => r.id === id);
+    setResourceToDelete(resource);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!resourceToDelete) return;
+    try {
+      await resourceService.deleteResource(resourceToDelete.id);
+      toast.success('Resource deleted successfully', {
+        style: { background: '#1e293b', color: '#f1f5f9', border: '1px solid #334155' }
+      });
+      setIsDeleteModalOpen(false);
+      setResourceToDelete(null);
+      fetchResources();
+    } catch (error) {
+      toast.error('Failed to delete resource');
     }
   };
 
@@ -68,137 +81,141 @@ const FacilitiesAssetsPage = () => {
     setMinCapacity('');
   };
 
-  const filteredResources = resources.filter(res => {
-    const name = res.name || '';
-    const location = res.location || '';
-    const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !filterType || res.type === filterType;
-    const matchesStatus = !filterStatus || res.status === filterStatus;
-    const matchesCapacity = !minCapacity || res.capacity >= (parseInt(minCapacity) || 0);
-    
-    return matchesSearch && matchesType && matchesStatus && matchesCapacity;
-  });
+  const filteredResources = useMemo(() => {
+    return resources.filter(res => {
+      const name = res.name || '';
+      const location = res.location || '';
+      const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            location.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = !filterType || res.type === filterType;
+      const matchesStatus = !filterStatus || res.status === filterStatus;
+      const matchesCapacity = !minCapacity || res.capacity >= (parseInt(minCapacity) || 0);
+      
+      return matchesSearch && matchesType && matchesStatus && matchesCapacity;
+    });
+  }, [resources, searchTerm, filterType, filterStatus, minCapacity]);
 
   return (
-    <div className="min-h-screen bg-dark-bg text-dark-text relative overflow-hidden">
-      {/* Premium Background Effects */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary-500/10 rounded-full blur-[150px] animate-glow-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent-500/10 rounded-full blur-[130px] animate-glow-pulse delay-1000"></div>
-
-      <div className="max-w-7xl mx-auto p-6 lg:p-10 relative z-10">
+    <div className="min-h-screen bg-slate-900 text-slate-200 p-6 md:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-accent-400 font-extrabold text-[10px] uppercase tracking-[0.4em]">
-              <Zap className="h-4 w-4 fill-accent-400/20" /> Unified Operations Node
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-600/10 p-2.5 rounded-lg border border-blue-500/20">
+              <Layers className="h-6 w-6 text-blue-500" />
             </div>
-            <h1 className="text-4xl lg:text-6xl font-[900] tracking-tight text-gradient-cyber">
-              Facilities <span className="text-primary-500">&</span> Assets
-            </h1>
-            <p className="text-dark-muted text-lg max-w-xl font-medium">
-              Real-time synchronization and management of the university's physical infrastructure.
-            </p>
+            <div>
+              <h1 className="text-xl font-semibold text-white">Facilities & Assets</h1>
+              <p className="text-sm text-slate-400">Manage campus infrastructure and resource allocation.</p>
+            </div>
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="glass rounded-[1.25rem] p-1.5 flex shadow-2xl ring-1 ring-white/5">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-800 rounded-lg p-1 border border-slate-700 flex shadow-sm">
               <button
                 onClick={() => setViewMode('table')}
-                className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'table' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/30' : 'text-dark-muted hover:text-white'}`}
-                title="Grid Statistics"
+                className={`p-2 rounded-md transition-colors ${viewMode === 'table' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+                title="Table View"
               >
-                <List className="h-5 w-5" />
+                <List className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('card')}
-                className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'card' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/30' : 'text-dark-muted hover:text-white'}`}
-                title="Terminal View"
+                className={`p-2 rounded-md transition-colors ${viewMode === 'card' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+                title="Card View"
               >
-                <LayoutGrid className="h-5 w-5" />
+                <LayoutGrid className="h-4 w-4" />
               </button>
             </div>
             
             <button
               onClick={handleAdd}
-              className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-[1.25rem] font-bold transition-all shadow-2xl shadow-primary-600/20 flex items-center gap-3 transform hover:scale-[1.02] active:scale-[0.98] ring-1 ring-primary-400/30"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2"
             >
-              <Plus className="h-6 w-6 stroke-[3]" /> Create Asset
+              <Plus className="h-4 w-4" /> Create Resource
             </button>
           </div>
         </div>
 
         {/* Filter Section */}
-        <div className="mb-12">
-            <ResourceFilter 
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterType={filterType}
-              setFilterType={setFilterType}
-              filterStatus={filterStatus}
-              setFilterStatus={setFilterStatus}
-              minCapacity={minCapacity}
-              setMinCapacity={setMinCapacity}
-              onReset={handleResetFilters}
-            />
+        <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-4 text-slate-300">
+            <Filter className="h-4 w-4" />
+            <h2 className="text-sm font-medium">Filter Resources</h2>
+          </div>
+          <ResourceFilter 
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            filterType={filterType}
+            setFilterType={setFilterType}
+            filterStatus={filterStatus}
+            setFilterStatus={setFilterStatus}
+            minCapacity={minCapacity}
+            setMinCapacity={setMinCapacity}
+            onReset={handleResetFilters}
+          />
         </div>
 
         {/* Main Content Area */}
         <div className="relative min-h-[400px]">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-32 space-y-8">
-                <div className="relative">
-                    <div className="h-24 w-24 border-4 border-primary-500/10 border-t-accent-500 rounded-full animate-spin"></div>
-                    <div className="absolute inset-0 flex items-center justify-center text-primary-500">
-                        <Sparkles className="h-8 w-8 animate-pulse" />
-                    </div>
-                </div>
-                <div className="text-center">
-                    <p className="text-dark-text font-black tracking-[0.3em] uppercase text-xs mb-2">Downloading Assets...</p>
-                    <p className="text-dark-muted text-[10px] font-bold uppercase tracking-widest">Secure Connection Active</p>
-                </div>
-              </div>
+              <LoadingSpinner message="Fetching campus resources..." />
             ) : filteredResources.length > 0 ? (
-              <div className="animate-in fade-in zoom-in-95 duration-500">
+              <div className="space-y-4">
                 {viewMode === 'table' ? (
-                  <div className="glass rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
-                    <ResourceTable resources={filteredResources} onEdit={handleEdit} onDelete={handleDelete} />
+                  <div className="bg-slate-800 border border-slate-700 rounded-lg shadow-sm overflow-hidden">
+                    <ResourceTable resources={filteredResources} onEdit={handleEdit} onDelete={handleDeleteClick} />
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredResources.map((res, idx) => (
-                      <div key={res.id} className="animate-in fade-in slide-in-from-bottom-8 duration-500" style={{ animationDelay: `${idx * 40}ms` }}>
-                        <ResourceCard resource={res} onEdit={handleEdit} onDelete={handleDelete} />
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredResources.map((res) => (
+                      <ResourceCard key={res.id} resource={res} onEdit={handleEdit} onDelete={handleDeleteClick} />
                     ))}
                   </div>
                 )}
+                
+                {/* Stats Footer */}
+                <div className="flex items-center justify-between px-4 py-3 bg-slate-800/50 rounded-lg border border-slate-700 text-xs text-slate-400">
+                  <div className="flex items-center gap-4">
+                    <span>Total: <span className="text-slate-200 font-medium">{filteredResources.length}</span></span>
+                    <span>Active: <span className="text-emerald-400 font-medium">{filteredResources.filter(r => r.status === 'ACTIVE').length}</span></span>
+                  </div>
+                  <div>Showing processed resource nodes</div>
+                </div>
               </div>
             ) : (
-              <div className="glass border-2 border-dashed border-white/5 rounded-[3.5rem] p-24 flex flex-col items-center text-center group hover:border-primary-500/20 transition-all duration-700">
-                <div className="bg-dark-card border border-white/5 p-10 rounded-[2.5rem] mb-8 ring-1 ring-white/10 group-hover:scale-110 transition-transform duration-700 glow-primary">
-                  <PackageSearch className="h-20 w-20 text-dark-muted group-hover:text-accent-400 transition-colors" />
+              <div className="bg-slate-800 border border-slate-700 rounded-lg p-20 flex flex-col items-center text-center shadow-sm">
+                <div className="bg-slate-900 p-6 rounded-full mb-6 border border-slate-700">
+                  <PackageSearch className="h-12 w-12 text-slate-500" />
                 </div>
-                <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Zero Assets Synchronized</h3>
-                <p className="text-dark-muted max-w-md mb-12 text-lg font-medium leading-relaxed">
-                  No records found in the current node. Adjust your data filters or initialize a new asset record.
+                <h3 className="text-lg font-medium text-white mb-2">No resources found</h3>
+                <p className="text-sm text-slate-400 max-w-sm mb-8">
+                  Create a new resource to get started or adjust your filters to find what you're looking for.
                 </p>
                 <button 
                   onClick={handleAdd}
-                  className="bg-primary-600/10 hover:bg-primary-600 text-primary-400 hover:text-white px-10 py-5 rounded-2xl transition-all font-bold flex items-center gap-3 border border-primary-500/30 shadow-2xl hover:shadow-primary-600/20"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md text-sm font-medium transition-all flex items-center gap-2"
                 >
-                  <Plus className="h-6 w-6" /> Initialize First Asset
+                  <Plus className="h-4 w-4" /> Create First Resource
                 </button>
               </div>
             )}
         </div>
 
-        {/* Modal */}
+        {/* Modal: Create/Edit */}
         <ResourceFormModal 
           isOpen={isModalOpen}
           resource={selectedResource}
           onClose={() => setIsModalOpen(false)}
           onSuccess={fetchResources}
+        />
+
+        {/* Modal: Delete Confirmation */}
+        <DeleteConfirmationModal 
+          isOpen={isDeleteModalOpen}
+          itemName={resourceToDelete?.name}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
         />
       </div>
     </div>

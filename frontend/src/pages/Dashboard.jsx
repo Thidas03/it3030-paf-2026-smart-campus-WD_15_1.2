@@ -1,77 +1,116 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield } from 'lucide-react';
+import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users, LayoutDashboard, Search } from 'lucide-react';
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-dark-bg text-dark-text font-sans selection:bg-primary-500/30 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500/30 relative overflow-hidden">
       {/* Dynamic background blurs */}
-      <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-primary-600/10 rounded-full blur-[140px] animate-glow-pulse"></div>
-      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-accent-600/10 rounded-full blur-[140px] animate-glow-pulse delay-1000"></div>
+      <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[140px]"></div>
+      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[140px]"></div>
 
       <div className="max-w-6xl mx-auto px-6 py-8 md:py-16 flex flex-col items-center justify-center min-h-screen relative z-10">
         <div className="w-full max-w-4xl relative">
           
-          <div className="relative bg-dark-card/40 backdrop-blur-2xl border border-white/5 rounded-[3rem] p-8 md:p-14 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden ring-1 ring-white/10">
-            {/* Header section - Reduced scale */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[9px] font-black uppercase tracking-[0.4em] mb-8 shadow-inner">
-                <Sparkles className="h-3 w-3" /> Intelligence Node 01
+          <div className="relative bg-slate-900/40 backdrop-blur-2xl border border-slate-800 rounded-[3rem] p-8 md:p-14 shadow-2xl overflow-hidden ring-1 ring-white/5">
+            {/* Header section */}
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 shadow-inner">
+                <Sparkles className="h-3 w-3" /> System Status: Operational
               </div>
-              <h1 className="text-5xl md:text-7xl font-[900] tracking-tighter mb-8 leading-[0.9]">
-                 <span className="text-gradient-cyber">Smart Campus</span><br />
-                 <span className="text-white opacity-90">Operations</span> <span className="text-accent-500">Hub</span>
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-tight text-white">
+                 Smart Campus <br />
+                 <span className="text-blue-500">Operations Hub</span>
               </h1>
-              <p className="text-lg md:text-xl text-dark-muted max-w-xl mx-auto leading-relaxed font-semibold">
-                The high-performance operating system for modern academic ecosystems. 
-                Synchronize facilities and assets with zero latency.
+              <p className="text-base md:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
+                Management and exploration of campus infrastructure. 
+                Synchronize facilities and assets with a modern, high-performance interface.
               </p>
             </div>
 
-            {/* Navigation Cards - Optimized sizes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <Link 
-                to="/resources" 
-                className="group relative p-7 bg-dark-bg/40 hover:bg-dark-bg/80 border border-white/5 hover:border-primary-500/50 rounded-[2.5rem] transition-all duration-700 flex items-center gap-6 shadow-2xl hover:shadow-primary-600/15"
-              >
-                <div className="p-5 bg-primary-500/10 rounded-2xl group-hover:bg-primary-500 group-hover:text-white text-primary-400 transition-all duration-700 shadow-inner ring-1 ring-primary-500/20">
-                  <Building2 className="h-8 w-8" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-black text-xl group-hover:text-white transition-colors tracking-tight">Facilities & Assets</h3>
-                  <p className="text-xs text-dark-muted group-hover:text-dark-text leading-snug mt-1 font-medium">Infrastructure node management.</p>
-                </div>
-                <div className="absolute top-6 right-8 opacity-20 group-hover:opacity-100 group-hover:text-primary-400 transition-all">
-                    <ExternalLink className="h-5 w-5" />
-                </div>
-              </Link>
+            {/* Navigation Sections */}
+            <div className="space-y-12">
+                {/* Facilities & Assets Section */}
+                <div>
+                   <div className="flex items-center gap-2 mb-6 px-4">
+                      <div className="h-px flex-1 bg-slate-800"></div>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Facilities & Assets Module</span>
+                      <div className="h-px flex-1 bg-slate-800"></div>
+                   </div>
 
-              <div className="group p-7 bg-white/[0.01] border border-white/5 rounded-[2.5rem] transition-all duration-700 flex items-center gap-6 cursor-not-allowed opacity-30 grayscale">
-                <div className="p-5 bg-dark-muted/10 rounded-2xl text-dark-muted shadow-inner border border-dark-muted/20">
-                  <Calendar className="h-8 w-8" />
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Admin Portal */}
+                      <Link 
+                        to="/resources" 
+                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-blue-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                      >
+                        <div className="p-4 bg-blue-600/10 rounded-xl group-hover:bg-blue-600 group-hover:text-white text-blue-500 transition-all duration-300 border border-blue-500/20">
+                          <LayoutDashboard className="h-6 w-6" />
+                        </div>
+                        <div className="text-left">
+                          <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">Admin Portal</h3>
+                          <p className="text-xs text-slate-400 mt-1">Manage campus nodes and infrastructure.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                            <ExternalLink className="h-4 w-4 text-blue-400" />
+                        </div>
+                      </Link>
+
+                      {/* Student Catalogue */}
+                      <Link 
+                        to="/student/resources" 
+                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                      >
+                        <div className="p-4 bg-indigo-600/10 rounded-xl group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 transition-all duration-300 border border-indigo-500/20">
+                          <Search className="h-6 w-6" />
+                        </div>
+                        <div className="text-left">
+                          <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors">Student Catalogue</h3>
+                          <p className="text-xs text-slate-400 mt-1">Explore and view campus facilities.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                            <ExternalLink className="h-4 w-4 text-indigo-400" />
+                        </div>
+                      </Link>
+                   </div>
                 </div>
-                <div className="text-left">
-                  <h3 className="font-black text-xl text-dark-muted tracking-tight">Smart Bookings</h3>
-                  <p className="text-xs text-dark-muted/60 leading-snug mt-1 font-medium">Algorithmic scheduling engine.</p>
+
+                {/* Coming Soon Section */}
+                <div className="opacity-50">
+                    <div className="flex items-center gap-2 mb-6 px-4">
+                        <div className="h-px flex-1 bg-slate-800"></div>
+                        <span className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em] whitespace-nowrap">Upcoming Modules</span>
+                        <div className="h-px flex-1 bg-slate-800"></div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grayscale">
+                        <div className="p-6 bg-slate-800/20 border border-slate-800 rounded-2xl flex items-center gap-5 cursor-not-allowed">
+                            <div className="p-4 bg-slate-700/20 rounded-xl text-slate-600">
+                                <Calendar className="h-6 w-6" />
+                            </div>
+                            <div className="text-left">
+                                <h3 className="font-bold text-lg text-slate-600">Smart Bookings</h3>
+                                <p className="text-xs text-slate-700 mt-1">Algorithmic scheduling engine.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
 
-            {/* Status indicators - Compact scale */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[9px] font-black text-dark-muted tracking-[0.25em] uppercase">
-              <span className="flex items-center gap-2 px-3 py-1 bg-dark-bg/60 rounded-full border border-white/5">
-                 <Globe className="h-2.5 w-2.5 text-accent-500" /> Network Active
+            {/* Status indicators */}
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-[10px] font-bold text-slate-500 tracking-widest uppercase">
+              <span className="flex items-center gap-2">
+                 <Globe className="h-3 w-3 text-emerald-500" /> Network Active
               </span>
-              <span className="flex items-center gap-2 px-3 py-1 bg-dark-bg/60 rounded-full border border-white/5">
-                 <Shield className="h-2.5 w-2.5 text-primary-400" /> Secure v4.2
+              <span className="flex items-center gap-2">
+                 <Shield className="h-3 w-3 text-blue-500" /> Data Secure
               </span>
-              <span className="flex items-center gap-2 px-3 py-1 bg-dark-bg/60 rounded-full border border-white/5">
-                 <Zap className="h-2.5 w-2.5 text-amber-500 animate-pulse" /> Low Latency
+              <span className="flex items-center gap-2">
+                 <Zap className="h-3 w-3 text-amber-500 animate-pulse" /> Core Online
               </span>
             </div>
           </div>
           
-          <div className="mt-12 text-center text-dark-muted/20 font-black text-[8px] tracking-[0.4em] uppercase">
+          <div className="mt-12 text-center text-slate-600 font-medium text-[10px] tracking-[0.3em] uppercase">
             © 2026 Smart Campus Research Division // Node Optimized
           </div>
         </div>
