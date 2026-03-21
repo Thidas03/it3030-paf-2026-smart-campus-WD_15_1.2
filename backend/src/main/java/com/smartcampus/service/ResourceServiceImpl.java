@@ -3,13 +3,16 @@ package com.smartcampus.service;
 import com.smartcampus.dto.ResourceRequestDTO;
 import com.smartcampus.dto.ResourceResponseDTO;
 import com.smartcampus.model.Resource;
+import com.smartcampus.model.ResourceStatus;
 import com.smartcampus.model.ResourceType;
+import com.smartcampus.dto.ResourceDashboardStatsDTO;
 import com.smartcampus.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,6 +86,27 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceRepository.findByCapacityGreaterThanEqual(capacity).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResourceDashboardStatsDTO getDashboardStats() {
+        List<Resource> resources = resourceRepository.findAll();
+
+        int total = resources.size();
+        int active = (int) resources.stream().filter(r -> r.getStatus() == ResourceStatus.ACTIVE).count();
+        int maintenance = (int) resources.stream().filter(r -> r.getStatus() == ResourceStatus.MAINTENANCE).count();
+        int outOfService = (int) resources.stream().filter(r -> r.getStatus() == ResourceStatus.OUT_OF_SERVICE).count();
+
+        Map<ResourceType, Long> byType = resources.stream()
+                .collect(Collectors.groupingBy(Resource::getType, Collectors.counting()));
+
+        return ResourceDashboardStatsDTO.builder()
+                .totalResources(total)
+                .activeResources(active)
+                .maintenanceResources(maintenance)
+                .outOfServiceResources(outOfService)
+                .resourcesByType(byType)
+                .build();
     }
 
     private ResourceResponseDTO mapToResponseDTO(Resource resource) {

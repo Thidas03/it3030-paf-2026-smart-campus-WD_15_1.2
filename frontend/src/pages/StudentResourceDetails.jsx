@@ -66,6 +66,25 @@ const StudentResourceDetails = () => {
     return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
   };
 
+  const formatDate = (isoString) => {
+    if (!isoString) return 'N/A';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return 'N/A';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   if (loading) return <div className="min-h-screen bg-slate-900 pt-20"><LoadingSpinner message="Accessing nodal data..." /></div>;
   if (!resource) return null;
 
@@ -172,13 +191,19 @@ const StudentResourceDetails = () => {
                     </h2>
                     
                     <div className="space-y-4">
-                        <div className="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-700/50">
-                            <span className="text-xs text-slate-500 font-bold uppercase tracking-widest">Start Time</span>
-                            <span className="text-blue-400 font-mono font-bold">{resource.availabilityStartTime}</span>
+                        <div className="flex flex-col gap-1 p-3 bg-slate-900 rounded-xl border border-slate-700/50 hover:border-blue-500/30 transition-colors">
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Start Time</span>
+                            <div className="flex items-center justify-between">
+                                <span className="text-sm text-slate-300">{formatDate(resource.availabilityStartTime)}</span>
+                                <span className="text-blue-400 font-mono font-bold tracking-tight">{formatTime(resource.availabilityStartTime)}</span>
+                            </div>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-700/50">
-                            <span className="text-xs text-slate-500 font-bold uppercase tracking-widest">End Time</span>
-                            <span className="text-blue-400 font-mono font-bold">{resource.availabilityEndTime}</span>
+                        <div className="flex flex-col gap-1 p-3 bg-slate-900 rounded-xl border border-slate-700/50 hover:border-blue-500/30 transition-colors">
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">End Time</span>
+                            <div className="flex items-center justify-between">
+                                <span className="text-sm text-slate-300">{formatDate(resource.availabilityEndTime)}</span>
+                                <span className="text-blue-400 font-mono font-bold tracking-tight">{formatTime(resource.availabilityEndTime)}</span>
+                            </div>
                         </div>
                     </div>
 

@@ -6,7 +6,9 @@ import LoginPage from './pages/LoginPage';
 import FacilitiesAssetsPage from './pages/FacilitiesAssetsPage';
 import StudentResourcesPage from './pages/StudentResourcesPage';
 import StudentResourceDetails from './pages/StudentResourceDetails';
+import StudentCalendar from './pages/student/StudentCalendar';
 import ResourceAvailabilityCalendar from './pages/admin/ResourceAvailabilityCalendar';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
   return (
@@ -25,10 +27,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/admin/resource-calendar" element={<ResourceAvailabilityCalendar />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/resources" element={<FacilitiesAssetsPage />} />
         <Route path="/student/resources" element={<StudentResourcesPage />} />
         <Route path="/student/resources/:id" element={<StudentResourceDetails />} />
+        <Route path="/student/calendar" element={<StudentCalendar />} />
       </Routes>
     </>
   );

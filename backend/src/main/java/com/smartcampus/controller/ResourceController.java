@@ -2,6 +2,7 @@ package com.smartcampus.controller;
 
 import com.smartcampus.dto.ResourceRequestDTO;
 import com.smartcampus.dto.ResourceResponseDTO;
+import com.smartcampus.dto.ResourceDashboardStatsDTO;
 import com.smartcampus.model.ResourceType;
 import com.smartcampus.service.ResourceService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class ResourceController {
     @GetMapping
     public ResponseEntity<List<ResourceResponseDTO>> getAllResources() {
         return ResponseEntity.ok(resourceService.getAllResources());
+    }
+
+    @GetMapping("/dashboard-stats")
+    public ResponseEntity<ResourceDashboardStatsDTO> getDashboardStats() {
+        return ResponseEntity.ok(resourceService.getDashboardStats());
     }
 
     @GetMapping("/{id}")
