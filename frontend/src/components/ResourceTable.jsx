@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit, Trash2, MapPin, Users, Clock, Tag } from 'lucide-react';
+import { Edit, Trash2, MapPin, Users, Clock, Tag, Calendar } from 'lucide-react';
 
 const ResourceTable = ({ resources, onEdit, onDelete }) => {
   const getStatusBadge = (status) => {
@@ -33,6 +33,25 @@ const ResourceTable = ({ resources, onEdit, onDelete }) => {
 
   const formatType = (type) => {
     return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  const formatDate = (isoString) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   return (
@@ -74,11 +93,17 @@ const ResourceTable = ({ resources, onEdit, onDelete }) => {
                 </div>
               </td>
               <td className="px-4 py-2 text-sm text-slate-400">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 text-slate-500" />
-                  <span className="tabular-nums">
-                    {resource.availabilityStartTime} — {resource.availabilityEndTime}
-                  </span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                    <span className="text-xs">{formatDate(resource.availabilityStartTime)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-3.5 w-3.5 text-slate-500" />
+                    <span className="text-xs tabular-nums">
+                      {formatTime(resource.availabilityStartTime)} — {formatTime(resource.availabilityEndTime)}
+                    </span>
+                  </div>
                 </div>
               </td>
               <td className="px-4 py-2 whitespace-nowrap">

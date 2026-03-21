@@ -76,22 +76,29 @@ const Dashboard = () => {
                 </div>
 
                 {/* Coming Soon Section */}
-                <div className="opacity-50">
+                <div>
                     <div className="flex items-center gap-2 mb-6 px-4">
                         <div className="h-px flex-1 bg-slate-800"></div>
-                        <span className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em] whitespace-nowrap">Upcoming Modules</span>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Scheduling</span>
                         <div className="h-px flex-1 bg-slate-800"></div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grayscale">
-                        <div className="p-6 bg-slate-800/20 border border-slate-800 rounded-2xl flex items-center gap-5 cursor-not-allowed">
-                            <div className="p-4 bg-slate-700/20 rounded-xl text-slate-600">
-                                <Calendar className="h-6 w-6" />
-                            </div>
-                            <div className="text-left">
-                                <h3 className="font-bold text-lg text-slate-600">Smart Bookings</h3>
-                                <p className="text-xs text-slate-700 mt-1">Algorithmic scheduling engine.</p>
-                            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Resource Calendar */}
+                      <Link 
+                        to="/admin/resource-calendar" 
+                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                      >
+                        <div className="p-4 bg-emerald-600/10 rounded-xl group-hover:bg-emerald-600 group-hover:text-white text-emerald-500 transition-all duration-300 border border-emerald-500/20">
+                          <Calendar className="h-6 w-6" />
                         </div>
+                        <div className="text-left">
+                          <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors">Resource Calendar</h3>
+                          <p className="text-xs text-slate-400 mt-1">Visualize facility and asset availability.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                            <ExternalLink className="h-4 w-4 text-emerald-400" />
+                        </div>
+                      </Link>
                     </div>
                 </div>
             </div>

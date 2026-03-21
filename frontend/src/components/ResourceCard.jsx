@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit, Trash2, MapPin, Users, Clock, Box, LayoutPanelLeft } from 'lucide-react';
+import { Edit, Trash2, MapPin, Users, Clock, Box, LayoutPanelLeft, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const ResourceCard = ({ resource, onEdit, onDelete, isAdmin = true }) => {
@@ -38,6 +38,25 @@ const ResourceCard = ({ resource, onEdit, onDelete, isAdmin = true }) => {
     return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
   };
 
+  const formatDate = (isoString) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return isNaN(date.getTime()) ? isoString : date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 hover:border-slate-600 transition-all shadow-sm group">
       <div className="flex justify-between items-start mb-4">
@@ -68,11 +87,19 @@ const ResourceCard = ({ resource, onEdit, onDelete, isAdmin = true }) => {
           <Users className="h-4 w-4 text-slate-500" />
           <span>{resource.capacity} PAX</span>
         </div>
-        <div className="flex items-center gap-3 text-sm text-slate-300 bg-slate-900/50 p-2 rounded-md border border-slate-700/50">
-          <Clock className="h-4 w-4 text-blue-500/70" />
-          <span className="text-xs uppercase font-medium tabular-nums tracking-tighter">
-            {resource.availabilityStartTime} — {resource.availabilityEndTime}
-          </span>
+        <div className="flex flex-col gap-2 text-sm text-slate-300 bg-slate-900/50 p-3 rounded-md border border-slate-700/50">
+          <div className="flex items-center gap-3">
+            <Calendar className="h-4 w-4 text-blue-500/70" />
+            <span className="text-xs font-medium">
+              {formatDate(resource.availabilityStartTime)}
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Clock className="h-4 w-4 text-blue-500/70" />
+            <span className="text-xs uppercase font-medium tabular-nums tracking-tighter">
+              {formatTime(resource.availabilityStartTime)} — {formatTime(resource.availabilityEndTime)}
+            </span>
+          </div>
         </div>
       </div>
 

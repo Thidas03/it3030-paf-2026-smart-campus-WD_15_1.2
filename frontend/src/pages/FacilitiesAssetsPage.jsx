@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { LayoutGrid, List, Plus, PackageSearch, RefreshCw, Layers, Filter } from 'lucide-react';
+import { LayoutGrid, List, Plus, PackageSearch, RefreshCw, Layers, Filter, Calendar } from 'lucide-react';
 import toast from 'react-hot-toast';
 import resourceService from '../services/resourceService';
 import ResourceTable from '../components/ResourceTable';
@@ -129,6 +129,13 @@ const FacilitiesAssetsPage = () => {
             </div>
             
             <button
+              onClick={() => window.location.href = '/admin/resource-calendar'}
+              className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/20 px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2"
+            >
+              <Calendar className="h-4 w-4" /> View Calendar
+            </button>
+
+            <button
               onClick={handleAdd}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2"
             >
@@ -206,6 +213,7 @@ const FacilitiesAssetsPage = () => {
         <ResourceFormModal 
           isOpen={isModalOpen}
           resource={selectedResource}
+          resources={resources}
           onClose={() => setIsModalOpen(false)}
           onSuccess={fetchResources}
         />
