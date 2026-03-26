@@ -73,8 +73,9 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
       const start = new Date(data.availabilityStartTime);
       const end = new Date(data.availabilityEndTime);
       const now = new Date();
+      const minValidStart = new Date(now.getTime() - 5 * 60000); // 5 minute grace period
       
-      if (start < now) {
+      if (!resource && start < minValidStart) {
         toast.error('Cannot create resource allocation in the past');
         return;
       }
@@ -125,39 +126,39 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="w-full max-w-2xl bg-slate-800 border border-slate-700 rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+      <div className="bg-slate-800 border border-slate-700 p-6 rounded-2xl w-full max-w-lg shadow-xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700 bg-slate-800/50">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-600/10 rounded-md text-blue-500">
               <Tag className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-xl font-semibold text-white">
                 {resource ? 'Edit Resource' : 'Create Resource'}
               </h2>
-              <p className="text-xs text-slate-400">Configure campus infrastructure parameters</p>
+              <p className="text-sm text-slate-300">Configure campus infrastructure parameters</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-colors"
+            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition duration-200"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
-            <div className="md:col-span-2 space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Resource Name</label>
+            <div className="md:col-span-2 space-y-1">
+              <label className="text-xs text-slate-400 mb-1 block">Resource Name</label>
               <input
                 {...register('name', { required: 'Name is required' })}
-                placeholder="e.g. Main Auditorium"
-                className={`w-full bg-slate-900 border ${errors.name ? 'border-rose-500' : 'border-slate-700'} rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors`}
+                placeholder="e.g. Dr. John Doe"
+                className={`w-full bg-slate-800 border ${errors.name ? 'border-rose-500' : 'border-slate-700'} rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500`}
               />
               {errors.name && (
                 <p className="text-[11px] text-rose-400 flex items-center gap-1 mt-1">
@@ -167,12 +168,12 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
             </div>
 
             {/* Type */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Resource Type</label>
+            <div className="space-y-1">
+              <label className="text-xs text-slate-400 mb-1 block">Resource Type</label>
               <div className="relative">
                 <select
                   {...register('type', { required: true })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors appearance-none"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
                 >
                   <option value="LECTURE_HALL">Lecture Hall</option>
                   <option value="LAB">Laboratory</option>
@@ -188,49 +189,49 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
             </div>
 
             {/* Capacity */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Capacity (PAX)</label>
+            <div className="space-y-1">
+              <label className="text-xs text-slate-400 mb-1 block">Capacity (PAX)</label>
               <input
                 type="number"
                 {...register('capacity', { required: 'Capacity is required', min: 1 })}
                 placeholder="0"
-                className={`w-full bg-slate-900 border ${errors.capacity ? 'border-rose-500' : 'border-slate-700'} rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors`}
+                className={`w-full bg-slate-800 border ${errors.capacity ? 'border-rose-500' : 'border-slate-700'} rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500`}
               />
             </div>
 
             {/* Location */}
-            <div className="md:col-span-2 space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Location</label>
+            <div className="md:col-span-2 space-y-1">
+              <label className="text-xs text-slate-400 mb-1 block">Location</label>
               <input
                 {...register('location', { required: 'Location is required' })}
                 placeholder="e.g. Building A, Floor 2"
-                className={`w-full bg-slate-900 border ${errors.location ? 'border-rose-500' : 'border-slate-700'} rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors`}
+                className={`w-full bg-slate-800 border ${errors.location ? 'border-rose-500' : 'border-slate-700'} rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500`}
               />
             </div>
 
             {/* Time Window */}
-            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5 calendar-wrapper-style">
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 calendar-wrapper-style">
               <style jsx>{`
                 .calendar-wrapper-style .react-datepicker-wrapper {
                   width: 100%;
                 }
               `}</style>
               
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Start Date</label>
+              <div className="space-y-1">
+                <label className="text-xs text-slate-400 mb-1 block">Start Date</label>
                 <div className="w-full">
                   <DatePicker
                     selected={startTime ? new Date(startTime) : null}
                     onChange={(date) => handleDateChange(date, 'availabilityStartTime', startTime)}
                     minDate={new Date()}
                     dateFormat="yyyy-MM-dd"
-                    className="w-full p-2 bg-slate-900 text-white border border-slate-700 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 py-2 bg-slate-800 text-white border border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Start Time</label>
+              <div className="space-y-1">
+                <label className="text-xs text-slate-400 mb-1 block">Start Time</label>
                 <div className="w-full">
                   <DatePicker
                     selected={startTime ? new Date(startTime) : null}
@@ -239,26 +240,26 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
                     showTimeSelectOnly
                     timeIntervals={30}
                     dateFormat="HH:mm"
-                    className="w-full p-2 bg-slate-900 text-white border border-slate-700 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 py-2 bg-slate-800 text-white border border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">End Date</label>
+              <div className="space-y-1">
+                <label className="text-xs text-slate-400 mb-1 block">End Date</label>
                 <div className="w-full">
                   <DatePicker
                     selected={endTime ? new Date(endTime) : null}
                     onChange={(date) => handleDateChange(date, 'availabilityEndTime', endTime)}
                     minDate={startTime ? new Date(startTime) : new Date()}
                     dateFormat="yyyy-MM-dd"
-                    className="w-full p-2 bg-slate-900 text-white border border-slate-700 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 py-2 bg-slate-800 text-white border border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">End Time</label>
+              <div className="space-y-1">
+                <label className="text-xs text-slate-400 mb-1 block">End Time</label>
                 <div className="w-full">
                   <DatePicker
                     selected={endTime ? new Date(endTime) : null}
@@ -267,19 +268,19 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
                     showTimeSelectOnly
                     timeIntervals={30}
                     dateFormat="HH:mm"
-                    className="w-full p-2 bg-slate-900 text-white border border-slate-700 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 py-2 bg-slate-800 text-white border border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
             </div>
 
             {/* Status */}
-            <div className="md:col-span-2 space-y-1.5">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Status</label>
+            <div className="md:col-span-2 space-y-1">
+              <label className="text-xs text-slate-400 mb-1 block">Status</label>
               <div className="relative">
                 <select
                   {...register('status', { required: true })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors appearance-none"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
                 >
                   <option value="ACTIVE">Active</option>
                   <option value="MAINTENANCE">Maintenance</option>
@@ -294,18 +295,18 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-slate-700">
+          <div className="flex justify-end gap-3 pt-6 mt-6 border-t border-slate-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-md transition-colors"
+              className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm transition duration-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-all shadow-lg active:scale-95 disabled:opacity-50"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 shadow-sm active:scale-95 disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
               {isSubmitting ? 'Saving...' : (resource ? 'Update Resource' : 'Create Resource')}

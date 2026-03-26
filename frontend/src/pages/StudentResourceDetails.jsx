@@ -89,8 +89,8 @@ const StudentResourceDetails = () => {
   if (!resource) return null;
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 p-6 md:p-12">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-900">
+      <div className="p-6 space-y-6 max-w-4xl mx-auto">
         {/* Navigation */}
         <button 
           onClick={() => navigate(-1)}
@@ -117,7 +117,7 @@ const StudentResourceDetails = () => {
                             <div className="text-xs font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">
                                 Resource Profile
                             </div>
-                            <h1 className="text-3xl font-bold text-white tracking-tight">
+                            <h1 className="text-xl font-semibold text-white">
                                 {resource.name}
                             </h1>
                         </div>
@@ -133,8 +133,8 @@ const StudentResourceDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Primary Info Card */}
             <div className="md:col-span-2 space-y-6">
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
-                    <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-6 flex items-center gap-2">
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                         <Info className="h-4 w-4 text-blue-500" />
                         Technical Specifications
                     </h2>
@@ -171,12 +171,12 @@ const StudentResourceDetails = () => {
                 </div>
 
                 {/* Description Placeholder / Additional Info */}
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
-                    <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                         <Shield className="h-4 w-4 text-blue-500" />
                         Usage Protocol
                     </h2>
-                    <p className="text-sm text-slate-400 leading-relaxed">
+                    <p className="text-sm text-slate-300">
                         This facility is a part of the Smart Campus Infrastructure Lattice. Access is granted based on current operational status and institutional policy. Please ensure you follow all campus guidelines when utilizing these resources.
                     </p>
                 </div>
@@ -184,8 +184,8 @@ const StudentResourceDetails = () => {
 
             {/* Sidebar / Operational Info */}
             <div className="space-y-6">
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
-                    <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-6 flex items-center gap-2">
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                         <Clock className="h-4 w-4 text-blue-500" />
                         Operational Hours
                     </h2>
@@ -220,14 +220,14 @@ const StudentResourceDetails = () => {
                 </div>
 
                 {/* Call to Action */}
-                <div className="bg-blue-600 rounded-2xl p-6 shadow-lg shadow-blue-900/20">
-                    <h3 className="text-white font-bold mb-2">Need to Book?</h3>
-                    <p className="text-blue-100 text-xs mb-4 leading-relaxed">
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                    <h3 className="text-lg font-semibold text-white mb-2">Need to Book?</h3>
+                    <p className="text-sm text-slate-300 mb-4">
                         Reservation services for this facility are managed through the centralized booking hub.
                     </p>
                     <button 
                       onClick={() => toast.success('Redirecting to Booking Hub...')}
-                      className="w-full py-2.5 bg-white text-blue-600 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-blue-50 transition-colors shadow-inner"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200"
                     >
                         Go to Reservations
                     </button>

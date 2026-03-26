@@ -79,12 +79,12 @@ const ResourceAvailabilityCalendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 p-8" onMouseMove={handleMouseMove}>
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-900" onMouseMove={handleMouseMove}>
+      <div className="p-6 space-y-6 max-w-7xl mx-auto">
         
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-xl font-semibold text-white flex items-center gap-3">
               <CalendarIcon className="text-blue-500" />
               Resource Availability
             </h1>
@@ -106,7 +106,7 @@ const ResourceAvailabilityCalendar = () => {
           </div>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl border border-slate-700/50 p-6 shadow-xl relative">
+        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-4 shadow-sm hover:shadow-md transition duration-200 relative text-slate-200">
           {isLoading ? (
             <div className="flex items-center justify-center h-[600px]">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>

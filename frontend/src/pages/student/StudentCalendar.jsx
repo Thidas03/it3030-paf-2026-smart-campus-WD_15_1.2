@@ -65,8 +65,8 @@ const StudentCalendar = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 p-6 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-900">
+      <div className="p-6 space-y-6 max-w-7xl mx-auto">
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group mb-2"
@@ -85,7 +85,7 @@ const StudentCalendar = () => {
           </div>
         </div>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 shadow-sm text-slate-200">
+        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 text-slate-200">
           <FullCalendar
             plugins={[timeGridPlugin, interactionPlugin]}
             initialView="timeGridWeek"

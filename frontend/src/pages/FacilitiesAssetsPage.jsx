@@ -96,8 +96,8 @@ const FacilitiesAssetsPage = () => {
   }, [resources, searchTerm, filterType, filterStatus, minCapacity]);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 p-6 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-900">
+      <div className="p-6 space-y-6 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -114,14 +114,14 @@ const FacilitiesAssetsPage = () => {
             <div className="bg-slate-800 rounded-lg p-1 border border-slate-700 flex shadow-sm">
               <button
                 onClick={() => setViewMode('table')}
-                className={`p-2 rounded-md transition-colors ${viewMode === 'table' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+                className={`p-2 rounded-md transition duration-200 ${viewMode === 'table' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
                 title="Table View"
               >
                 <List className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('card')}
-                className={`p-2 rounded-md transition-colors ${viewMode === 'card' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+                className={`p-2 rounded-md transition duration-200 ${viewMode === 'card' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
                 title="Card View"
               >
                 <LayoutGrid className="h-4 w-4" />
@@ -130,14 +130,14 @@ const FacilitiesAssetsPage = () => {
             
             <button
               onClick={() => window.location.href = '/admin/resource-calendar'}
-              className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/20 px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2"
+              className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm transition duration-200 flex items-center gap-2"
             >
               <Calendar className="h-4 w-4" /> View Calendar
             </button>
 
             <button
               onClick={handleAdd}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 flex items-center gap-2"
             >
               <Plus className="h-4 w-4" /> Create Resource
             </button>
@@ -145,7 +145,7 @@ const FacilitiesAssetsPage = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 shadow-sm">
+        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
           <div className="flex items-center gap-2 mb-4 text-slate-300">
             <Filter className="h-4 w-4" />
             <h2 className="text-sm font-medium">Filter Resources</h2>
@@ -191,17 +191,17 @@ const FacilitiesAssetsPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-800 border border-slate-700 rounded-lg p-20 flex flex-col items-center text-center shadow-sm">
+              <div className="bg-slate-800 border border-slate-700 rounded-2xl p-12 flex flex-col items-center text-center shadow-sm">
                 <div className="bg-slate-900 p-6 rounded-full mb-6 border border-slate-700">
                   <PackageSearch className="h-12 w-12 text-slate-500" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">No resources found</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">No resources found</h3>
                 <p className="text-sm text-slate-400 max-w-sm mb-8">
                   Create a new resource to get started or adjust your filters to find what you're looking for.
                 </p>
                 <button 
                   onClick={handleAdd}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md text-sm font-medium transition-all flex items-center gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 flex items-center gap-2"
                 >
                   <Plus className="h-4 w-4" /> Create First Resource
                 </button>

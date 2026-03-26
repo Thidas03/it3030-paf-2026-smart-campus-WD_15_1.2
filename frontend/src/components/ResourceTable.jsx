@@ -6,25 +6,25 @@ const ResourceTable = ({ resources, onEdit, onDelete }) => {
     switch (status) {
       case 'ACTIVE':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span className="text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded text-xs">
             Active
           </span>
         );
       case 'MAINTENANCE':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+          <span className="text-amber-400 bg-amber-500/10 px-2 py-1 rounded text-xs">
             Maintenance
           </span>
         );
       case 'OUT_OF_SERVICE':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+          <span className="text-rose-400 bg-rose-500/10 px-2 py-1 rounded text-xs">
             Out of Service
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-700 text-slate-300">
+          <span className="text-slate-300 bg-slate-700 px-2 py-1 rounded text-xs">
             {status}
           </span>
         );
@@ -58,77 +58,85 @@ const ResourceTable = ({ resources, onEdit, onDelete }) => {
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-slate-700 bg-slate-800/50">
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Name</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Type</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Capacity</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Location</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Window</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300">Status</th>
-            <th className="px-4 py-3 text-sm font-medium text-slate-300 text-right">Actions</th>
+          <tr className="text-xs uppercase text-slate-400 border-b border-slate-700">
+            <th className="px-3 py-2 font-medium">Name</th>
+            <th className="px-3 py-2 font-medium">Type</th>
+            <th className="px-3 py-2 font-medium">Capacity</th>
+            <th className="px-3 py-2 font-medium">Location</th>
+            <th className="px-3 py-2 font-medium">Window</th>
+            <th className="px-3 py-2 font-medium">Status</th>
+            <th className="px-3 py-2 font-medium text-right">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-700">
-          {resources.map((resource) => (
-            <tr key={resource.id} className="hover:bg-slate-700/50 transition-colors group">
-              <td className="px-4 py-2 text-sm font-medium text-slate-200">
-                {resource.name}
-              </td>
-              <td className="px-4 py-2 text-sm text-slate-400">
-                <div className="flex items-center gap-2">
-                  <Tag className="h-3.5 w-3.5 text-slate-500" />
-                  {formatType(resource.type)}
-                </div>
-              </td>
-              <td className="px-4 py-2 text-sm text-slate-400">
-                <div className="flex items-center gap-2">
-                  <Users className="h-3.5 w-3.5 text-slate-500" />
-                  {resource.capacity}
-                </div>
-              </td>
-              <td className="px-4 py-2 text-sm text-slate-400">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-slate-500" />
-                  {resource.location}
-                </div>
-              </td>
-              <td className="px-4 py-2 text-sm text-slate-400">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-3.5 w-3.5 text-slate-500" />
-                    <span className="text-xs">{formatDate(resource.availabilityStartTime)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-3.5 w-3.5 text-slate-500" />
-                    <span className="text-xs tabular-nums">
-                      {formatTime(resource.availabilityStartTime)} — {formatTime(resource.availabilityEndTime)}
-                    </span>
-                  </div>
-                </div>
-              </td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                {getStatusBadge(resource.status)}
-              </td>
-              <td className="px-4 py-2 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => onEdit(resource)}
-                    className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-md transition-colors"
-                    title="Edit"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => onDelete(resource.id)}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-400/10 rounded-md transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
+          {resources.length === 0 ? (
+            <tr>
+              <td colSpan="7" className="text-center text-slate-400 text-sm py-8">
+                No resources found
               </td>
             </tr>
-          ))}
+          ) : (
+            resources.map((resource) => (
+              <tr key={resource.id} className="text-sm hover:bg-slate-800 transition duration-200 odd:bg-slate-800/40 group">
+                <td className="px-3 py-2 font-medium text-slate-200">
+                  {resource.name}
+                </td>
+                <td className="px-3 py-2 text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <Tag className="h-3.5 w-3.5 text-slate-500" />
+                    {formatType(resource.type)}
+                  </div>
+                </td>
+                <td className="px-3 py-2 text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-3.5 w-3.5 text-slate-500" />
+                    {resource.capacity}
+                  </div>
+                </td>
+                <td className="px-3 py-2 text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                    {resource.location}
+                  </div>
+                </td>
+                <td className="px-3 py-2 text-slate-400">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-3.5 w-3.5 text-slate-500" />
+                      <span className="text-xs">{formatDate(resource.availabilityStartTime)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-3.5 w-3.5 text-slate-500" />
+                      <span className="text-xs tabular-nums">
+                        {formatTime(resource.availabilityStartTime)} — {formatTime(resource.availabilityEndTime)}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-3 py-2 whitespace-nowrap">
+                  {getStatusBadge(resource.status)}
+                </td>
+                <td className="px-3 py-2 text-right">
+                  <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => onEdit(resource)}
+                      className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-md transition duration-200"
+                      title="Edit"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => onDelete(resource.id)}
+                      className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-400/10 rounded-md transition duration-200"
+                      title="Delete"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

@@ -22,7 +22,7 @@ const ResourceFilter = ({
           placeholder="Search resources..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="block w-full pl-10 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="block w-full pl-10 pr-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
         />
       </div>
 
@@ -34,7 +34,7 @@ const ResourceFilter = ({
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="block w-full pl-10 pr-10 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
+          className="block w-full pl-10 pr-10 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
         >
           <option value="">All Types</option>
           <option value="LECTURE_HALL">Lecture Hall</option>
@@ -57,7 +57,7 @@ const ResourceFilter = ({
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="block w-full pl-10 pr-10 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
+          className="block w-full pl-10 pr-10 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
         >
           <option value="">All Statuses</option>
           <option value="ACTIVE">Active Only</option>
@@ -82,7 +82,7 @@ const ResourceFilter = ({
             placeholder="Min capacity"
             value={minCapacity}
             onChange={(e) => setMinCapacity(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            className="block w-full pl-10 pr-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           />
         </div>
         

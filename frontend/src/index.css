@@ -12,19 +12,20 @@
 
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-dark-bg;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-dark-border rounded-full border-2 border-dark-bg;
+  background: #475569;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-700;
+  background: #64748b;
 }
 
 /* Glassmorphism utility */

@@ -4,25 +4,21 @@ import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users,
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-blue-500/30 relative overflow-hidden">
-      {/* Dynamic background blurs */}
-      <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[140px]"></div>
-      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[140px]"></div>
-
-      <div className="max-w-6xl mx-auto px-6 py-8 md:py-16 flex flex-col items-center justify-center min-h-screen relative z-10">
+    <div className="min-h-screen bg-slate-900">
+      <div className="p-6 space-y-6 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-3rem)] relative z-10">
         <div className="w-full max-w-4xl relative">
           
-          <div className="relative bg-slate-900/40 backdrop-blur-2xl border border-slate-800 rounded-[3rem] p-8 md:p-14 shadow-2xl overflow-hidden ring-1 ring-white/5">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 md:p-14 shadow-sm">
             {/* Header section */}
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 shadow-inner">
                 <Sparkles className="h-3 w-3" /> System Status: Operational
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-tight text-white">
+              <h1 className="text-3xl font-bold tracking-tight mb-6 leading-tight text-white">
                  Smart Campus <br />
                  <span className="text-blue-500">Operations Hub</span>
               </h1>
-              <p className="text-base md:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
+              <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
                 Management and exploration of campus infrastructure. 
                 Synchronize facilities and assets with a modern, high-performance interface.
               </p>
@@ -42,7 +38,7 @@ const Dashboard = () => {
                       {/* Admin Portal */}
                       <Link 
                         to="/resources" 
-                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-blue-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
                       >
                         <div className="p-4 bg-blue-600/10 rounded-xl group-hover:bg-blue-600 group-hover:text-white text-blue-500 transition-all duration-300 border border-blue-500/20">
                           <LayoutDashboard className="h-6 w-6" />
@@ -59,7 +55,7 @@ const Dashboard = () => {
                       {/* Student Catalogue */}
                       <Link 
                         to="/student/resources" 
-                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
                       >
                         <div className="p-4 bg-indigo-600/10 rounded-xl group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 transition-all duration-300 border border-indigo-500/20">
                           <Search className="h-6 w-6" />
@@ -86,7 +82,7 @@ const Dashboard = () => {
                       {/* Resource Calendar */}
                       <Link 
                         to="/admin/resource-calendar" 
-                        className="group relative p-6 bg-slate-800/40 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 rounded-2xl transition-all duration-300 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
                       >
                         <div className="p-4 bg-emerald-600/10 rounded-xl group-hover:bg-emerald-600 group-hover:text-white text-emerald-500 transition-all duration-300 border border-emerald-500/20">
                           <Calendar className="h-6 w-6" />
