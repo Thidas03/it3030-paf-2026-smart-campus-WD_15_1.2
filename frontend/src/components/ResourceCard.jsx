@@ -1,8 +1,8 @@
 import React from 'react';
-import { Edit, Trash2, MapPin, Users, Clock, Box, LayoutPanelLeft, Calendar } from 'lucide-react';
+import { Edit, Trash2, MapPin, Users, Clock, Box, LayoutPanelLeft, Calendar, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const ResourceCard = ({ resource, onEdit, onDelete, isAdmin = true }) => {
+const ResourceCard = ({ resource, onEdit, onDelete, onReportIssue, isAdmin = true }) => {
   const navigate = useNavigate();
   
   const getStatusBadge = (status) => {
@@ -121,12 +121,33 @@ const ResourceCard = ({ resource, onEdit, onDelete, isAdmin = true }) => {
             </button>
           </>
         ) : (
-          <button
-            onClick={() => navigate(`/student/resources/${resource.id}`)}
-            className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 active:scale-95"
-          >
-            <LayoutPanelLeft className="h-4 w-4" /> View Details
-          </button>
+          <div className="flex flex-col gap-2 w-full">
+            <button
+              type="button"
+              onClick={() => navigate(`/student/resources/${resource.id}`)}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 active:scale-95"
+            >
+              <LayoutPanelLeft className="h-4 w-4" /> View Details
+            </button>
+            <span
+              className="w-full"
+              title={
+                resource.status === 'OUT_OF_SERVICE'
+                  ? 'Cannot report while resource is out of service'
+                  : 'Report maintenance issue'
+              }
+            >
+              <button
+                type="button"
+                onClick={() => onReportIssue?.(resource)}
+                disabled={resource.status === 'OUT_OF_SERVICE'}
+                className="w-full inline-flex items-center justify-center gap-1.5 text-xs px-2 py-1 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition duration-200 disabled:opacity-40 disabled:pointer-events-none"
+              >
+                <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                Report Issue
+              </button>
+            </span>
+          </div>
         )}
       </div>
     </div>

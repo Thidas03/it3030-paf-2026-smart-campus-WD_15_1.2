@@ -5,6 +5,7 @@ import resourceService from '../services/resourceService';
 import ResourceCard from '../components/ResourceCard';
 import ResourceFilter from '../components/ResourceFilter';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ReportIssueModal from '../components/ReportIssueModal';
 
 const StudentResourcesPage = () => {
   const [resources, setResources] = useState([]);
@@ -14,6 +15,8 @@ const StudentResourcesPage = () => {
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [minCapacity, setMinCapacity] = useState('');
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [resourceForReport, setResourceForReport] = useState(null);
 
   useEffect(() => {
     fetchResources();
@@ -39,6 +42,17 @@ const StudentResourcesPage = () => {
     setFilterType('');
     setFilterStatus('');
     setMinCapacity('');
+  };
+
+  const handleReportIssue = (resource) => {
+    setResourceForReport(resource);
+    setIsReportModalOpen(true);
+  };
+
+  const handleReportIssueSuccess = (resourceId) => {
+    setResources((prev) =>
+      prev.map((r) => (r.id === resourceId ? { ...r, status: 'MAINTENANCE' } : r))
+    );
   };
 
   const filteredResources = useMemo(() => {
@@ -98,10 +112,11 @@ const StudentResourcesPage = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredResources.map((res) => (
-                    <ResourceCard 
-                      key={res.id} 
-                      resource={res} 
-                      isAdmin={false} // Student view
+                    <ResourceCard
+                      key={res.id}
+                      resource={res}
+                      isAdmin={false}
+                      onReportIssue={handleReportIssue}
                     />
                   ))}
                 </div>
@@ -132,6 +147,16 @@ const StudentResourcesPage = () => {
               </div>
             )}
         </div>
+
+        <ReportIssueModal
+          isOpen={isReportModalOpen}
+          resource={resourceForReport}
+          onClose={() => {
+            setIsReportModalOpen(false);
+            setResourceForReport(null);
+          }}
+          onSuccess={handleReportIssueSuccess}
+        />
       </div>
     </div>
   );

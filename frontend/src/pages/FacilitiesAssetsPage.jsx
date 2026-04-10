@@ -7,6 +7,7 @@ import ResourceCard from '../components/ResourceCard';
 import ResourceFormModal from '../components/ResourceFormModal';
 import ResourceFilter from '../components/ResourceFilter';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import ReportIssueModal from '../components/ReportIssueModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const FacilitiesAssetsPage = () => {
@@ -17,6 +18,8 @@ const FacilitiesAssetsPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [resourceToDelete, setResourceToDelete] = useState(null);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [resourceForReport, setResourceForReport] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -72,6 +75,17 @@ const FacilitiesAssetsPage = () => {
   const handleAdd = () => {
     setSelectedResource(null);
     setIsModalOpen(true);
+  };
+
+  const handleReportIssue = (resource) => {
+    setResourceForReport(resource);
+    setIsReportModalOpen(true);
+  };
+
+  const handleReportIssueSuccess = (resourceId) => {
+    setResources((prev) =>
+      prev.map((r) => (r.id === resourceId ? { ...r, status: 'MAINTENANCE' } : r))
+    );
   };
 
   const handleResetFilters = () => {
@@ -171,7 +185,12 @@ const FacilitiesAssetsPage = () => {
               <div className="space-y-4">
                 {viewMode === 'table' ? (
                   <div className="bg-slate-800 border border-slate-700 rounded-lg shadow-sm overflow-hidden">
-                    <ResourceTable resources={filteredResources} onEdit={handleEdit} onDelete={handleDeleteClick} />
+                    <ResourceTable
+                      resources={filteredResources}
+                      onEdit={handleEdit}
+                      onDelete={handleDeleteClick}
+                      onReportIssue={handleReportIssue}
+                    />
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -224,6 +243,16 @@ const FacilitiesAssetsPage = () => {
           itemName={resourceToDelete?.name}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={confirmDelete}
+        />
+
+        <ReportIssueModal
+          isOpen={isReportModalOpen}
+          resource={resourceForReport}
+          onClose={() => {
+            setIsReportModalOpen(false);
+            setResourceForReport(null);
+          }}
+          onSuccess={handleReportIssueSuccess}
         />
       </div>
     </div>

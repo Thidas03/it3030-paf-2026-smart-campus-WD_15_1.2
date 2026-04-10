@@ -1,7 +1,7 @@
 import React from 'react';
-import { Edit, Trash2, MapPin, Users, Clock, Tag, Calendar } from 'lucide-react';
+import { Edit, Trash2, MapPin, Users, Clock, Tag, Calendar, AlertCircle } from 'lucide-react';
 
-const ResourceTable = ({ resources, onEdit, onDelete }) => {
+const ResourceTable = ({ resources, onEdit, onDelete, onReportIssue }) => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'ACTIVE':
@@ -117,7 +117,24 @@ const ResourceTable = ({ resources, onEdit, onDelete }) => {
                   {getStatusBadge(resource.status)}
                 </td>
                 <td className="px-3 py-2 text-right">
-                  <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center justify-end gap-2 flex-wrap opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span
+                      title={
+                        resource.status === 'OUT_OF_SERVICE'
+                          ? 'Cannot report while resource is out of service'
+                          : 'Report maintenance issue'
+                      }
+                    >
+                      <button
+                        type="button"
+                        onClick={() => onReportIssue?.(resource)}
+                        disabled={resource.status === 'OUT_OF_SERVICE'}
+                        className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition duration-200 disabled:opacity-40 disabled:pointer-events-none"
+                      >
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        Report Issue
+                      </button>
+                    </span>
                     <button
                       onClick={() => onEdit(resource)}
                       className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-md transition duration-200"
