@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue-600: #2563eb;
+  --color-brand-blue-500: #3b82f6;
+  
+  --color-status-active: #22c55e;
+  --color-status-maintenance: #facc15;
+  --color-status-out-of-service: #ef4444;
+  
+  --color-accent-indigo: #6366f1;
+  --color-accent-violet: #8b5cf6;
+  --color-accent-pink: #ec4899;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0f172a] text-[#e2e8f0] antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white font-bold;
+  }
+}
+
+@layer components {
+  .card-glass {
+    @apply bg-[#1e293b]/90 backdrop-blur-md border border-[#334155] rounded-2xl shadow-xl;
+  }
+}

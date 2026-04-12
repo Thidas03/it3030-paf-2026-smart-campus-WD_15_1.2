@@ -4,60 +4,76 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div
-      className="min-vh-100 d-flex align-items-center justify-content-center text-white"
-      style={{
-        background:
-          'linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 40%, #22c55e 100%)',
-      }}
-    >
-      <div className="container px-4 px-md-0">
-        <div className="row justify-content-center">
-          <div className="col-12 col-md-8 col-lg-6">
-            <div
-              className="rounded-4 shadow-lg p-4 p-md-5 text-center"
-              style={{
-                background:
-                  'linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.75))',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <p className="text-uppercase small text-info mb-2 fw-semibold">
-                Welcome to
-              </p>
-              <h1 className="fw-bold mb-3">
-                Smart Campus <span className="text-info">Operations Hub</span>
-              </h1>
-              <p className="mb-4 text-white-50">
-                A beautiful centralized portal to manage campus facilities,
-                bookings, maintenance tickets, and notifications with a modern
-                smart-campus experience.
-              </p>
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
+      <div className="max-w-4xl w-full">
+        <div className="card-glass p-8 md:p-12 text-center relative overflow-hidden">
+          {/* Background Highlight Decoration */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-brand-blue-600/20 blur-3xl rounded-full"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-accent-indigo/20 blur-3xl rounded-full"></div>
 
-              <div className="d-flex flex-column flex-md-row justify-content-center gap-3 mb-4">
-                <button className="btn btn-info text-dark fw-semibold px-4">
-                  Explore Campus Services
-                </button>
-                <button className="btn btn-outline-light fw-semibold px-4">
-                  View Demo Dashboard
+          <div className="relative z-10">
+            <p className="text-sm font-bold tracking-widest text-brand-blue-500 uppercase mb-4">
+              Welcome to
+            </p>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
+              Smart Campus <span className="text-brand-blue-500">Operations Hub</span>
+            </h1>
+            <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+              A centralized portal to manage campus facilities, bookings, 
+              maintenance tickets, and notifications with a modern AI-powered experience.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+              <button className="bg-brand-blue-600 hover:bg-brand-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue-600/25">
+                Explore Campus Services
+              </button>
+              <button className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-xl border border-slate-600 transition-all duration-300">
+                View Demo Dashboard
+              </button>
+            </div>
+
+            {user && (
+              <div className="flex flex-col sm:flex-row items-center justify-between border-t border-slate-700/50 pt-6 mb-8 text-sm text-slate-400 gap-4">
+                <span className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-status-active"></div>
+                  Signed in as {user.email}
+                </span>
+                <button
+                  onClick={logout}
+                  className="text-slate-300 hover:text-white border border-slate-700 hover:bg-slate-800 py-1.5 px-4 rounded-lg transition-all"
+                >
+                  Logout
                 </button>
               </div>
+            )}
 
-              {user && (
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center border-top border-secondary pt-3 mt-2 small text-white-50 gap-2">
-                  <span>Signed in as {user.email}</span>
-                  <button
-                    onClick={logout}
-                    className="btn btn-sm btn-outline-light"
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl text-left hover:border-brand-blue-500/50 transition-all duration-300 group">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-blue-400 transition-colors">Support & Tickets</h3>
+                    <p className="text-slate-400 text-sm">
+                      Need help? Raise a ticket and get AI-powered DIY fixes instantly.
+                    </p>
+                  </div>
+                  <a 
+                    href="/raise-ticket" 
+                    className="inline-flex items-center justify-center bg-brand-blue-600/10 hover:bg-brand-blue-600 text-brand-blue-400 hover:text-white font-bold py-2 px-6 rounded-lg transition-all"
                   >
-                    Logout
-                  </button>
+                    Report an Issue →
+                  </a>
                 </div>
-              )}
-
-              <div className="mt-3 small text-white-50">
-                Facilities • Bookings • Maintenance • Notifications
               </div>
+            </div>
+
+            <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-500 uppercase tracking-widest">
+              <span>Facilities</span>
+              <span className="text-slate-700">•</span>
+              <span>Bookings</span>
+              <span className="text-slate-700">•</span>
+              <span>Maintenance</span>
+              <span className="text-slate-700">•</span>
+              <span>Notifications</span>
             </div>
           </div>
         </div>
@@ -67,4 +83,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
