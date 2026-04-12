@@ -1,12 +1,12 @@
 package com.smartcampus.repository;
 
 import com.smartcampus.model.Ticket;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface TicketRepository extends MongoRepository<Ticket, String> {
+public interface TicketRepository {
+    Ticket save(Ticket ticket);
+    List<Ticket> findAll();
+    Optional<Ticket> findById(String id);
     List<Ticket> findByUserId(String userId);
 }

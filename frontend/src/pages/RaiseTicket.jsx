@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { HiOutlineArrowLeft, HiOutlineLightningBolt, HiOutlineChatAlt2, HiOutlineCheckCircle, HiOutlineWrench } from 'react-icons/hi2';
+import { HiOutlineArrowLeft, HiOutlineBolt, HiOutlineChatBubbleLeftEllipsis, HiOutlineCheckCircle, HiOutlineWrench } from 'react-icons/hi2';
 
 const RaiseTicket = () => {
   const [labName, setLabName] = useState('');
@@ -62,7 +62,7 @@ const RaiseTicket = () => {
           <div className="p-8 md:p-10">
             <div className="flex items-center justify-center gap-3 mb-8">
               <div className="bg-brand-blue-500/20 p-3 rounded-2xl">
-                <HiOutlineLightningBolt className="text-3xl text-brand-blue-400" />
+                <HiOutlineBolt className="text-3xl text-brand-blue-400" />
               </div>
               <h1 className="text-3xl font-extrabold text-white">Report an Issue</h1>
             </div>
@@ -104,7 +104,7 @@ const RaiseTicket = () => {
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   ) : (
-                    <HiOutlineLightningBolt className="text-xl group-hover:scale-110 transition-transform" />
+                    <HiOutlineBolt className="text-xl group-hover:scale-110 transition-transform" />
                   )}
                   <span>{loading ? 'Analyzing with Gemini AI...' : 'Analyze & Raise Ticket'}</span>
                 </button>
@@ -113,10 +113,10 @@ const RaiseTicket = () => {
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="bg-accent-indigo/10 border border-accent-indigo/20 p-6 rounded-2xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
-                    <HiOutlineChatAlt2 size={80} />
+                    <HiOutlineChatBubbleLeftEllipsis size={80} />
                   </div>
                   <h2 className="text-accent-indigo font-bold text-sm uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <HiOutlineLightningBolt />
+                    <HiOutlineBolt />
                     Gemini AI Suggestion
                   </h2>
                   <p className="text-slate-200 text-lg leading-relaxed italic">
@@ -145,11 +145,11 @@ const RaiseTicket = () => {
                 
                 <div className="flex items-center justify-center gap-4">
                   <div className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border ${
-                    ticket.status === 'RESOLVED' 
+                    ticket?.status === 'RESOLVED' 
                       ? 'bg-status-active/10 border-status-active/30 text-status-active' 
                       : 'bg-status-maintenance/10 border-status-maintenance/30 text-status-maintenance'
                   }`}>
-                    Ticket Status: {ticket.status.replace('_', ' ')}
+                    Ticket Status: {typeof ticket?.status === 'string' ? ticket.status.replace('_', ' ') : String(ticket?.status || 'UNKNOWN')}
                   </div>
                 </div>
                 
