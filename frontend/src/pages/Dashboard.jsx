@@ -1,80 +1,157 @@
-import { useAuth } from '../context/AuthContext.jsx';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users, LayoutDashboard, Search } from 'lucide-react';
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
-      <div className="max-w-4xl w-full">
-        <div className="card-glass p-8 md:p-12 text-center relative overflow-hidden">
-          {/* Background Highlight Decoration */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-brand-blue-600/20 blur-3xl rounded-full"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-accent-indigo/20 blur-3xl rounded-full"></div>
+    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] overflow-hidden relative">
+      {/* Animated background elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-500/20 blur-[120px] mix-blend-screen animate-glow-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-accent-500/20 blur-[120px] mix-blend-screen animate-glow-pulse" style={{ animationDelay: '2s' }}></div>
 
-          <div className="relative z-10">
-            <p className="text-sm font-bold tracking-widest text-brand-blue-500 uppercase mb-4">
-              Welcome to
-            </p>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-              Smart Campus <span className="text-brand-blue-500">Operations Hub</span>
-            </h1>
-            <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              A centralized portal to manage campus facilities, bookings, 
-              maintenance tickets, and notifications with a modern AI-powered experience.
-            </p>
-
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-              <button className="bg-brand-blue-600 hover:bg-brand-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue-600/25">
-                Explore Campus Services
-              </button>
-              <button className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-xl border border-slate-600 transition-all duration-300">
-                View Demo Dashboard
-              </button>
+      <div className="p-6 space-y-6 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-3rem)] relative z-10">
+        <div className="w-full max-w-4xl relative">
+          
+          <div className="glass rounded-2xl p-8 md:p-14">
+            {/* Header section */}
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 shadow-inner">
+                <Sparkles className="h-3 w-3" /> System Status: Operational
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight text-white drop-shadow-md">
+                 Smart Campus <br />
+                 <span className="text-gradient-cyber">Operations Hub</span>
+              </h1>
+              <p className="text-sm text-dark-muted max-w-xl mx-auto leading-relaxed">
+                Management and exploration of campus infrastructure. 
+                Synchronize facilities and assets with a modern, high-performance interface.
+              </p>
             </div>
 
-            {user && (
-              <div className="flex flex-col sm:flex-row items-center justify-between border-t border-slate-700/50 pt-6 mb-8 text-sm text-slate-400 gap-4">
-                <span className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-active"></div>
-                  Signed in as {user.email}
-                </span>
-                <button
-                  onClick={logout}
-                  className="text-slate-300 hover:text-white border border-slate-700 hover:bg-slate-800 py-1.5 px-4 rounded-lg transition-all"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
+            {/* Navigation Sections */}
+            <div className="space-y-12">
 
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-              <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl text-left hover:border-brand-blue-500/50 transition-all duration-300 group">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-blue-400 transition-colors">Support & Tickets</h3>
-                    <p className="text-slate-400 text-sm">
-                      Need help? Raise a ticket and get AI-powered DIY fixes instantly.
-                    </p>
-                  </div>
-                  <a 
-                    href="/raise-ticket" 
-                    className="inline-flex items-center justify-center bg-brand-blue-600/10 hover:bg-brand-blue-600 text-brand-blue-400 hover:text-white font-bold py-2 px-6 rounded-lg transition-all"
+              {/* Facilities & Assets Section */}
+              <div>
+                <div className="flex items-center gap-4 mb-8 px-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                  <span className="text-[10px] font-bold text-accent-500 uppercase tracking-[0.2em] whitespace-nowrap glow-accent px-3 py-1 rounded-full border border-accent-500/20 bg-accent-500/5">Facilities & Assets Module</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                  {/* Admin Portal */}
+                  <Link 
+                    to="/resources" 
+                    className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
                   >
-                    Report an Issue →
-                  </a>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-4 bg-primary-500/10 rounded-xl group-hover:bg-primary-500 group-hover:text-white text-primary-500 transition-all duration-300 border border-primary-500/30 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] z-10">
+                      <LayoutDashboard className="h-6 w-6" />
+                    </div>
+                    <div className="text-left relative z-10">
+                      <h3 className="font-bold text-lg text-white group-hover:text-primary-400 transition-colors">Admin Portal</h3>
+                      <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Manage campus nodes and infrastructure.</p>
+                    </div>
+                    <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                      <ExternalLink className="h-5 w-5 text-primary-400" />
+                    </div>
+                  </Link>
+
+                  {/* Student Catalogue */}
+                  <Link 
+                    to="/student/resources" 
+                    className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-4 bg-accent-500/10 rounded-xl group-hover:bg-accent-500 group-hover:text-white text-accent-500 transition-all duration-300 border border-accent-500/30 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] z-10">
+                      <Search className="h-6 w-6" />
+                    </div>
+                    <div className="text-left relative z-10">
+                      <h3 className="font-bold text-lg text-white group-hover:text-accent-400 transition-colors">Student Catalogue</h3>
+                      <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Explore and view campus facilities.</p>
+                    </div>
+                    <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                      <ExternalLink className="h-5 w-5 text-accent-400" />
+                    </div>
+                  </Link>
                 </div>
               </div>
+
+              {/* Scheduling Section */}
+              <div>
+                <div className="flex items-center gap-4 mb-8 px-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                  <span className="text-[10px] font-bold text-primary-500 uppercase tracking-[0.2em] whitespace-nowrap glow-primary px-3 py-1 rounded-full border border-primary-500/20 bg-primary-500/5">Scheduling</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                  {/* Resource Calendar */}
+                  <Link 
+                    to="/admin/resource-calendar" 
+                    className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-4 bg-emerald-500/10 rounded-xl group-hover:bg-emerald-500 group-hover:text-white text-emerald-500 transition-all duration-300 border border-emerald-500/30 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] z-10">
+                      <Calendar className="h-6 w-6" />
+                    </div>
+                    <div className="text-left relative z-10">
+                      <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors">Resource Calendar</h3>
+                      <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Visualize facility and asset availability.</p>
+                    </div>
+                    <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                      <ExternalLink className="h-5 w-5 text-emerald-400" />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Maintenance & Support Section */}
+              <div>
+                <div className="flex items-center gap-4 mb-8 px-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                  <span className="text-[10px] font-bold text-amber-500 uppercase tracking-[0.2em] whitespace-nowrap px-3 py-1 rounded-full border border-amber-500/20 bg-amber-500/5">Maintenance & Support</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                  {/* Report an Issue */}
+                  <Link 
+                    to="/raise-ticket" 
+                    className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-4 bg-amber-500/10 rounded-xl group-hover:bg-amber-500 group-hover:text-white text-amber-500 transition-all duration-300 border border-amber-500/30 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] z-10">
+                      <Zap className="h-6 w-6" />
+                    </div>
+                    <div className="text-left relative z-10">
+                      <h3 className="font-bold text-lg text-white group-hover:text-amber-400 transition-colors">Report an Issue</h3>
+                      <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Need help? Raise a ticket and get AI-powered DIY fixes instantly.</p>
+                    </div>
+                    <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                      <ExternalLink className="h-5 w-5 text-amber-400" />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
             </div>
 
-            <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-500 uppercase tracking-widest">
-              <span>Facilities</span>
-              <span className="text-slate-700">•</span>
-              <span>Bookings</span>
-              <span className="text-slate-700">•</span>
-              <span>Maintenance</span>
-              <span className="text-slate-700">•</span>
-              <span>Notifications</span>
+            {/* Status indicators */}
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-[10px] font-bold text-dark-muted tracking-widest uppercase bg-dark-bg/30 py-3 rounded-xl border border-white/5">
+              <span className="flex items-center gap-2">
+                <Globe className="h-3 w-3 text-accent-500 glow-accent" /> Network Active
+              </span>
+              <span className="flex items-center gap-2">
+                <Shield className="h-3 w-3 text-primary-500 glow-primary" /> Data Secure
+              </span>
+              <span className="flex items-center gap-2">
+                <Zap className="h-3 w-3 text-amber-500 animate-pulse drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]" /> Core Online
+              </span>
             </div>
+          </div>
+          
+          <div className="mt-12 text-center text-dark-muted font-medium text-[10px] tracking-[0.3em] uppercase drop-shadow-sm">
+            © 2026 Smart Campus Research Division // Node Optimized
           </div>
         </div>
       </div>

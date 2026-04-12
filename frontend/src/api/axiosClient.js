@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:8081/api',
   withCredentials: false
 });
 
@@ -14,4 +14,3 @@ axiosClient.interceptors.request.use((config) => {
 });
 
 export default axiosClient;
-
