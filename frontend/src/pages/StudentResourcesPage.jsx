@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PackageSearch, RefreshCw, Layers, Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
 import resourceService from '../services/resourceService';
@@ -10,6 +11,7 @@ import ReportIssueModal from '../components/ReportIssueModal';
 const StudentResourcesPage = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -45,8 +47,7 @@ const StudentResourcesPage = () => {
   };
 
   const handleReportIssue = (resource) => {
-    setResourceForReport(resource);
-    setIsReportModalOpen(true);
+    navigate(`/raise-ticket?name=${encodeURIComponent(resource.name)}&type=${encodeURIComponent(resource.type)}&location=${encodeURIComponent(resource.location || '')}`);
   };
 
   const handleReportIssueSuccess = (resourceId) => {

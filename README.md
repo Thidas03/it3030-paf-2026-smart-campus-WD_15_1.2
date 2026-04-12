@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-# it3030-paf-2026-smart-campus-WD_15_1.2
-=======
-## Smart Campus Operations Hub
+# Smart Campus Operations Hub
 
 Full-stack university system for managing campus facilities, bookings, maintenance tickets, and notifications.
 
@@ -36,5 +33,3 @@ npm run dev
 ```
 
 Configure environment variables using `.env.example` in the project root.
-
->>>>>>> 5a6e345 (Initial commit for smart campus project)

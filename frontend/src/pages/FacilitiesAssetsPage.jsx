@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LayoutGrid, List, Plus, PackageSearch, RefreshCw, Layers, Filter, Calendar } from 'lucide-react';
 import toast from 'react-hot-toast';
 import resourceService from '../services/resourceService';
@@ -7,19 +8,17 @@ import ResourceCard from '../components/ResourceCard';
 import ResourceFormModal from '../components/ResourceFormModal';
 import ResourceFilter from '../components/ResourceFilter';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
-import ReportIssueModal from '../components/ReportIssueModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const FacilitiesAssetsPage = () => {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('table');
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [resourceToDelete, setResourceToDelete] = useState(null);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-  const [resourceForReport, setResourceForReport] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -75,17 +74,6 @@ const FacilitiesAssetsPage = () => {
   const handleAdd = () => {
     setSelectedResource(null);
     setIsModalOpen(true);
-  };
-
-  const handleReportIssue = (resource) => {
-    setResourceForReport(resource);
-    setIsReportModalOpen(true);
-  };
-
-  const handleReportIssueSuccess = (resourceId) => {
-    setResources((prev) =>
-      prev.map((r) => (r.id === resourceId ? { ...r, status: 'MAINTENANCE' } : r))
-    );
   };
 
   const handleResetFilters = () => {
@@ -150,6 +138,13 @@ const FacilitiesAssetsPage = () => {
             </button>
 
             <button
+              onClick={() => navigate('/admin/tickets')}
+              className="bg-dark-bg hover:bg-amber-500/10 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 border border-white/10 hover:border-amber-500/50 hover:text-amber-400 shadow-sm"
+            >
+              View Tickets
+            </button>
+
+            <button
               onClick={handleAdd}
               className="bg-gradient-cyber hover:glow-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 shadow-lg hover:scale-[1.02] active:scale-[0.98] border border-white/10"
             >
@@ -194,7 +189,6 @@ const FacilitiesAssetsPage = () => {
                       resources={filteredResources}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick}
-                      onReportIssue={handleReportIssue}
                     />
                   </div>
                 ) : (
@@ -254,16 +248,6 @@ const FacilitiesAssetsPage = () => {
           itemName={resourceToDelete?.name}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={confirmDelete}
-        />
-
-        <ReportIssueModal
-          isOpen={isReportModalOpen}
-          resource={resourceForReport}
-          onClose={() => {
-            setIsReportModalOpen(false);
-            setResourceForReport(null);
-          }}
-          onSuccess={handleReportIssueSuccess}
         />
       </div>
     </div>

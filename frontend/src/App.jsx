@@ -3,17 +3,19 @@ import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/LoginPage';
+import RaiseTicket from './pages/RaiseTicket.jsx';
 import FacilitiesAssetsPage from './pages/FacilitiesAssetsPage';
 import StudentResourcesPage from './pages/StudentResourcesPage';
 import StudentResourceDetails from './pages/StudentResourceDetails';
 import StudentCalendar from './pages/student/StudentCalendar';
 import ResourceAvailabilityCalendar from './pages/admin/ResourceAvailabilityCalendar';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminTicketsPage from './pages/admin/AdminTicketsPage';
 
 function App() {
   return (
     <>
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           className: 'glass text-white font-bold',
@@ -25,11 +27,22 @@ function App() {
         }}
       />
       <Routes>
+        {/* Home */}
         <Route path="/" element={<Dashboard />} />
+
+        {/* Auth */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Maintenance & Support - Mageepan's part */}
+        <Route path="/raise-ticket" element={<RaiseTicket />} />
+
+        {/* Facilities & Assets - Teammate's part */}
+        <Route path="/resources" element={<FacilitiesAssetsPage />} />
         <Route path="/admin/resource-calendar" element={<ResourceAvailabilityCalendar />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/resources" element={<FacilitiesAssetsPage />} />
+        <Route path="/admin/tickets" element={<AdminTicketsPage />} />
+
+        {/* Student - Teammate's part */}
         <Route path="/student/resources" element={<StudentResourcesPage />} />
         <Route path="/student/resources/:id" element={<StudentResourceDetails />} />
         <Route path="/student/calendar" element={<StudentCalendar />} />

@@ -232,6 +232,23 @@ const StudentResourceDetails = () => {
                         Go to Reservations
                     </button>
                 </div>
+
+                {/* Report Issue Action */}
+                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 mt-6">
+                    <h3 className="text-lg font-semibold text-rose-400 mb-2 flex items-center gap-2">
+                        <Shield className="h-4 w-4" />
+                        Found an Issue?
+                    </h3>
+                    <p className="text-sm text-slate-300 mb-4">
+                        Help us maintain our facilities by reporting any broken equipment or maintenance needs.
+                    </p>
+                    <button 
+                      onClick={() => navigate(`/raise-ticket?name=${encodeURIComponent(resource.name)}&type=${encodeURIComponent(resource.type)}&location=${encodeURIComponent(resource.location || '')}`)}
+                      className="w-full bg-slate-700 hover:bg-rose-500/20 text-rose-400 border border-slate-600 hover:border-rose-500/50 px-4 py-2 rounded-lg text-sm transition duration-200"
+                    >
+                        Report an Issue
+                    </button>
+                </div>
             </div>
         </div>
       </div>
