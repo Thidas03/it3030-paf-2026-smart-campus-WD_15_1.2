@@ -4,21 +4,25 @@ import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users,
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] overflow-hidden relative">
+      {/* Animated background elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-500/20 blur-[120px] mix-blend-screen animate-glow-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-accent-500/20 blur-[120px] mix-blend-screen animate-glow-pulse" style={{ animationDelay: '2s' }}></div>
+
       <div className="p-6 space-y-6 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-3rem)] relative z-10">
         <div className="w-full max-w-4xl relative">
           
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 md:p-14 shadow-sm">
+          <div className="glass rounded-2xl p-8 md:p-14">
             {/* Header section */}
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 shadow-inner">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 shadow-inner">
                 <Sparkles className="h-3 w-3" /> System Status: Operational
               </div>
-              <h1 className="text-3xl font-bold tracking-tight mb-6 leading-tight text-white">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight text-white drop-shadow-md">
                  Smart Campus <br />
-                 <span className="text-blue-500">Operations Hub</span>
+                 <span className="text-gradient-cyber">Operations Hub</span>
               </h1>
-              <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+              <p className="text-sm text-dark-muted max-w-xl mx-auto leading-relaxed">
                 Management and exploration of campus infrastructure. 
                 Synchronize facilities and assets with a modern, high-performance interface.
               </p>
@@ -28,44 +32,46 @@ const Dashboard = () => {
             <div className="space-y-12">
                 {/* Facilities & Assets Section */}
                 <div>
-                   <div className="flex items-center gap-2 mb-6 px-4">
-                      <div className="h-px flex-1 bg-slate-800"></div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Facilities & Assets Module</span>
-                      <div className="h-px flex-1 bg-slate-800"></div>
+                   <div className="flex items-center gap-4 mb-8 px-4">
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                      <span className="text-[10px] font-bold text-accent-500 uppercase tracking-[0.2em] whitespace-nowrap glow-accent px-3 py-1 rounded-full border border-accent-500/20 bg-accent-500/5">Facilities & Assets Module</span>
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
                    </div>
 
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
                       {/* Admin Portal */}
                       <Link 
                         to="/resources" 
-                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
                       >
-                        <div className="p-4 bg-blue-600/10 rounded-xl group-hover:bg-blue-600 group-hover:text-white text-blue-500 transition-all duration-300 border border-blue-500/20">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-primary-500/10 rounded-xl group-hover:bg-primary-500 group-hover:text-white text-primary-500 transition-all duration-300 border border-primary-500/30 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] z-10">
                           <LayoutDashboard className="h-6 w-6" />
                         </div>
-                        <div className="text-left">
-                          <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">Admin Portal</h3>
-                          <p className="text-xs text-slate-400 mt-1">Manage campus nodes and infrastructure.</p>
+                        <div className="text-left relative z-10">
+                          <h3 className="font-bold text-lg text-white group-hover:text-primary-400 transition-colors">Admin Portal</h3>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Manage campus nodes and infrastructure.</p>
                         </div>
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                            <ExternalLink className="h-4 w-4 text-blue-400" />
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-primary-400" />
                         </div>
                       </Link>
 
                       {/* Student Catalogue */}
                       <Link 
                         to="/student/resources" 
-                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
                       >
-                        <div className="p-4 bg-indigo-600/10 rounded-xl group-hover:bg-indigo-600 group-hover:text-white text-indigo-500 transition-all duration-300 border border-indigo-500/20">
+                        <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-accent-500/10 rounded-xl group-hover:bg-accent-500 group-hover:text-white text-accent-500 transition-all duration-300 border border-accent-500/30 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] z-10">
                           <Search className="h-6 w-6" />
                         </div>
-                        <div className="text-left">
-                          <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors">Student Catalogue</h3>
-                          <p className="text-xs text-slate-400 mt-1">Explore and view campus facilities.</p>
+                        <div className="text-left relative z-10">
+                          <h3 className="font-bold text-lg text-white group-hover:text-accent-400 transition-colors">Student Catalogue</h3>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Explore and view campus facilities.</p>
                         </div>
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                            <ExternalLink className="h-4 w-4 text-indigo-400" />
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-accent-400" />
                         </div>
                       </Link>
                    </div>
@@ -73,26 +79,27 @@ const Dashboard = () => {
 
                 {/* Coming Soon Section */}
                 <div>
-                    <div className="flex items-center gap-2 mb-6 px-4">
-                        <div className="h-px flex-1 bg-slate-800"></div>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Scheduling</span>
-                        <div className="h-px flex-1 bg-slate-800"></div>
+                    <div className="flex items-center gap-4 mb-8 px-4">
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                        <span className="text-[10px] font-bold text-primary-500 uppercase tracking-[0.2em] whitespace-nowrap glow-primary px-3 py-1 rounded-full border border-primary-500/20 bg-primary-500/5">Scheduling</span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
                       {/* Resource Calendar */}
                       <Link 
                         to="/admin/resource-calendar" 
-                        className="group relative p-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl transition duration-200 flex items-center gap-5 shadow-sm"
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
                       >
-                        <div className="p-4 bg-emerald-600/10 rounded-xl group-hover:bg-emerald-600 group-hover:text-white text-emerald-500 transition-all duration-300 border border-emerald-500/20">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-emerald-500/10 rounded-xl group-hover:bg-emerald-500 group-hover:text-white text-emerald-500 transition-all duration-300 border border-emerald-500/30 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] z-10">
                           <Calendar className="h-6 w-6" />
                         </div>
-                        <div className="text-left">
+                        <div className="text-left relative z-10">
                           <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors">Resource Calendar</h3>
-                          <p className="text-xs text-slate-400 mt-1">Visualize facility and asset availability.</p>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Visualize facility and asset availability.</p>
                         </div>
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                            <ExternalLink className="h-4 w-4 text-emerald-400" />
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-emerald-400" />
                         </div>
                       </Link>
                     </div>
@@ -100,20 +107,20 @@ const Dashboard = () => {
             </div>
 
             {/* Status indicators */}
-            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-[10px] font-bold text-slate-500 tracking-widest uppercase">
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-[10px] font-bold text-dark-muted tracking-widest uppercase bg-dark-bg/30 py-3 rounded-xl border border-white/5">
               <span className="flex items-center gap-2">
-                 <Globe className="h-3 w-3 text-emerald-500" /> Network Active
+                 <Globe className="h-3 w-3 text-accent-500 glow-accent" /> Network Active
               </span>
               <span className="flex items-center gap-2">
-                 <Shield className="h-3 w-3 text-blue-500" /> Data Secure
+                 <Shield className="h-3 w-3 text-primary-500 glow-primary" /> Data Secure
               </span>
               <span className="flex items-center gap-2">
-                 <Zap className="h-3 w-3 text-amber-500 animate-pulse" /> Core Online
+                 <Zap className="h-3 w-3 text-amber-500 animate-pulse drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]" /> Core Online
               </span>
             </div>
           </div>
           
-          <div className="mt-12 text-center text-slate-600 font-medium text-[10px] tracking-[0.3em] uppercase">
+          <div className="mt-12 text-center text-dark-muted font-medium text-[10px] tracking-[0.3em] uppercase drop-shadow-sm">
             © 2026 Smart Campus Research Division // Node Optimized
           </div>
         </div>

@@ -30,7 +30,7 @@ const StudentResourcesPage = () => {
     } catch (error) {
        console.error('API Error:', error);
        toast.error('Failed to load resources. Please try again later.', {
-         style: { background: '#1e293b', color: '#f1f5f9', border: '1px solid #334155' }
+         style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
        });
     } finally {
       setLoading(false);
@@ -70,38 +70,41 @@ const StudentResourcesPage = () => {
   }, [resources, searchTerm, filterType, filterStatus, minCapacity]);
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.15),rgba(255,255,255,0))] relative pb-12">
+      <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-blue-600/10 p-2.5 rounded-lg border border-blue-500/20">
-              <Layers className="h-6 w-6 text-blue-500" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="bg-gradient-to-br from-accent-500/20 to-primary-500/10 p-3 rounded-xl border border-accent-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+              <Layers className="h-7 w-7 text-accent-400" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-white">Campus Resources</h1>
-              <p className="text-sm text-slate-400">Browse and explore available campus facilities.</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">Campus Resources</h1>
+              <p className="text-sm text-dark-muted mt-1">Browse and explore available campus facilities.</p>
             </div>
           </div>
         </div>
 
         {/* Filter Section */}
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
-          <div className="flex items-center gap-2 mb-4 text-slate-300">
-            <Filter className="h-4 w-4" />
-            <h2 className="text-sm font-medium">Search & Filter</h2>
+        <div className="glass rounded-2xl p-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/5 rounded-full blur-[60px] pointer-events-none group-hover:bg-accent-500/10 transition-colors duration-700"></div>
+          <div className="flex items-center gap-2 mb-5 text-slate-200 relative z-10">
+            <Filter className="h-4 w-4 text-accent-400" />
+            <h2 className="text-sm font-semibold tracking-wide uppercase text-accent-400">Search & Filter</h2>
           </div>
-          <ResourceFilter 
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            filterType={filterType}
-            setFilterType={setFilterType}
-            filterStatus={filterStatus}
-            setFilterStatus={setFilterStatus}
-            minCapacity={minCapacity}
-            setMinCapacity={setMinCapacity}
-            onReset={handleResetFilters}
-          />
+          <div className="relative z-10">
+            <ResourceFilter 
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filterType={filterType}
+              setFilterType={setFilterType}
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+              minCapacity={minCapacity}
+              setMinCapacity={setMinCapacity}
+              onReset={handleResetFilters}
+            />
+          </div>
         </div>
 
         {/* Main Content Area */}
@@ -109,8 +112,8 @@ const StudentResourcesPage = () => {
             {loading ? (
               <LoadingSpinner message="Discovering facilities..." />
             ) : filteredResources.length > 0 ? (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredResources.map((res) => (
                     <ResourceCard
                       key={res.id}
@@ -122,25 +125,28 @@ const StudentResourcesPage = () => {
                 </div>
                 
                 {/* Stats Footer */}
-                <div className="flex items-center justify-between px-4 py-3 bg-slate-800/50 rounded-lg border border-slate-700 text-xs text-slate-400">
-                  <div className="flex items-center gap-4">
-                    <span>Available Resources: <span className="text-slate-200 font-medium">{filteredResources.length}</span></span>
+                <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-4 glass-card rounded-xl border border-white/5 text-xs text-dark-muted mt-8">
+                  <div className="flex items-center gap-6 mb-3 sm:mb-0">
+                    <span className="flex items-center gap-2">
+                       <span className="w-2.5 h-2.5 rounded-full bg-accent-500/50 border border-accent-500 glow-accent"></span> 
+                       Available Resources: <span className="text-white font-semibold">{filteredResources.length}</span>
+                    </span>
                   </div>
-                  <div>Campus Operations Hub</div>
+                  <div className="tracking-widest uppercase font-semibold text-[10px]">Campus Operations Hub</div>
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-800 border border-slate-700 rounded-2xl p-12 flex flex-col items-center text-center shadow-sm">
-                <div className="bg-slate-900 p-6 rounded-full mb-6 border border-slate-700">
-                  <PackageSearch className="h-12 w-12 text-slate-500" />
+              <div className="glass-card rounded-2xl p-16 flex flex-col items-center text-center shadow-lg border border-white/10">
+                <div className="bg-dark-bg/50 p-6 rounded-full mb-8 border border-white/5 shadow-inner">
+                  <PackageSearch className="h-12 w-12 text-accent-500/50" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">No resources found</h3>
-                <p className="text-sm text-slate-400 max-w-sm mb-8">
+                <h3 className="text-xl font-semibold text-white mb-3">No resources found</h3>
+                <p className="text-sm text-dark-muted max-w-sm mb-8 leading-relaxed">
                   Adjust your search or filters to discover campus facilities.
                 </p>
                 <button 
                   onClick={handleResetFilters}
-                  className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm transition duration-200"
+                  className="bg-dark-bg hover:bg-white/5 text-white px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 border border-white/10"
                 >
                   Reset all filters
                 </button>
