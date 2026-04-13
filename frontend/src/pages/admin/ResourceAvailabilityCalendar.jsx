@@ -79,18 +79,21 @@ const ResourceAvailabilityCalendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900" onMouseMove={handleMouseMove}>
-      <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-dark-bg" onMouseMove={handleMouseMove}>
+      <div className="p-6 space-y-6 max-w-7xl mx-auto animate-in fade-in zoom-in-95 duration-500">
         
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-xl font-semibold text-white flex items-center gap-3">
-              <CalendarIcon className="text-blue-500" />
+        <div className="flex justify-between items-center bg-dark-bg p-6 rounded-2xl border border-white/5 shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="relative z-10">
+            <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+              <div className="p-2.5 bg-primary-500/20 rounded-xl border border-primary-500/30">
+                <CalendarIcon className="text-primary-400 w-6 h-6" />
+              </div>
               Resource Availability
             </h1>
-            <p className="text-slate-400 mt-2">View and manage facility and asset availability</p>
+            <p className="text-gray-400 mt-2 text-sm">View and manage facility and asset availability</p>
           </div>
-          <div className="flex gap-4 p-4 bg-slate-800 rounded-xl border border-slate-700/50">
+          <div className="flex gap-4 p-4 glass-card rounded-xl border border-white/10 shadow-lg relative z-10">
              <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#22c55e]"></div>
                 <span className="text-sm">Active</span>
@@ -106,40 +109,49 @@ const ResourceAvailabilityCalendar = () => {
           </div>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-4 shadow-sm hover:shadow-md transition duration-200 relative text-slate-200">
+        <div className="glass rounded-2xl p-6 shadow-2xl relative text-gray-200">
           {isLoading ? (
             <div className="flex items-center justify-center h-[600px]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
             </div>
           ) : (
-             <div className="calendar-container bg-slate-800 rounded-xl overflow-hidden p-2">
+             <div className="calendar-container rounded-xl overflow-hidden p-2">
               <style jsx global>{`
                 .calendar-container .fc-theme-standard td, 
                 .calendar-container .fc-theme-standard th {
-                  border-color: #334155;
+                  border-color: rgba(255, 255, 255, 0.05);
                 }
                 .calendar-container .fc-col-header-cell {
-                  background-color: #1e293b;
-                  padding: 10px 0;
+                  background-color: rgba(255, 255, 255, 0.02);
+                  padding: 12px 0;
                 }
                 .calendar-container .fc-timegrid-slot {
                   height: 36px;
                 }
                 .calendar-container .fc-event {
                   cursor: pointer;
-                  transition: transform 0.2s;
+                  transition: all 0.3s ease;
+                  border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 }
                 .calendar-container .fc-event:hover {
-                  transform: scale(1.02);
+                  transform: scale(1.02) translateY(-2px);
+                  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
                   z-index: 50 !important;
                 }
                 .calendar-container .fc-button-primary {
-                  background-color: #3b82f6 !important;
-                  border-color: #3b82f6 !important;
+                  background-color: transparent !important;
+                  border-color: rgba(255, 255, 255, 0.1) !important;
+                  color: #9ca3af !important;
+                  transition: all 0.3s ease;
+                }
+                .calendar-container .fc-button-primary:hover {
+                  background-color: rgba(255, 255, 255, 0.05) !important;
+                  color: #fff !important;
                 }
                 .calendar-container .fc-button-active {
-                  background-color: #2563eb !important;
-                  border-color: #2563eb !important;
+                  background-color: rgba(139, 92, 246, 0.2) !important;
+                  border-color: rgba(139, 92, 246, 0.5) !important;
+                  color: #c4b5fd !important;
                 }
               `}</style>
               <FullCalendar
@@ -164,24 +176,30 @@ const ResourceAvailabilityCalendar = () => {
           {/* Tooltip */}
           {hoveredEvent && (
             <div 
-              className="fixed bg-slate-900 border border-slate-700 p-4 rounded-xl shadow-2xl z-[100] w-64 pointer-events-none"
+              className="fixed glass border border-white/10 p-5 rounded-xl shadow-2xl z-[100] w-64 pointer-events-none animate-in fade-in zoom-in duration-200"
               style={{
                 left: `${tooltipPos.x + 15}px`,
                 top: `${tooltipPos.y + 15}px`,
               }}
             >
               <h3 className="font-bold text-lg text-white mb-3 line-clamp-1">{hoveredEvent.name}</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <MapPin size={16} className="text-slate-500" />
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <div className="p-1.5 bg-white/5 rounded-lg">
+                    <MapPin size={14} className="text-primary-400" />
+                  </div>
                   <span>{hoveredEvent.location || 'N/A'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Users size={16} className="text-slate-500" />
+                <div className="flex items-center gap-3 text-gray-300">
+                  <div className="p-1.5 bg-white/5 rounded-lg">
+                    <Users size={14} className="text-primary-400" />
+                  </div>
                   <span>Cap: {hoveredEvent.capacity || 'N/A'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-300 pt-2 border-t border-slate-800">
-                  <Settings size={16} className="text-slate-500" />
+                <div className="flex items-center gap-3 text-gray-300 pt-3 border-t border-white/10 mt-1">
+                  <div className="p-1.5 bg-white/5 rounded-lg">
+                    <Settings size={14} className="text-primary-400" />
+                  </div>
                   <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
                     hoveredEvent.status === 'ACTIVE' ? 'bg-green-500/20 text-green-400' :
                     hoveredEvent.status === 'MAINTENANCE' ? 'bg-yellow-500/20 text-yellow-400' :
