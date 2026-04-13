@@ -85,20 +85,33 @@ const ResourceFormModal = ({ isOpen, resource, resources = [], onClose, onSucces
         return;
       }
 
-      // Overlap validation
-      const isOverlap = resources.some(r => {
+      // Name overlap validation (same person/equipment cannot be in two places at once)
+      const isNameOverlap = resources.some(r => {
         if (resource && r.id === resource.id) return false;
+        if (r.name.toLowerCase() !== data.name.toLowerCase()) return false;
         
+        const rStart = new Date(r.availabilityStartTime);
+        const rEnd = new Date(r.availabilityEndTime);
+        return (start < rEnd) && (end > rStart);
+      });
+
+      if (isNameOverlap) {
+        toast.error(`'${data.name}' is already booked during this time period`);
+        return;
+      }
+
+      // Location overlap validation (same location cannot be double-booked)
+      const isLocationOverlap = resources.some(r => {
+        if (resource && r.id === resource.id) return false;
         if (r.location.toLowerCase() !== data.location.toLowerCase()) return false;
         
         const rStart = new Date(r.availabilityStartTime);
         const rEnd = new Date(r.availabilityEndTime);
-        
         return (start < rEnd) && (end > rStart);
       });
 
-      if (isOverlap) {
-        toast.error('Location is already booked for this time period');
+      if (isLocationOverlap) {
+        toast.error('Location is already booked during this time period');
         return;
       }
 
