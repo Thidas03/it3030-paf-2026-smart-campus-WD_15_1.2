@@ -11,6 +11,7 @@ import StudentCalendar from './pages/student/StudentCalendar';
 import ResourceAvailabilityCalendar from './pages/admin/ResourceAvailabilityCalendar';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminTicketsPage from './pages/admin/AdminTicketsPage';
+import StudentTicketsPage from './pages/student/StudentTicketsPage';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         <Route path="/student/resources" element={<StudentResourcesPage />} />
         <Route path="/student/resources/:id" element={<StudentResourceDetails />} />
         <Route path="/student/calendar" element={<StudentCalendar />} />
+        <Route path="/student/tickets" element={<StudentTicketsPage />} />
       </Routes>
     </>
   );

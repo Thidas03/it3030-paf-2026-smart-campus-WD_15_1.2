@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { HiOutlineArrowLeft, HiOutlineLightningBolt, HiOutlineShieldExclamation, HiOutlineCheckCircle, HiOutlineClock } from 'react-icons/hi';
+import { HiOutlineArrowLeft, HiOutlineLightningBolt, HiOutlineShieldExclamation, HiOutlineCheckCircle } from 'react-icons/hi';
 import { Shield } from 'lucide-react';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import toast from 'react-hot-toast';
 
-const AdminTicketsPage = () => {
+const StudentTicketsPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,7 @@ const AdminTicketsPage = () => {
   const fetchTickets = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8081/api/tickets');
+      const response = await axios.get('http://localhost:8081/api/tickets/user/demo-user-123');
       setTickets(response.data || []);
     } catch (error) {
       console.error('Error fetching tickets:', error);
@@ -25,21 +25,6 @@ const AdminTicketsPage = () => {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const updateTicketStatus = async (id, newStatus) => {
-    try {
-      await axios.patch(`http://localhost:8081/api/tickets/${id}/status`, { status: newStatus });
-      setTickets(tickets.map(t => t.id === id ? { ...t, status: newStatus } : t));
-      toast.success('Ticket status updated successfully!', {
-        style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
-      });
-    } catch (error) {
-      console.error('Error updating ticket status:', error);
-      toast.error('Failed to update ticket status', {
-        style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
-      });
     }
   };
 
@@ -88,28 +73,22 @@ const AdminTicketsPage = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-rose-500/20 to-orange-500/10 p-3 rounded-xl border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.15)]">
-              <Shield className="h-7 w-7 text-rose-400" />
+            <div className="bg-gradient-to-br from-primary-500/20 to-accent-500/10 p-3 rounded-xl border border-primary-500/20 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+              <Shield className="h-7 w-7 text-primary-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">Active Support Tickets</h1>
-              <p className="text-sm text-dark-muted mt-1">Review issues reported by users across the campus.</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">My Support Tickets</h1>
+              <p className="text-sm text-dark-muted mt-1">Track the status of the issues you have reported.</p>
             </div>
           </div>
-          <button
-            onClick={() => window.location.href = '/resources'}
-            className="bg-dark-bg hover:bg-white/5 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 border border-white/10"
-          >
-            <HiOutlineArrowLeft /> Back to Resources
-          </button>
         </div>
 
         {/* Tickets Table */}
         <div className="glass rounded-3xl overflow-hidden shadow-2xl border border-white/5 p-1 relative">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-[60px] pointer-events-none transition-colors duration-700"></div>
+           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 rounded-full blur-[60px] pointer-events-none transition-colors duration-700"></div>
           
            {loading ? (
-             <LoadingSpinner message="Fetching campus tickets..." />
+             <LoadingSpinner message="Fetching your tickets..." />
            ) : (
              <div className="overflow-x-auto relative z-10 p-4">
                <table className="w-full text-left border-collapse">
@@ -126,7 +105,7 @@ const AdminTicketsPage = () => {
                    {tickets.length === 0 ? (
                      <tr>
                        <td colSpan="5" className="text-center text-dark-muted text-sm py-12">
-                         No tickets have been reported yet.
+                         You have not reported any issues yet.
                        </td>
                      </tr>
                    ) : (
@@ -141,20 +120,9 @@ const AdminTicketsPage = () => {
                          <td className="px-4 py-4 whitespace-nowrap">
                            {getPriorityBadge(ticket.priority)}
                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <select
-                              value={ticket.status}
-                              onChange={(e) => updateTicketStatus(ticket.id, e.target.value)}
-                              className={`bg-dark-bg/80 border border-white/10 rounded-lg py-1.5 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500/40 transition-colors cursor-pointer appearance-none
-                                ${ticket.status === 'OPEN' ? 'text-primary-400 bg-primary-500/10' : 
-                                  ticket.status === 'IN_PROGRESS' ? 'text-rose-400 bg-rose-500/10' : 
-                                  ticket.status === 'RESOLVED' ? 'text-emerald-400 bg-emerald-500/10' : 'text-slate-300'}`}
-                            >
-                              <option value="OPEN" className="bg-slate-800 text-primary-400">Open</option>
-                              <option value="IN_PROGRESS" className="bg-slate-800 text-rose-400">In Progress</option>
-                              <option value="RESOLVED" className="bg-slate-800 text-emerald-400">Resolved</option>
-                            </select>
-                          </td>
+                         <td className="px-4 py-4 whitespace-nowrap">
+                           {getStatusBadge(ticket.status)}
+                         </td>
                          <td className="px-4 py-4 text-right text-xs text-dark-muted whitespace-nowrap tabular-nums">
                            {formatDate(ticket.createdAt)}
                          </td>
@@ -172,4 +140,4 @@ const AdminTicketsPage = () => {
   );
 };
 
-export default AdminTicketsPage;
+export default StudentTicketsPage;

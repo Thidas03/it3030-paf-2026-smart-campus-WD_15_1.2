@@ -84,6 +84,12 @@ const StudentResourcesPage = () => {
               <p className="text-sm text-dark-muted mt-1">Browse and explore available campus facilities.</p>
             </div>
           </div>
+          <button
+            onClick={() => navigate('/student/tickets')}
+            className="bg-accent-600 hover:bg-accent-500 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 shadow-lg glow-accent font-semibold"
+          >
+            My Support Tickets
+          </button>
         </div>
 
         {/* Filter Section */}

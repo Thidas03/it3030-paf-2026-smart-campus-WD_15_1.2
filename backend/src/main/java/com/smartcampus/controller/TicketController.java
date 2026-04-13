@@ -38,4 +38,9 @@ public class TicketController {
     public Ticket escalateTicket(@PathVariable String id) {
         return ticketService.escalateTicket(id);
     }
+
+    @PatchMapping("/{id}/status")
+    public Ticket updateTicketStatus(@PathVariable String id, @RequestBody java.util.Map<String, String> updates) {
+        return ticketService.updateTicketStatus(id, updates.get("status"));
+    }
 }

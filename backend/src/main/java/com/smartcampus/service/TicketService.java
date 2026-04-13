@@ -48,4 +48,10 @@ public class TicketService {
         ticket.setStatus("IN_PROGRESS");
         return ticketRepository.save(ticket);
     }
+
+    public Ticket updateTicketStatus(String id, String status) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow();
+        ticket.setStatus(status);
+        return ticketRepository.save(ticket);
+    }
 }
