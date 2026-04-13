@@ -6,6 +6,7 @@ import com.smartcampus.dto.ResourceDashboardStatsDTO;
 import com.smartcampus.model.ResourceType;
 import com.smartcampus.service.ResourceService;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ResourceController {
     private final ResourceService resourceService;
 
     @PostMapping
-    public ResponseEntity<ResourceResponseDTO> createResource(@RequestBody ResourceRequestDTO request) {
+    public ResponseEntity<ResourceResponseDTO> createResource(@Valid @RequestBody ResourceRequestDTO request) {
         return new ResponseEntity<>(resourceService.createResource(request), HttpStatus.CREATED);
     }
 
@@ -41,7 +42,7 @@ public class ResourceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResourceResponseDTO> updateResource(@PathVariable String id, @RequestBody ResourceRequestDTO request) {
+    public ResponseEntity<ResourceResponseDTO> updateResource(@PathVariable String id, @Valid @RequestBody ResourceRequestDTO request) {
         return ResponseEntity.ok(resourceService.updateResource(id, request));
     }
 
