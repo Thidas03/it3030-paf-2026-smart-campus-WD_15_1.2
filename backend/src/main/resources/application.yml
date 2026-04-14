@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb+srv://thidasawen03:THidas1234@cluster0.yifhyhw.mongodb.net/smart_campus?appName=Cluster0}
+      uri: ${MONGODB_URI}
   security:
     oauth2:
       client:
