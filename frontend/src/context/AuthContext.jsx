@@ -8,14 +8,55 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    const token = localStorage.getItem('accessToken');
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser));
     }
     setLoading(false);
   }, []);
 
   const loginWithGoogle = () => {
-    window.location.href = '/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+  };
+
+  const login = async (email, password) => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        handleAuthSuccess(data.user, data.token);
+        return { success: true };
+      } else {
+        const error = await response.text();
+        return { success: false, error };
+      }
+    } catch (err) {
+      return { success: false, error: 'Network error occurred' };
+    }
+  };
+
+  const signup = async (name, email, password) => {
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        handleAuthSuccess(data.user, data.token);
+        return { success: true };
+      } else {
+        const error = await response.text();
+        return { success: false, error };
+      }
+    } catch (err) {
+      return { success: false, error: 'Network error occurred' };
+    }
   };
 
   const handleAuthSuccess = (userData, token) => {
@@ -28,10 +69,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
     setUser(null);
+    window.location.href = '/login';
+  };
+
+  const hasRole = (role) => {
+    return user?.roles?.includes(role);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, handleAuthSuccess, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, login, signup, handleAuthSuccess, logout, hasRole }}>
       {children}
     </AuthContext.Provider>
   );
