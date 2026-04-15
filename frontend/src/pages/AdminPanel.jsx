@@ -1,5 +1,6 @@
 import { useAuth } from '../context/AuthContext.jsx';
-import { Navigate } from 'react-router-dom';
+import { useNotifications } from '../context/NotificationContext.jsx';
+import { Navigate, Link } from 'react-router-dom';
 import { 
     MdDashboard,
     MdPeople,
@@ -12,6 +13,7 @@ import {
 
 const AdminPanel = () => {
     const { user, logout, hasRole } = useAuth();
+    const { unreadCount } = useNotifications();
 
     if (!user || !hasRole('ADMIN')) {
         return <Navigate to="/" />;
@@ -51,11 +53,13 @@ const AdminPanel = () => {
                         <MdConfirmationNumber size={20} />
                         <span className="leading-tight">Ticket Management</span>
                     </div>
-                    <div className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 rounded-lg cursor-pointer text-gray-600 transition-colors relative">
+                    <Link to="/notifications" className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 rounded-lg cursor-pointer text-gray-600 transition-colors relative">
                         <MdNotifications size={20} />
                         <span className="leading-tight">Notifications</span>
-                        <span className="absolute left-[26px] top-2 bg-[#E6A023] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-sm font-bold">7</span>
-                    </div>
+                        {unreadCount > 0 && (
+                            <span className="absolute left-[26px] top-2 bg-[#E6A023] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-sm font-bold">{unreadCount}</span>
+                        )}
+                    </Link>
                 </nav>
 
                 {/* Profile Footer */}

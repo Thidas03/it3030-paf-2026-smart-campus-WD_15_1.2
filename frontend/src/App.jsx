@@ -7,11 +7,15 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import TechnicianTickets from './pages/TechnicianTickets.jsx';
 import TechnicianStatus from './pages/TechnicianStatus.jsx';
+import NotificationPage from './pages/NotificationPage.jsx';
+
+import { NotificationProvider } from './context/NotificationContext.jsx';
 
 const App = () => {
     return (
         <AuthProvider>
-            <BrowserRouter>
+            <NotificationProvider>
+                <BrowserRouter>
                 <Routes>
                     {/* Protected dashboard home page */}
                     <Route 
@@ -58,8 +62,19 @@ const App = () => {
                     
                     {/* OAuth2 Callback page */}
                     <Route path="/auth/callback" element={<AuthCallback />} />
+                    
+                    {/* Protected notifications page */}
+                    <Route 
+                        path="/notifications" 
+                        element={
+                            <ProtectedRoute>
+                                <NotificationPage />
+                            </ProtectedRoute>
+                        } 
+                    />
                 </Routes>
             </BrowserRouter>
+            </NotificationProvider>
         </AuthProvider>
     );
 };

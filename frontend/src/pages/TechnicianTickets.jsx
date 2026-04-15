@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useNotifications } from '../context/NotificationContext.jsx';
 import { Link, Navigate } from 'react-router-dom';
 import { 
     MdOutlineConfirmationNumber,
@@ -15,6 +16,7 @@ import {
 
 const TechnicianTickets = () => {
     const { user, logout, hasRole } = useAuth();
+    const { unreadCount } = useNotifications();
     const [tickets, setTickets] = useState([
         { id: '#456', user: 'nami', issue: 'AC not working in Lab 1', status: 'Pending', priority: 'High', date: '2024-08-17' },
         { id: '#457', user: 'thidas', issue: 'Projector flickering in BH-02', status: 'In Progress', priority: 'Medium', date: '2024-08-17' },
@@ -49,7 +51,9 @@ const TechnicianTickets = () => {
                     <Link to="/technician/status" className="text-gray-700 hover:text-[#004282] transition">Ticket Status</Link>
                     <Link to="/notifications" className="text-gray-700 hover:text-[#004282] transition flex items-center">
                         <MdNotificationsNone size={20} className="mr-1" /> Notifications
-                        <span className="bg-[#E6A023] text-white text-[10px] px-1.5 py-0.5 rounded-md ml-1 font-bold">3</span>
+                        {unreadCount > 0 && (
+                            <span className="bg-[#E6A023] text-white text-[10px] px-1.5 py-0.5 rounded-md ml-1 font-bold">{unreadCount}</span>
+                        )}
                     </Link>
                 </div>
 

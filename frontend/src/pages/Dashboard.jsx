@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext.jsx';
+import { useNotifications } from '../context/NotificationContext.jsx';
 import { Link } from 'react-router-dom';
 import { 
     MdOutlineBusiness,
@@ -13,6 +14,7 @@ import {
 
 const Dashboard = () => {
     const { user, logout, hasRole } = useAuth();
+    const { unreadCount } = useNotifications();
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
@@ -45,7 +47,9 @@ const Dashboard = () => {
                     )}
                     <Link to="/notifications" className="text-gray-700 hover:text-[#004282] transition flex items-center">
                         <MdNotificationsNone size={20} className="mr-1" /> Notifications
-                        <span className="bg-[#E6A023] text-white text-[10px] px-1.5 py-0.5 rounded-md ml-1 font-bold">3</span>
+                        {unreadCount > 0 && (
+                            <span className="bg-[#E6A023] text-white text-[10px] px-1.5 py-0.5 rounded-md ml-1 font-bold">{unreadCount}</span>
+                        )}
                     </Link>
                     {hasRole && hasRole('ADMIN') && (
                         <Link to="/admin" className="text-red-600 hover:text-red-700 transition flex items-center">
