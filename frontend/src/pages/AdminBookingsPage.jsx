@@ -1,68 +1,91 @@
 import { useEffect, useState } from "react";
-import { 
-    approveBooking,
-    rejectBooking,
-    cancelBooking,
-    getAllBookings,
+import {
+  approveBooking,
+  rejectBooking,
+  cancelBooking,
+  getAllBookings,
 } from "../api/bookingApi";
 import BookingTable from "../components/BookingTable";
 
-export default function AdminBookingsPage(){
-    const [booking, setBookings] = useState([]);
-    const [loading, setLoading] = useState(true);
+export default function AdminBookingsPage() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    const loadBookings = async () => {
-        try {
-            const data = await getAllBookings();
-            setBookings(data);
-        }catch (error) {
-            console.error("Field to load admin bookings", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const getErrorMessage = (err, fallback) => {
+    console.error("Full error object:", err);
+    console.error("Response data:", err?.response?.data);
 
-    useEffect(() => {
-        loadBookings();
-    }, []);
+    const data = err?.response?.data;
 
-    const handleApprove = async (bookinId) => {
-        const reason = window.prompt("Enter approcal note:");
-        if (!reason) return;
+    if (typeof data === "string" && data.trim()) {
+      return data;
+    }
 
-        try {
-            await approveBooking(bookingId, reason);
-            await loadBookings();
-        } catch(error) {
-            alert(error?.response?.data?.message || "Failed to approve booking");
-        }
-    };
+    if (data?.message) {
+      return data.message;
+    }
 
-    const handleReject = async (bookinId) => {
-        const reason = window.prompt("Enter rejection note:");
-        if (!reason) return;
+    if (data?.errors && Object.keys(data.errors).length > 0) {
+      return JSON.stringify(data.errors, null, 2);
+    }
 
-        try {
-            await approveBooking(bookingId, reason);
-            await loadBookings();
-        } catch(error) {
-            alert(error?.response?.data?.message || "Failed to reject booking");
-        }
-    };
+    return err?.message || fallback;
+  };
 
-    const handleCancel = async (bookinId) => {
-        const reason = window.prompt("Enter cancellation note:");
-        if (!reason) return;
+  const loadBookings = async () => {
+    try {
+      setError("");
+      const data = await getAllBookings();
+      setBookings(data);
+    } catch (err) {
+      setError(getErrorMessage(err, "Failed to load admin bookings."));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            await approveBooking(bookingId, reason);
-            await loadBookings();
-        } catch(error) {
-            alert(error?.response?.data?.message || "Failed to cancel booking");
-        }
-    };
+  useEffect(() => {
+    loadBookings();
+  }, []);
 
-    return (
+  const handleApprove = async (bookingId) => {
+    const reason = window.prompt("Enter approval reason:");
+    if (!reason) return;
+
+    try {
+      await approveBooking(bookingId, reason);
+      await loadBookings();
+    } catch (err) {
+      alert(getErrorMessage(err, "Failed to approve booking"));
+    }
+  };
+
+  const handleReject = async (bookingId) => {
+    const reason = window.prompt("Enter rejection reason:");
+    if (!reason) return;
+
+    try {
+      await rejectBooking(bookingId, reason);
+      await loadBookings();
+    } catch (err) {
+      alert(getErrorMessage(err, "Failed to reject booking"));
+    }
+  };
+
+  const handleCancel = async (bookingId) => {
+    const reason = window.prompt("Enter cancellation reason:");
+    if (!reason) return;
+
+    try {
+      await cancelBooking(bookingId, reason, true);
+      await loadBookings();
+    } catch (err) {
+      alert(getErrorMessage(err, "Failed to cancel booking"));
+    }
+  };
+
+  return (
     <div className="min-h-screen bg-dark-bg px-6 py-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-6">
@@ -75,6 +98,10 @@ export default function AdminBookingsPage(){
         {loading ? (
           <div className="rounded-2xl border border-dark-border bg-dark-card/70 p-6 text-dark-muted backdrop-blur-xl">
             Loading admin bookings...
+          </div>
+        ) : error ? (
+          <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-red-400 backdrop-blur-xl">
+            {error}
           </div>
         ) : (
           <BookingTable

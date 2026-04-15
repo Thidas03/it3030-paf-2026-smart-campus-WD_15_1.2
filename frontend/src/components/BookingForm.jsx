@@ -1,69 +1,69 @@
 import { useState } from "react";
 
 export default function BookingForm({ onSubmit }) {
-
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     resourceId: "",
-    resourseName: "",
+    resourceName: "",
     bookingDate: "",
     startTime: "",
     endTime: "",
     purpose: "",
-    expectedAttandees: 1,
-});
+    expectedAttendees: 1,
+  });
 
-const [error, setError] = useState("");
-const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
-        ...prev,
-        [name]: name === "expectedAttendees" ? Numer(value) : value,
+      ...prev,
+      [name]: name === "expectedAttendees" ? Number(value) : value,
     }));
-};
+  };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
     setSuccess("");
 
     if (
-        !formData.resourceId ||
-        !formData.resourceName ||
-        !formData.bookingDate ||
-        !formData.startTime ||
-        !formData.endTime ||
-        !formData.purpose
+      !formData.resourceId ||
+      !formData.resourceName ||
+      !formData.bookingDate ||
+      !formData.startTime ||
+      !formData.endTime ||
+      !formData.purpose
     ) {
-        setError("Please fill in all the required fields!!!!");
-        return;
+      setError("Please fill in all required fields.");
+      return;
     }
 
-    if (formData.endTime <= formData.startTime){
-        setError("End time must be later than start time!!!!");
-        return;
+    if (formData.endTime <= formData.startTime) {
+      setError("End time must be later than start time.");
+      return;
     }
 
     try {
-        await onSubmit(formData);
-        setSuccess("Booking request submitted successfully!!!");
+      await onSubmit(formData);
+      setSuccess("Booking request submitted successfully.");
 
-        setFormData({
-            resourceId: "",
-            resourseName: "",
-            bookingDate: "",
-            startTime: "",
-            endTime: "",
-            purpose: "",
-            expectedAttandees: 1,
-        });
+      setFormData({
+        resourceId: "",
+        resourceName: "",
+        bookingDate: "",
+        startTime: "",
+        endTime: "",
+        purpose: "",
+        expectedAttendees: 1,
+      });
     } catch (err) {
-        setError(err?.response?.data?.message || "Failed to submit booking!!!");
+      setError(err?.response?.data?.message || "Failed to submit booking.");
     }
-};
+  };
 
- return (
+  return (
     <div className="mx-auto max-w-3xl rounded-2xl border border-dark-border bg-dark-card/70 p-8 backdrop-blur-xl shadow-glow">
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-primary">Create Booking</h2>

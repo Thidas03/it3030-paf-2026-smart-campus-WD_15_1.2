@@ -7,14 +7,12 @@ import com.smartcampus.booking.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:5173")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -47,28 +45,23 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<BookingResponse> getAllBookings(Authentication authentication) {
-        requireAdmin(authentication);
+    public List<BookingResponse> getAllBookings() {
         return bookingService.getAllBookings();
     }
 
     @PatchMapping("/{bookingId}/approve")
     public BookingResponse approveBooking(
             @PathVariable String bookingId,
-            @Valid @RequestBody BookingStatusUpdateRequest request,
-            Authentication authentication
+            @Valid @RequestBody BookingStatusUpdateRequest request
     ) {
-        requireAdmin(authentication);
         return bookingService.approveBooking(bookingId, request.getReason());
     }
 
     @PatchMapping("/{bookingId}/reject")
     public BookingResponse rejectBooking(
             @PathVariable String bookingId,
-            @Valid @RequestBody BookingStatusUpdateRequest request,
-            Authentication authentication
+            @Valid @RequestBody BookingStatusUpdateRequest request
     ) {
-        requireAdmin(authentication);
         return bookingService.rejectBooking(bookingId, request.getReason());
     }
 
@@ -77,10 +70,11 @@ public class BookingController {
             @PathVariable String bookingId,
             @Valid @RequestBody BookingStatusUpdateRequest request,
             Authentication authentication,
-            @RequestHeader(value = "X-User-Email", required = false) String fallbackEmail
+            @RequestHeader(value = "X-User-Email", required = false) String fallbackEmail,
+            @RequestHeader(value = "X-User-Role", required = false) String fallbackRole
     ) {
         String userEmail = extractUserEmail(authentication, fallbackEmail);
-        boolean isAdmin = isAdmin(authentication);
+        boolean isAdmin = "ADMIN".equalsIgnoreCase(fallbackRole);
 
         return bookingService.cancelBooking(bookingId, userEmail, isAdmin, request.getReason());
     }
@@ -89,9 +83,11 @@ public class BookingController {
         if (authentication != null && authentication.getName() != null && !authentication.getName().isBlank()) {
             return authentication.getName();
         }
+
         if (fallbackEmail != null && !fallbackEmail.isBlank()) {
             return fallbackEmail;
         }
+
         throw new RuntimeException("User identity not available");
     }
 
@@ -99,25 +95,11 @@ public class BookingController {
         if (authentication != null && authentication.getName() != null && !authentication.getName().isBlank()) {
             return authentication.getName();
         }
+
         if (fallbackName != null && !fallbackName.isBlank()) {
             return fallbackName;
         }
+
         return "Unknown User";
-    }
-
-    private void requireAdmin(Authentication authentication) {
-        if (!isAdmin(authentication)) {
-            throw new RuntimeException("Access denied: ADMIN only");
-        }
-    }
-
-    private boolean isAdmin(Authentication authentication) {
-        if (authentication == null || authentication.getAuthorities() == null) {
-            return false;
-        }
-
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_ADMIN") || role.equals("ADMIN"));
     }
 }
