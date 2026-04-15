@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users, LayoutDashboard, Search, AlertCircle, Ticket } from 'lucide-react';
+import { Building2, Calendar, Sparkles, Zap, ExternalLink, Globe, Shield, Users, LayoutDashboard, Search } from 'lucide-react';
 
 const Dashboard = () => {
   return (
@@ -100,52 +100,6 @@ const Dashboard = () => {
                         </div>
                         <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
                             <ExternalLink className="h-5 w-5 text-emerald-400" />
-                        </div>
-                      </Link>
-                    </div>
-                </div>
-
-                {/* Support & Maintenance Section */}
-                <div>
-                    <div className="flex items-center gap-4 mb-8 px-4">
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
-                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-[0.2em] whitespace-nowrap glow-amber px-3 py-1 rounded-full border border-amber-500/20 bg-amber-500/5">Support & Maintenance</span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-                      {/* Admin Tickets */}
-                      <Link 
-                        to="/admin/tickets" 
-                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="relative p-4 bg-rose-500/10 rounded-xl group-hover:bg-rose-500 group-hover:text-white text-rose-500 transition-all duration-300 border border-rose-500/30 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] z-10">
-                          <AlertCircle className="h-6 w-6" />
-                        </div>
-                        <div className="text-left relative z-10">
-                          <h3 className="font-bold text-lg text-white group-hover:text-rose-400 transition-colors">Admin Tickets</h3>
-                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Manage user reported issues.</p>
-                        </div>
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
-                            <ExternalLink className="h-5 w-5 text-rose-400" />
-                        </div>
-                      </Link>
-
-                      {/* Student Tickets */}
-                      <Link 
-                        to="/student/tickets" 
-                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="relative p-4 bg-amber-500/10 rounded-xl group-hover:bg-amber-500 group-hover:text-white text-amber-500 transition-all duration-300 border border-amber-500/30 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] z-10">
-                          <Ticket className="h-6 w-6" />
-                        </div>
-                        <div className="text-left relative z-10">
-                          <h3 className="font-bold text-lg text-white group-hover:text-amber-400 transition-colors">My Support Tickets</h3>
-                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Track your reported issues.</p>
-                        </div>
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
-                            <ExternalLink className="h-5 w-5 text-amber-400" />
                         </div>
                       </Link>
                     </div>
