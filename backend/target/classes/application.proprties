@@ -1,0 +1,7 @@
+spring.application.name=smartcampus
+server.port=8080
+
+spring.data.mongodb.uri=mongodb://localhost:27017/smartcampus_db
+
+spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS=false
+spring.jackson.deserializtion,fail-on-unknown-properties=false
