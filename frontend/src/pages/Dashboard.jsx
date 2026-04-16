@@ -105,6 +105,70 @@ const Dashboard = () => {
                     </div>
                 </div>
 
+                {/* Booking Module Section */}
+                <div>
+                    <div className="flex items-center gap-4 mb-8 px-4">
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                        <span className="text-[10px] font-bold text-violet-500 uppercase tracking-[0.2em] whitespace-nowrap glow-violet px-3 py-1 rounded-full border border-violet-500/20 bg-violet-500/5">Booking Module</span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dark-border to-transparent"></div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                      {/* Create Booking */}
+                      <Link 
+                        to="/bookings" 
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-violet-500/10 rounded-xl group-hover:bg-violet-500 group-hover:text-white text-violet-500 transition-all duration-300 border border-violet-500/30 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] z-10">
+                          <Calendar className="h-6 w-6" />
+                        </div>
+                        <div className="text-left relative z-10">
+                          <h3 className="font-bold text-lg text-white group-hover:text-violet-400 transition-colors">Create Booking</h3>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Book campus resources.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-violet-400" />
+                        </div>
+                      </Link>
+
+                      {/* My Bookings */}
+                      <Link 
+                        to="/my-bookings" 
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-violet-500/10 rounded-xl group-hover:bg-violet-500 group-hover:text-white text-violet-500 transition-all duration-300 border border-violet-500/30 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] z-10">
+                          <Ticket className="h-6 w-6" />
+                        </div>
+                        <div className="text-left relative z-10">
+                          <h3 className="font-bold text-lg text-white group-hover:text-violet-400 transition-colors">My Bookings</h3>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">View your bookings.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-violet-400" />
+                        </div>
+                      </Link>
+
+                      {/* Admin Bookings */}
+                      <Link 
+                        to="/admin-bookings" 
+                        className="group relative p-6 glass-card rounded-2xl flex items-center gap-5 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative p-4 bg-violet-500/10 rounded-xl group-hover:bg-violet-500 group-hover:text-white text-violet-500 transition-all duration-300 border border-violet-500/30 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] z-10">
+                          <Shield className="h-6 w-6" />
+                        </div>
+                        <div className="text-left relative z-10">
+                          <h3 className="font-bold text-lg text-white group-hover:text-violet-400 transition-colors">Admin Bookings</h3>
+                          <p className="text-xs text-dark-muted mt-1 group-hover:text-slate-300 transition-colors">Manage all bookings.</p>
+                        </div>
+                        <div className="ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all relative z-10">
+                            <ExternalLink className="h-5 w-5 text-violet-400" />
+                        </div>
+                      </Link>
+                    </div>
+                </div>
+
                 {/* Support & Maintenance Section */}
                 <div>
                     <div className="flex items-center gap-4 mb-8 px-4">

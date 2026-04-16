@@ -71,13 +71,13 @@ const StudentResourcesPage = () => {
   }, [resources, searchTerm, filterType, filterStatus, minCapacity]);
 
   return (
-    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.15),rgba(255,255,255,0))] relative pb-12">
+    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] relative pb-12">
       <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-accent-500/20 to-primary-500/10 p-3 rounded-xl border border-accent-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-              <Layers className="h-7 w-7 text-accent-400" />
+            <div className="bg-gradient-to-br from-primary-500/20 to-accent-500/10 p-3 rounded-xl border border-primary-500/20 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+              <Layers className="h-7 w-7 text-primary-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight">Campus Resources</h1>
@@ -86,7 +86,7 @@ const StudentResourcesPage = () => {
           </div>
           <button
             onClick={() => navigate('/student/tickets')}
-            className="bg-accent-600 hover:bg-accent-500 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 shadow-lg glow-accent font-semibold"
+            className="bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 shadow-lg glow-primary font-semibold"
           >
             My Support Tickets
           </button>
@@ -94,10 +94,10 @@ const StudentResourcesPage = () => {
 
         {/* Filter Section */}
         <div className="glass rounded-2xl p-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/5 rounded-full blur-[60px] pointer-events-none group-hover:bg-accent-500/10 transition-colors duration-700"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 rounded-full blur-[60px] pointer-events-none group-hover:bg-primary-500/10 transition-colors duration-700"></div>
           <div className="flex items-center gap-2 mb-5 text-slate-200 relative z-10">
-            <Filter className="h-4 w-4 text-accent-400" />
-            <h2 className="text-sm font-semibold tracking-wide uppercase text-accent-400">Search & Filter</h2>
+            <Filter className="h-4 w-4 text-primary-400" />
+            <h2 className="text-sm font-semibold tracking-wide uppercase text-primary-400">Search & Filter</h2>
           </div>
           <div className="relative z-10">
             <ResourceFilter 
@@ -135,7 +135,7 @@ const StudentResourcesPage = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-4 glass-card rounded-xl border border-white/5 text-xs text-dark-muted mt-8">
                   <div className="flex items-center gap-6 mb-3 sm:mb-0">
                     <span className="flex items-center gap-2">
-                       <span className="w-2.5 h-2.5 rounded-full bg-accent-500/50 border border-accent-500 glow-accent"></span> 
+                       <span className="w-2.5 h-2.5 rounded-full bg-primary-500/50 border border-primary-500 glow-primary"></span> 
                        Available Resources: <span className="text-white font-semibold">{filteredResources.length}</span>
                     </span>
                   </div>
@@ -145,7 +145,7 @@ const StudentResourcesPage = () => {
             ) : (
               <div className="glass-card rounded-2xl p-16 flex flex-col items-center text-center shadow-lg border border-white/10">
                 <div className="bg-dark-bg/50 p-6 rounded-full mb-8 border border-white/5 shadow-inner">
-                  <PackageSearch className="h-12 w-12 text-accent-500/50" />
+                  <PackageSearch className="h-12 w-12 text-primary-500/50" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">No resources found</h3>
                 <p className="text-sm text-dark-muted max-w-sm mb-8 leading-relaxed">

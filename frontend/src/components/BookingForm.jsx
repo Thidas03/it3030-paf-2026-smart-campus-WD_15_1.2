@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Settings, Calendar, Clock, Box, Users, AlignLeft } from "lucide-react";
 
-export default function BookingForm({ onSubmit }) {
+export default function BookingForm({ 
+  onSubmit, 
+  initialResourceId = "", 
+  initialResourceName = "",
+  initialBookingDate = "",
+  initialStartTime = "",
+  initialEndTime = ""
+}) {
   const [formData, setFormData] = useState({
-    resourceId: "",
-    resourceName: "",
-    bookingDate: "",
-    startTime: "",
-    endTime: "",
+    resourceId: initialResourceId,
+    resourceName: initialResourceName,
+    bookingDate: initialBookingDate,
+    startTime: initialStartTime,
+    endTime: initialEndTime,
     purpose: "",
     expectedAttendees: 1,
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      resourceId: initialResourceId || prev.resourceId,
+      resourceName: initialResourceName || prev.resourceName,
+      bookingDate: initialBookingDate || prev.bookingDate,
+      startTime: initialStartTime || prev.startTime,
+      endTime: initialEndTime || prev.endTime,
+    }));
+  }, [initialResourceId, initialResourceName, initialBookingDate, initialStartTime, initialEndTime]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,12 +83,20 @@ export default function BookingForm({ onSubmit }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl rounded-2xl border border-dark-border bg-dark-card/70 p-8 backdrop-blur-xl shadow-glow">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-primary">Create Booking</h2>
-        <p className="mt-2 text-dark-muted">
-          Submit a booking request for a campus resource.
-        </p>
+    <div className="mx-auto max-w-4xl rounded-2xl border border-white/5 bg-dark-bg/50 p-8 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="bg-gradient-to-br from-primary-500/20 to-accent-500/10 p-3 rounded-xl border border-primary-500/20 shadow-[0_0_15px_rgba(139,92,246,0.15)] text-primary-400 flex-shrink-0">
+          <Calendar className="h-8 w-8" />
+        </div>
+        <div>
+          <div className="text-xs font-bold text-primary-400 uppercase tracking-[0.2em] mb-1">
+            Reservation System
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">Resource Booking</h2>
+          <p className="mt-1 text-sm text-slate-300">
+            Submit a formal booking request for campus facilities or equipment.
+          </p>
+        </div>
       </div>
 
       {error && (

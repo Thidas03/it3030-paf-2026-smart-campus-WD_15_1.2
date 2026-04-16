@@ -11,9 +11,14 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 public class SmartCampusApplication {
 
     public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        Dotenv dotenv;
+        if (new java.io.File("../.env").exists()) {
+            dotenv = Dotenv.configure().directory("../").load();
+        } else {
+            dotenv = Dotenv.configure().ignoreIfMissing().load();
+        }
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
-        
+
         SpringApplication.run(SmartCampusApplication.class, args);
     }
 }
