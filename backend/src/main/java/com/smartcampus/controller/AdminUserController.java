@@ -58,6 +58,28 @@ public class AdminUserController {
                 )).toList());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody UpdateUserRequest request) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(request.getName());
+            if (request.getRoles() != null && !request.getRoles().isEmpty()) {
+                java.util.Set<Role> newRoles = request.getRoles().stream()
+                        .map(Role::valueOf)
+                        .collect(java.util.stream.Collectors.toSet());
+                user.setRoles(newRoles);
+            }
+            userRepository.save(user);
+            return ResponseEntity.ok("User updated successfully");
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        if (!userRepository.existsById(id)) return ResponseEntity.notFound().build();
+        userRepository.deleteById(id);
+        return ResponseEntity.ok("User deleted successfully");
+    }
+
     @Data
     @AllArgsConstructor
     public static class UserResponseDTO {
@@ -74,5 +96,13 @@ public class AdminUserController {
         private String name;
         private String email;
         private String password;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateUserRequest {
+        private String name;
+        private java.util.Set<String> roles;
     }
 }

@@ -24,6 +24,7 @@ import AdminTicketsPage from './pages/admin/AdminTicketsPage';
 import AdminUserManagement from './pages/admin/AdminUserManagement.jsx';
 import AdminNotifications from './pages/admin/AdminNotifications.jsx';
 import StudentTicketsPage from './pages/student/StudentTicketsPage';
+import StudentNotifications from './pages/student/StudentNotifications.jsx';
 import BookingPage from "./pages/BookingPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
 import AdminBookingsPage from "./pages/AdminBookingsPage";
@@ -80,6 +81,7 @@ function App() {
           <Route path="calendar" element={<StudentCalendar />} />
           <Route path="tickets" element={<StudentTicketsPage />} />
           <Route path="bookings" element={<MyBookingsPage />} />
+          <Route path="notifications" element={<StudentNotifications />} />
         </Route>
 
         {/* Global/Public Bookings Endpoint */}

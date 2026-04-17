@@ -4,11 +4,14 @@ import {
     MdBusiness,
     MdCalendarToday,
     MdConfirmationNumber,
-    MdPersonOutline
+    MdPersonOutline,
+    MdNotifications
 } from 'react-icons/md';
+import { useNotifications } from '../../context/NotificationContext.jsx';
 
 const StudentPanel = () => {
     const { user, logout, hasRole } = useAuth();
+    const { unreadCount } = useNotifications();
 
     // To prevent forcing student-role only if they haven't set up perfectly yet, we'll just check if they are logged in 
     // or loosely enforce STUDENT role.
@@ -48,6 +51,17 @@ const StudentPanel = () => {
                     <NavLink to="/student/tickets" className={navLinkClass}>
                         <MdConfirmationNumber size={20} />
                         <span className="leading-tight">Support Tickets</span>
+                    </NavLink>
+                    <NavLink to="/student/notifications" className={navLinkClass}>
+                        <div className="relative flex items-center justify-center">
+                            <MdNotifications size={20} />
+                            {unreadCount > 0 && (
+                                <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse">
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </div>
+                        <span className="leading-tight">Notifications</span>
                     </NavLink>
                 </nav>
 

@@ -5,6 +5,9 @@ import com.smartcampus.booking.dto.BookingResponse;
 import com.smartcampus.booking.model.Booking;
 import com.smartcampus.booking.model.BookingStatus;
 import com.smartcampus.booking.repository.BookingRepository;
+import com.smartcampus.model.User;
+import com.smartcampus.repository.UserRepository;
+import com.smartcampus.service.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,9 +19,15 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
-    public BookingServiceImpl(BookingRepository bookingRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository,
+                              NotificationService notificationService,
+                              UserRepository userRepository) {
         this.bookingRepository = bookingRepository;
+        this.notificationService = notificationService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -55,6 +64,16 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(BookingStatus.PENDING);
 
         Booking saved = bookingRepository.save(booking);
+
+        userRepository.findByEmail(userEmail).ifPresent(user -> {
+            notificationService.createNotification(
+                    user.getId(),
+                    "Your booking request for " + request.getResourceName() + " has been submitted and is processing.",
+                    "BOOKING",
+                    saved.getId()
+            );
+        });
+
         return BookingResponse.fromEntity(saved);
     }
 
@@ -104,7 +123,18 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(BookingStatus.APPROVED);
         booking.setAdminReason(reason);
-        return BookingResponse.fromEntity(bookingRepository.save(booking));
+        Booking saved = bookingRepository.save(booking);
+
+        userRepository.findByEmail(saved.getUserEmail()).ifPresent(user -> {
+            notificationService.createNotification(
+                    user.getId(),
+                    "Your booking request for " + saved.getResourceName() + " has been APPROVED.",
+                    "BOOKING",
+                    saved.getId()
+            );
+        });
+
+        return BookingResponse.fromEntity(saved);
     }
 
     @Override
@@ -120,7 +150,18 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(BookingStatus.REJECTED);
         booking.setAdminReason(reason);
-        return BookingResponse.fromEntity(bookingRepository.save(booking));
+        Booking saved = bookingRepository.save(booking);
+
+        userRepository.findByEmail(saved.getUserEmail()).ifPresent(user -> {
+            notificationService.createNotification(
+                    user.getId(),
+                    "Your booking request for " + saved.getResourceName() + " has been REJECTED.",
+                    "BOOKING",
+                    saved.getId()
+            );
+        });
+
+        return BookingResponse.fromEntity(saved);
     }
 
     @Override
@@ -139,8 +180,18 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(BookingStatus.CANCELLED);
         booking.setCancelledReason(reason);
+        Booking saved = bookingRepository.save(booking);
 
-        return BookingResponse.fromEntity(bookingRepository.save(booking));
+        userRepository.findByEmail(saved.getUserEmail()).ifPresent(user -> {
+            notificationService.createNotification(
+                    user.getId(),
+                    "Your booking for " + saved.getResourceName() + " has been CANCELLED.",
+                    "BOOKING",
+                    saved.getId()
+            );
+        });
+
+        return BookingResponse.fromEntity(saved);
     }
 
     private Booking getBookingOrThrow(String bookingId) {
