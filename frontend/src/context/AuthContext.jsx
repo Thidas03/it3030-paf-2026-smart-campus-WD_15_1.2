@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('accessToken');
+    const storedUser = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('accessToken');
     if (storedUser && token) {
       setUser(normalizeUser(JSON.parse(storedUser)));
     }
@@ -85,13 +85,15 @@ export const AuthProvider = ({ children }) => {
 
   const handleAuthSuccess = (userData, token) => {
     const normalizedUser = normalizeUser(userData);
-    localStorage.setItem('accessToken', token);
-    localStorage.setItem('user', JSON.stringify(normalizedUser));
+    sessionStorage.setItem('accessToken', token);
+    sessionStorage.setItem('user', JSON.stringify(normalizedUser));
     setUser(normalizedUser);
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('user');
+    localStorage.removeItem('accessToken'); // Fallback cleanup
     localStorage.removeItem('user');
     setUser(null);
     window.location.href = '/login';

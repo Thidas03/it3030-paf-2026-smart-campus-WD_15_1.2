@@ -4,29 +4,70 @@ import { HiOutlineArrowLeft, HiOutlineLightningBolt, HiOutlineShieldExclamation,
 import { Shield } from 'lucide-react';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
+import axiosClient from '../../api/axiosClient';
 
 const StudentTicketsPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchTickets();
-  }, []);
+    let isMounted = true;
+    let intervalId;
 
-  const fetchTickets = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('/api/tickets/user/demo-user-123');
-      setTickets(response.data || []);
-    } catch (error) {
-      console.error('Error fetching tickets:', error);
-      toast.error('Failed to load tickets', {
-        style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchTickets = async (showLoading = true) => {
+      if (showLoading) setLoading(true);
+      try {
+        let allTickets = [];
+
+        // Fetch tickets for the authenticated student
+        if (user?.id) {
+          try {
+            const authResponse = await axiosClient.get(`/tickets/user/${user.id}`);
+            if (authResponse.data) {
+              allTickets = [...authResponse.data];
+            }
+          } catch (err) {
+            console.error('Failed to fetch user tickets', err);
+          }
+        }
+
+        // Fetch tickets logged under the legacy demo fallback
+        try {
+          const demoResponse = await axiosClient.get('/tickets/user/demo-user-123');
+          if (demoResponse.data) {
+            const userIds = new Set(allTickets.map(t => t.id));
+            const newDemoTickets = demoResponse.data.filter(t => !userIds.has(t.id));
+            allTickets = [...allTickets, ...newDemoTickets];
+          }
+        } catch (err) {
+          console.error('Failed to fetch demo tickets', err);
+        }
+
+        // Sort by newest first
+        allTickets.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        if (isMounted) {
+          setTickets(allTickets);
+        }
+      } catch (error) {
+        console.error('Error fetching tickets:', error);
+      } finally {
+        if (isMounted && showLoading) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchTickets(true);
+    intervalId = setInterval(() => fetchTickets(false), 5000);
+
+    return () => {
+      isMounted = false;
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [user?.id]);
 
   const getPriorityBadge = (priority) => {
     switch (priority) {
@@ -67,7 +108,7 @@ const StudentTicketsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] relative pb-12">
+    <div className="relative pb-12 w-full">
       <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto relative z-10">
         
         {/* Header */}

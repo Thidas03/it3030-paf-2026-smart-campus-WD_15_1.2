@@ -117,7 +117,7 @@ const ResourceTable = ({ resources, onEdit, onDelete, onReportIssue }) => {
                   {getStatusBadge(resource.status)}
                 </td>
                 <td className="px-3 py-2 text-right">
-                  <div className="flex items-center justify-end gap-2 flex-wrap opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center justify-end gap-2 flex-wrap">
                     {onReportIssue && (
                       <span
                         title={

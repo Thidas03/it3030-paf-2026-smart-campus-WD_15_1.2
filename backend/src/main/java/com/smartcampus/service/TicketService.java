@@ -17,16 +17,27 @@ public class TicketService {
     @Autowired
     private GeminiService geminiService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public Ticket createTicket(Ticket ticket) {
         ticket.setStatus("OPEN");
         ticket.setCreatedAt(LocalDateTime.now());
         
-        // Get AI suggestion
         String suggestion = geminiService.getDiyFix(ticket.getDescription(), ticket.getLabName());
         ticket.setAiSuggestion(suggestion);
         ticket.setStatus("OPEN");
         
-        return ticketRepository.save(ticket);
+        Ticket savedTicket = ticketRepository.save(ticket);
+        
+        // Dispatch admin notification
+        notificationService.createSystemNotification(
+            "New Ticket Logged: " + savedTicket.getDescription() + " at " + savedTicket.getLabName(),
+            "TICKET",
+            savedTicket.getId()
+        );
+        
+        return savedTicket;
     }
 
     public List<Ticket> getAllTickets() {
@@ -35,6 +46,10 @@ public class TicketService {
 
     public List<Ticket> getUserTickets(String userId) {
         return ticketRepository.findByUserId(userId);
+    }
+
+    public List<Ticket> getTechnicianTickets(String technicianId) {
+        return ticketRepository.findByAssignedTechnicianId(technicianId);
     }
 
     public Ticket resolveTicket(String id) {
@@ -52,6 +67,12 @@ public class TicketService {
     public Ticket updateTicketStatus(String id, String status) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow();
         ticket.setStatus(status);
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket assignTechnician(String id, String technicianId) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow();
+        ticket.setAssignedTechnicianId(technicianId);
         return ticketRepository.save(ticket);
     }
 }

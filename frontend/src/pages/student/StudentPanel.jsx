@@ -1,21 +1,18 @@
-import { useAuth } from '../context/AuthContext.jsx';
-import { useNotifications } from '../context/NotificationContext.jsx';
-import { Navigate, Link, NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { 
-    MdDashboard,
-    MdPeople,
-    MdCalendarToday,
     MdBusiness,
+    MdCalendarToday,
     MdConfirmationNumber,
-    MdNotifications,
     MdPersonOutline
 } from 'react-icons/md';
 
-const AdminPanel = () => {
+const StudentPanel = () => {
     const { user, logout, hasRole } = useAuth();
-    const { unreadCount } = useNotifications();
 
-    if (!user || !hasRole('ADMIN')) {
+    // To prevent forcing student-role only if they haven't set up perfectly yet, we'll just check if they are logged in 
+    // or loosely enforce STUDENT role.
+    if (!user) {
         return <Navigate to="/" />;
     }
 
@@ -34,38 +31,23 @@ const AdminPanel = () => {
                 <div className="px-6 mb-8 flex items-center space-x-3">
                     <div>
                         <span className="block font-bold text-primary-300 text-[15px] leading-tight uppercase font-serif tracking-wider">SMART CAMPUS</span>
-                        <span className="block font-bold text-dark-muted text-[9px] leading-tight uppercase font-sans tracking-wide">OPERATIONS HUB</span>
+                        <span className="block font-bold text-dark-muted text-[9px] leading-tight uppercase font-sans tracking-wide">STUDENT PORTAL</span>
                     </div>
                 </div>
 
                 {/* Navigation */}
                 <nav className="flex-1 px-4 space-y-2 text-[13px] font-medium">
-                    <NavLink to="/admin/dashboard" className={navLinkClass}>
-                        <MdDashboard size={20} />
-                        <span>System Overview Dashboard</span>
-                    </NavLink>
-                    <NavLink to="/admin/users" className={navLinkClass}>
-                        <MdPeople size={20} />
-                        <span className="leading-tight">User Management</span>
-                    </NavLink>
-                    <NavLink to="/admin/bookings" className={navLinkClass}>
-                        <MdCalendarToday size={20} />
-                        <span className="leading-tight">Booking Management</span>
-                    </NavLink>
-                    <NavLink to="/admin/resources" className={navLinkClass}>
+                    <NavLink to="/student/resources" className={navLinkClass}>
                         <MdBusiness size={20} />
-                        <span className="leading-tight">Facilities Management</span>
+                        <span className="leading-tight">Available Resources</span>
                     </NavLink>
-                    <NavLink to="/admin/tickets" className={navLinkClass}>
+                    <NavLink to="/student/bookings" className={navLinkClass}>
+                        <MdCalendarToday size={20} />
+                        <span className="leading-tight">My Booked Sessions</span>
+                    </NavLink>
+                    <NavLink to="/student/tickets" className={navLinkClass}>
                         <MdConfirmationNumber size={20} />
-                        <span className="leading-tight">Ticket Management</span>
-                    </NavLink>
-                    <NavLink to="/admin/notifications" className={navLinkClass}>
-                        <MdNotifications size={20} />
-                        <span className="leading-tight">Notifications</span>
-                        {unreadCount > 0 && (
-                            <span className="absolute left-[26px] top-2 bg-[#E6A023] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-sm font-bold">{unreadCount}</span>
-                        )}
+                        <span className="leading-tight">Support Tickets</span>
                     </NavLink>
                 </nav>
 
@@ -77,8 +59,8 @@ const AdminPanel = () => {
                                 <MdPersonOutline size={20} />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[11px] font-bold text-slate-200 uppercase tracking-widest">{user?.name || 'Administrator'}</span>
-                                <span className="text-[9px] text-primary-400 font-mono mt-0.5">{user?.roles?.[0]}</span>
+                                <span className="text-[11px] font-bold text-slate-200 uppercase tracking-widest">{user?.name || 'Student'}</span>
+                                <span className="text-[9px] text-primary-400 font-mono mt-0.5">{user?.roles?.[0] || 'STUDENT'}</span>
                             </div>
                         </div>
                         <button 
@@ -92,11 +74,11 @@ const AdminPanel = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto h-full">
+            <main className="flex-1 overflow-auto h-full relative">
                 <Outlet />
             </main>
         </div>
     );
 };
 
-export default AdminPanel;
+export default StudentPanel;

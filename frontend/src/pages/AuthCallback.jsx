@@ -25,7 +25,7 @@ const AuthCallback = () => {
 
     const getRedirectPathByRole = (userData) => {
         const roles = normalizeRoles(userData?.roles);
-        if (roles.includes('ADMIN')) return '/resources';
+        if (roles.includes('ADMIN')) return '/admin';
         if (roles.includes('TECHNICIAN')) return '/technician/tickets';
         return '/student/resources';
     };

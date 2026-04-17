@@ -24,4 +24,5 @@ public class Ticket {
     private String priority; // LOW, MEDIUM, HIGH
     private String aiSuggestion;
     private LocalDateTime createdAt;
+    private String assignedTechnicianId; // Added for Technician Dashboard
 }

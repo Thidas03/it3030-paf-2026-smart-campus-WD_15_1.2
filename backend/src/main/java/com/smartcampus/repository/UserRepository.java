@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
     Optional<User> findByOauth2Id(String oauth2Id);
+    java.util.List<User> findByRolesContains(com.smartcampus.model.Role role);
 }

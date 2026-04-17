@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { MdArrowBack, MdCalendarToday } from "react-icons/md";
 import { cancelBooking, getMyBookings } from "../api/bookingApi";
 import BookingTable from "../components/BookingTable";
 
@@ -34,13 +36,16 @@ export default function MyBookingsPage(){
     };
 
      return (
-    <div className="min-h-screen bg-dark-bg px-6 py-10">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-primary">My Bookings</h1>
-          <p className="mt-2 text-dark-muted">
-            View and manage your submitted booking requests.
-          </p>
+    <div className="w-full pb-12">
+      <div className="mx-auto max-w-7xl pt-8 px-6 md:px-8">
+        <div className="mb-8 flex items-center gap-4">
+            <div className="bg-gradient-to-br from-accent-500/20 to-primary-500/10 p-3 rounded-xl border border-accent-500/20 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+               <MdCalendarToday size={28} className="text-accent-400" />
+            </div>
+            <div>
+               <h1 className="text-2xl font-bold text-white tracking-tight">My Booked Sessions</h1>
+               <p className="mt-1 text-dark-muted text-sm">View, track, and manage all your active resource booking requests.</p>
+            </div>
         </div>
 
         {loading ? (

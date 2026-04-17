@@ -4,12 +4,14 @@ import { ArrowLeft, MapPin, Users, Clock, Box, Info, Shield, Layers, Calendar } 
 import toast from 'react-hot-toast';
 import resourceService from '../services/resourceService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const StudentResourceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [resource, setResource] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchResourceDetails();
@@ -227,6 +229,11 @@ const StudentResourceDetails = () => {
                     </p>
                     <button 
                       onClick={() => {
+                        if (!user) {
+                          navigate('/signup');
+                          return;
+                        }
+                        
                         let queryParams = `?resourceId=${encodeURIComponent(resource.id)}&resourceName=${encodeURIComponent(resource.name)}`;
                         if (resource.availabilityStartTime) {
                           try {

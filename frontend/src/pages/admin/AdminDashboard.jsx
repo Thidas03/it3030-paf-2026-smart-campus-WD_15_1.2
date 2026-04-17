@@ -52,19 +52,19 @@ const AdminDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-dark-bg flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))]">
       <div className="p-6 space-y-6 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex items-center gap-3">
-          <div className="bg-blue-600/10 p-2.5 rounded-lg border border-blue-500/20">
-            <LayoutDashboard className="h-6 w-6 text-blue-500" />
+          <div className="bg-primary-500/20 p-2.5 rounded-lg border border-primary-500/30">
+            <LayoutDashboard className="h-6 w-6 text-primary-300" />
           </div>
           <div>
             <h1 className="text-xl font-semibold text-white">System Analytics</h1>
@@ -74,28 +74,28 @@ const AdminDashboard = () => {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
             <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-blue-500/10 rounded-full w-24 h-24 blur-xl group-hover:bg-blue-500/20 transition-all"></div>
             <Layers className="h-6 w-6 text-blue-400 mb-2" />
             <span className="text-2xl font-bold text-white mb-1">{stats?.totalResources || 0}</span>
             <span className="text-xs text-slate-400">Total Resources</span>
           </div>
           
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
             <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-emerald-500/5 rounded-full w-24 h-24 blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
             <CheckCircle2 className="h-6 w-6 text-emerald-500 mb-2" />
             <span className="text-2xl font-bold text-white mb-1">{stats?.activeResources || 0}</span>
             <span className="text-xs text-slate-400">Active</span>
           </div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
             <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-amber-500/5 rounded-full w-24 h-24 blur-xl group-hover:bg-amber-500/20 transition-all"></div>
             <Wrench className="h-6 w-6 text-amber-500 mb-2" />
             <span className="text-2xl font-bold text-white mb-1">{stats?.maintenanceResources || 0}</span>
             <span className="text-xs text-slate-400">Maintenance</span>
           </div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200 relative overflow-hidden group flex flex-col items-center justify-center">
             <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-rose-500/5 rounded-full w-24 h-24 blur-xl group-hover:bg-rose-500/20 transition-all"></div>
             <AlertTriangle className="h-6 w-6 text-rose-500 mb-2" />
             <span className="text-2xl font-bold text-white mb-1">{stats?.outOfServiceResources || 0}</span>
@@ -107,7 +107,7 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Status Distribution Pie Chart */}
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
             <h3 className="text-sm font-semibold text-slate-300 mb-6 uppercase tracking-wider flex items-center gap-2">
                <div className="w-2 h-2 rounded-full bg-blue-500"></div> Overall Health Status
             </h3>
@@ -139,7 +139,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Resources By Type Bar Chart */}
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+          <div className="glass-card border border-white/10 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
             <h3 className="text-sm font-semibold text-slate-300 mb-6 uppercase tracking-wider flex items-center gap-2">
                <div className="w-2 h-2 rounded-full bg-indigo-500"></div> Distribution by Category
             </h3>

@@ -29,6 +29,11 @@ public class TicketController {
         return ticketService.getUserTickets(userId);
     }
 
+    @GetMapping("/technician/{technicianId}")
+    public List<Ticket> getTechnicianTickets(@PathVariable String technicianId) {
+        return ticketService.getTechnicianTickets(technicianId);
+    }
+
     @PostMapping("/{id}/resolve")
     public Ticket resolveTicket(@PathVariable String id) {
         return ticketService.resolveTicket(id);
@@ -42,5 +47,10 @@ public class TicketController {
     @PatchMapping("/{id}/status")
     public Ticket updateTicketStatus(@PathVariable String id, @RequestBody java.util.Map<String, String> updates) {
         return ticketService.updateTicketStatus(id, updates.get("status"));
+    }
+
+    @PatchMapping("/{id}/assign")
+    public Ticket assignTechnician(@PathVariable String id, @RequestBody java.util.Map<String, String> updates) {
+        return ticketService.assignTechnician(id, updates.get("technicianId"));
     }
 }

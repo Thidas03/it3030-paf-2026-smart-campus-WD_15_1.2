@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '../../api/axiosClient';
-import { HiOutlineArrowLeft, HiOutlineLightningBolt, HiOutlineShieldExclamation, HiOutlineCheckCircle, HiOutlineClock } from 'react-icons/hi';
+import { HiOutlineLightningBolt, HiOutlineShieldExclamation, HiOutlineCheckCircle } from 'react-icons/hi';
 import { Shield } from 'lucide-react';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
+import ticketService from '../services/ticketService';
 
-const AdminTicketsPage = () => {
+const TechnicianDashboard = () => {
   const [tickets, setTickets] = useState([]);
-  const [technicians, setTechnicians] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     let isMounted = true;
     let intervalId;
 
-    const fetchTicketsAdmin = async (showLoading = true) => {
+    const fetchTicketsTech = async (showLoading = true) => {
       if (showLoading) setLoading(true);
       try {
-        const response = await axiosClient.get('/tickets');
+        const response = await ticketService.getTechnicianTickets(user.id);
         if (isMounted) {
           setTickets(response.data || []);
         }
@@ -25,41 +26,34 @@ const AdminTicketsPage = () => {
         console.error('Error fetching tickets:', error);
       } finally {
         if (isMounted && showLoading) {
-          setLoading(false);
+           setLoading(false);
         }
       }
     };
 
-    fetchTicketsAdmin(true);
-    fetchTechnicians();
+    if (user?.id) {
+      fetchTicketsTech(true);
+      intervalId = setInterval(() => fetchTicketsTech(false), 5000);
+    } else {
+      setLoading(false);
+    }
     
-    intervalId = setInterval(() => fetchTicketsAdmin(false), 5000);
-
     return () => {
       isMounted = false;
       if (intervalId) clearInterval(intervalId);
     };
-  }, []);
+  }, [user?.id]);
 
-  const fetchTechnicians = async () => {
+  const updateTicketStatus = async (id, newStatus) => {
     try {
-      const response = await axiosClient.get('/admin/users/technicians');
-      setTechnicians(response.data || []);
-    } catch (error) {
-      console.error('Error fetching technicians:', error);
-    }
-  };
-
-  const assignTechnician = async (ticketId, technicianId) => {
-    try {
-      await axiosClient.patch(`/tickets/${ticketId}/assign`, { technicianId });
-      setTickets(tickets.map(t => t.id === ticketId ? { ...t, assignedTechnicianId: technicianId } : t));
-      toast.success('Technician assigned successfully!', {
+      await ticketService.updateTicketStatus(id, newStatus);
+      setTickets(tickets.map(t => t.id === id ? { ...t, status: newStatus } : t));
+      toast.success('Ticket status updated successfully!', {
         style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
       });
     } catch (error) {
-      console.error('Error assigning technician:', error);
-      toast.error('Failed to assign technician', {
+      console.error('Error updating ticket status:', error);
+      toast.error('Failed to update ticket status', {
         style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }
       });
     }
@@ -91,18 +85,6 @@ const AdminTicketsPage = () => {
     }
   };
 
-  const formatDate = (isoString) => {
-    if (!isoString) return 'N/A';
-    const date = new Date(isoString);
-    return isNaN(date.getTime()) ? isoString : date.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   return (
     <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] relative pb-12">
       <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto relative z-10">
@@ -110,28 +92,22 @@ const AdminTicketsPage = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-rose-500/20 to-orange-500/10 p-3 rounded-xl border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.15)]">
-              <Shield className="h-7 w-7 text-rose-400" />
+            <div className="bg-gradient-to-br from-indigo-500/20 to-blue-500/10 p-3 rounded-xl border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+              <Shield className="h-7 w-7 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">Active Support Tickets</h1>
-              <p className="text-sm text-dark-muted mt-1">Review issues reported by users across the campus.</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">Technician Dashboard</h1>
+              <p className="text-sm text-dark-muted mt-1">Manage and resolve your assigned tickets.</p>
             </div>
           </div>
-          <button
-            onClick={() => window.location.href = '/resources'}
-            className="bg-dark-bg hover:bg-white/5 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 border border-white/10"
-          >
-            <HiOutlineArrowLeft /> Back to Resources
-          </button>
         </div>
 
         {/* Tickets Table */}
         <div className="glass rounded-3xl overflow-hidden shadow-2xl border border-white/5 p-1 relative">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-[60px] pointer-events-none transition-colors duration-700"></div>
+           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-[60px] pointer-events-none transition-colors duration-700"></div>
           
            {loading ? (
-             <LoadingSpinner message="Fetching campus tickets..." />
+             <LoadingSpinner message="Fetching your assigned tickets..." />
            ) : (
              <div className="overflow-x-auto relative z-10 p-4">
                <table className="w-full text-left border-collapse">
@@ -141,15 +117,14 @@ const AdminTicketsPage = () => {
                      <th className="px-4 py-4">Issue Description</th>
                      <th className="px-4 py-4">Priority</th>
                      <th className="px-4 py-4">Status</th>
-                     <th className="px-4 py-4">Assign Technician</th>
-                     <th className="px-4 py-4 text-right">Created</th>
+                     <th className="px-4 py-4 text-right">Actions</th>
                    </tr>
                  </thead>
                  <tbody className="divide-y divide-white/5">
                    {tickets.length === 0 ? (
                      <tr>
                        <td colSpan="5" className="text-center text-dark-muted text-sm py-12">
-                         No tickets have been reported yet.
+                         No tickets have been assigned to you yet.
                        </td>
                      </tr>
                    ) : (
@@ -164,23 +139,31 @@ const AdminTicketsPage = () => {
                          <td className="px-4 py-4 whitespace-nowrap">
                            {getPriorityBadge(ticket.priority)}
                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            {getStatusBadge(ticket.status)}
-                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <select
-                              value={ticket.assignedTechnicianId || ''}
-                              onChange={(e) => assignTechnician(ticket.id, e.target.value)}
-                              className="bg-dark-bg/80 border border-white/10 rounded-lg py-1.5 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500/40 transition-colors cursor-pointer text-slate-300"
-                            >
-                              <option value="">Unassigned</option>
-                              {technicians.map(tech => (
-                                <option key={tech.id} value={tech.id}>{tech.name}</option>
-                              ))}
-                            </select>
-                          </td>
-                         <td className="px-4 py-4 text-right text-xs text-dark-muted whitespace-nowrap tabular-nums">
-                           {formatDate(ticket.createdAt)}
+                         <td className="px-4 py-4 whitespace-nowrap">
+                           {getStatusBadge(ticket.status)}
+                         </td>
+                         <td className="px-4 py-4 text-right whitespace-nowrap">
+                           {ticket.status === 'OPEN' && (
+                             <button
+                               onClick={() => updateTicketStatus(ticket.id, 'IN_PROGRESS')}
+                               className="bg-primary-600 hover:bg-primary-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm"
+                             >
+                               Start Work
+                             </button>
+                           )}
+                           {ticket.status === 'IN_PROGRESS' && (
+                             <button
+                               onClick={() => updateTicketStatus(ticket.id, 'RESOLVED')}
+                               className="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm"
+                             >
+                               Mark as Resolved
+                             </button>
+                           )}
+                           {ticket.status === 'RESOLVED' && (
+                             <span className="text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">
+                               Completed
+                             </span>
+                           )}
                          </td>
                        </tr>
                      ))
@@ -196,4 +179,4 @@ const AdminTicketsPage = () => {
   );
 };
 
-export default AdminTicketsPage;
+export default TechnicianDashboard;

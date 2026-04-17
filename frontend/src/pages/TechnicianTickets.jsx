@@ -25,7 +25,7 @@ const TechnicianTickets = () => {
 
     const fetchTickets = async () => {
         try {
-            const token = localStorage.getItem('accessToken');
+            const token = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken');
             const res = await fetch('/api/tickets', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -42,7 +42,7 @@ const TechnicianTickets = () => {
 
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const token = localStorage.getItem('accessToken');
+            const token = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken');
             const res = await fetch(`/api/tickets/${id}/status`, {
                 method: 'PATCH',
                 headers: { 

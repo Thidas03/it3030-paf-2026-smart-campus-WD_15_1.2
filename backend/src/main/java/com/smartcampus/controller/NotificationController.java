@@ -28,6 +28,19 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getUserNotifications(user.get().getId()));
     }
 
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<Notification>> getAdminSystemNotifications(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(email);
+        
+        // Very basic mock check. Spring Security ideally handles the /api/admin/** prefix natively
+        if (user.isEmpty() || user.get().getRoles().stream().noneMatch(r -> r.name().equals("ADMIN"))) {
+            return ResponseEntity.status(403).build();
+        }
+        
+        return ResponseEntity.ok(notificationService.getSystemNotifications());
+    }
+
     @GetMapping("/unread-count")
     public ResponseEntity<Long> getUnreadCount(Authentication authentication) {
         String email = authentication.getName();

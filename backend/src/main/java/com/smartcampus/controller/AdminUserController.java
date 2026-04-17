@@ -42,6 +42,31 @@ public class AdminUserController {
         return ResponseEntity.ok("Technician created successfully");
     }
 
+    @GetMapping("/technicians")
+    public ResponseEntity<java.util.List<User>> getAllTechnicians() {
+        return ResponseEntity.ok(userRepository.findByRolesContains(Role.TECHNICIAN));
+    }
+
+    @GetMapping
+    public ResponseEntity<java.util.List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll().stream()
+                .map(user -> new UserResponseDTO(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getRolesAsString()
+                )).toList());
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class UserResponseDTO {
+        private String id;
+        private String name;
+        private String email;
+        private java.util.Set<String> roles;
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

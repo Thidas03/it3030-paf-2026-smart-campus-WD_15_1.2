@@ -71,7 +71,7 @@ const StudentResourcesPage = () => {
   }, [resources, searchTerm, filterType, filterStatus, minCapacity]);
 
   return (
-    <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] relative pb-12">
+    <div className="relative pb-12 w-full">
       <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -84,12 +84,6 @@ const StudentResourcesPage = () => {
               <p className="text-sm text-dark-muted mt-1">Browse and explore available campus facilities.</p>
             </div>
           </div>
-          <button
-            onClick={() => navigate('/student/tickets')}
-            className="bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 shadow-lg glow-primary font-semibold"
-          >
-            My Support Tickets
-          </button>
         </div>
 
         {/* Filter Section */}

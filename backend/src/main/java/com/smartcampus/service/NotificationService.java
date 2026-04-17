@@ -25,8 +25,16 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
+    public Notification createSystemNotification(String message, String type, String relatedId) {
+        return createNotification("GLOBAL_ADMIN", message, type, relatedId);
+    }
+
     public List<Notification> getUserNotifications(String userId) {
         return notificationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+    public List<Notification> getSystemNotifications() {
+        return notificationRepository.findByUserIdOrderByCreatedAtDesc("GLOBAL_ADMIN");
     }
 
     public void markAsRead(String notificationId) {

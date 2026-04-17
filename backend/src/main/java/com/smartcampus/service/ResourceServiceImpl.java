@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class ResourceServiceImpl implements ResourceService {
 
     private final ResourceRepository resourceRepository;
+    private final NotificationService notificationService;
 
     @Override
     public ResourceResponseDTO createResource(ResourceRequestDTO request) {
@@ -35,6 +36,13 @@ public class ResourceServiceImpl implements ResourceService {
                 .build();
 
         Resource savedResource = resourceRepository.save(resource);
+        
+        notificationService.createSystemNotification(
+            "New Campus Resource registered: " + savedResource.getName() + " (" + savedResource.getType() + ")",
+            "RESOURCE",
+            savedResource.getId()
+        );
+        
         return mapToResponseDTO(savedResource);
     }
 
