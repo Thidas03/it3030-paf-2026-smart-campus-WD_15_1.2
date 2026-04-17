@@ -9,29 +9,32 @@ const AboutUs = () => {
     return (
         <div className="min-h-screen bg-[#0A0F1E] font-sans relative overflow-hidden pb-20">
             
-            {/* Ambient Background Nodes */}
-            <div className="absolute top-1/4 left-10 w-64 h-64 bg-primary-600/10 rounded-full blur-[80px] pointer-events-none"></div>
-            <div className="absolute bottom-1/3 right-10 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-            <div className="absolute top-1/2 left-1/3 w-4 h-4 rounded-full bg-primary-400 shadow-[0_0_15px_rgba(255,255,255,0.2)] animate-pulse opacity-50"></div>
-            <div className="absolute top-1/4 right-1/4 w-3 h-3 rounded-full bg-accent-400 shadow-[0_0_15px_rgba(255,255,255,0.2)] opacity-50"></div>
-            <div className="absolute bottom-1/4 left-1/4 w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(255,255,255,0.2)] opacity-50 pointer-events-none"></div>
+            {/* Full-Screen Background Cover & Gradient Mask */}
+            <div 
+                className="fixed inset-0 z-0 bg-cover bg-center" 
+                style={{ backgroundImage: 'url(/campus-interior.png)' }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1E]/95 via-[#0A0F1E]/80 to-[#0A0F1E]/95"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1E]/40 via-transparent to-[#0A0F1E]"></div>
+            </div>
 
             {/* Top Navbar */}
-            <nav className="glass border-b border-white/10 px-6 py-4 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl relative">
-                {/* Left Side: Logo */}
-                <div className="flex-1 flex items-center">
+            <nav className="glass border-b border-white/10 px-6 py-4 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
+                {/* Left Side */}
+                <div className="flex-1 flex items-center justify-start gap-3">
+                    <img src="/logo.png" alt="SmartCampus Logo" className="w-8 h-8 object-contain drop-shadow-[0_0_10px_rgba(139,92,246,0.6)]" />
                     <span className="block font-bold text-primary-300 text-lg leading-tight tracking-wider font-serif">SmartCampus Hub</span>
                 </div>
                 
-                {/* Center Links - Absolutely Positioned for perfect centering */}
-                <div className="hidden lg:flex items-center space-x-8 text-sm font-semibold absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                {/* Center Links - Structurally centered */}
+                <div className="flex-1 hidden lg:flex items-center justify-center space-x-8 text-sm font-semibold">
                     <Link to="/" className={`${location.pathname === '/' ? 'text-primary-300 border-b-2 border-primary-400 pb-1 -mb-1' : 'text-slate-300 hover:text-primary-300 transition'}`}>Home</Link>
                     <Link to="/student/resources" className="text-slate-300 hover:text-primary-300 transition">Facilities & Assets</Link>
                     <Link to="/about" className={`${location.pathname === '/about' ? 'text-primary-300 border-b-2 border-primary-400 pb-1 -mb-1' : 'text-slate-300 hover:text-primary-300 transition'}`}>About Us</Link>
                 </div>
-                
+
                 {/* Right Side: Auth */}
-                <div className="flex-1 flex justify-end items-center space-x-3 md:space-x-4">
+                <div className="flex-1 flex items-center justify-end space-x-3 md:space-x-4">
                     {user ? (
                         <div className="flex items-center gap-4">
                             <span className="text-sm font-medium text-slate-300 hidden md:block">
@@ -66,9 +69,9 @@ const AboutUs = () => {
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
                         Transforming the <br className="hidden md:block" /> 
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400">Academic Infrastructure</span>
+                        <span className="inline-block hover:animate-wave cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400">Academic Infrastructure</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto font-light">
+                    <p className="text-lg md:text-xl text-white leading-relaxed max-w-3xl mx-auto font-medium bg-white/10 p-6 rounded-2xl border border-white/20 backdrop-blur-md drop-shadow-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:bg-white/15 transition-all duration-300">
                         SmartCampus Hub is a revolutionary, centralized platform engineered to streamline facility management, accelerate IT troubleshooting, and empower students to optimize their educational environment.
                     </p>
                 </section>
