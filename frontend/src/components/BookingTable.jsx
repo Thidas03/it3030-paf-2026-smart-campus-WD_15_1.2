@@ -65,7 +65,9 @@ export default function BookingTable({
               </td>
 
               <td className="px-4 py-4 text-dark-muted">
-                {booking.adminReason || booking.cancelledReason || "-"}
+                {booking.status === 'CANCELLED'
+                  ? booking.cancelledReason || booking.adminReason || "-"
+                  : booking.adminReason || booking.cancelledReason || "-"}
               </td>
 
               <td className="px-4 py-4">

@@ -196,7 +196,7 @@ export default function BookingForm({
         <div className="md:col-span-2">
           <button
             type="submit"
-            className="w-full rounded-xl bg-cyber-gradient px-5 py-3 font-semibold text-white shadow-glow transition hover:scale-[1.01] hover:opacity-95"
+            className="w-full rounded-xl bg-gradient-cyber hover:glow-primary px-5 py-3 font-semibold text-white shadow-lg transition-all duration-300 border border-white/10 hover:scale-[1.02] active:scale-[0.98]"
           >
             Submit Booking Request
           </button>

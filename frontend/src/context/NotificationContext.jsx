@@ -1,35 +1,53 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import toast from 'react-hot-toast';
 
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
     const { user } = useAuth();
     const [unreadCount, setUnreadCount] = useState(0);
+    const notifiedIds = useRef(new Set());
 
-    const fetchUnreadCount = useCallback(async () => {
+    const fetchNotifications = useCallback(async () => {
         if (!user) return;
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('/api/notifications/unread-count', {
+            const response = await axios.get('/api/notifications', {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setUnreadCount(response.data);
+            const allNotifs = response.data || [];
+            const unread = allNotifs.filter(n => !n.read && !n.isRead);
+            setUnreadCount(unread.length);
+
+            unread.forEach(n => {
+                if (!notifiedIds.current.has(n.id)) {
+                    notifiedIds.current.add(n.id);
+                    const msg = n.message || '';
+                    const type = n.type || '';
+                    
+                    if (type === 'BOOKING_APPROVED' || (msg.toLowerCase().includes('booking') && msg.toLowerCase().includes('approved'))) {
+                        toast.success(`${msg || 'Your booking was approved!'}`, { duration: 5000, position: 'top-right' });
+                    } else if (type === 'BOOKING_REJECTED' || (msg.toLowerCase().includes('booking') && msg.toLowerCase().includes('rejected'))) {
+                        toast.error(`${msg || 'Your booking was rejected.'}`, { duration: 5000, position: 'top-right' });
+                    }
+                }
+            });
         } catch (error) {
-            console.error("Error fetching unread count", error);
+            console.error("Error fetching notifications", error);
         }
     }, [user]);
 
     useEffect(() => {
-        fetchUnreadCount();
-        // Poll every 30 seconds for new notifications
-        const interval = setInterval(fetchUnreadCount, 30000);
+        fetchNotifications();
+        // Poll more frequently to ensure snappy dashboard notifications
+        const interval = setInterval(fetchNotifications, 15000);
         return () => clearInterval(interval);
-    }, [fetchUnreadCount]);
+    }, [fetchNotifications]);
 
     return (
-        <NotificationContext.Provider value={{ unreadCount, refreshUnreadCount: fetchUnreadCount }}>
+        <NotificationContext.Provider value={{ unreadCount, refreshUnreadCount: fetchNotifications }}>
             {children}
         </NotificationContext.Provider>
     );

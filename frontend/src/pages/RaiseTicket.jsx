@@ -62,7 +62,7 @@ const RaiseTicket = () => {
     <div className="min-h-screen bg-dark-bg bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(139,92,246,0.15),rgba(255,255,255,0))] py-12 px-4 flex flex-col items-center relative">
       <div className="max-w-2xl w-full relative z-10">
         <a 
-          href="/" 
+          href="/student" 
           className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors group"
         >
           <HiOutlineArrowLeft className="group-hover:-translate-x-1 transition-transform" />
