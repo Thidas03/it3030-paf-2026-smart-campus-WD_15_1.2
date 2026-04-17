@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -41,7 +42,7 @@ public class AuthController {
                 
                 Map<String, Object> response = new HashMap<>();
                 response.put("token", token);
-                response.put("user", user);
+                response.put("user", buildUserPayload(user));
                 
                 return ResponseEntity.ok(response);
             }
@@ -56,11 +57,13 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Email already in use");
         }
 
+        Role assignedRole = resolveRole(signupRequest.getRole());
+
         User user = User.builder()
                 .name(signupRequest.getName())
                 .email(signupRequest.getEmail())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
-                .roles(Collections.singleton(Role.USER))
+                .roles(Collections.singleton(assignedRole))
                 .build();
 
         userRepository.save(user);
@@ -68,9 +71,35 @@ public class AuthController {
         String token = jwtService.generateToken(user.getEmail(), user.getRolesAsString());
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("user", user);
+        response.put("user", buildUserPayload(user));
         
         return ResponseEntity.ok(response);
+    }
+
+    private Map<String, Object> buildUserPayload(User user) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("id", user.getId());
+        payload.put("name", user.getName());
+        payload.put("email", user.getEmail());
+        payload.put("picture", user.getPicture());
+        payload.put("roles", user.getRolesAsString());
+        return payload;
+    }
+
+    private Role resolveRole(String requestedRole) {
+        if (requestedRole == null || requestedRole.isBlank()) {
+            return Role.USER;
+        }
+
+        if ("STUDENT".equalsIgnoreCase(requestedRole)) {
+            return Role.USER;
+        }
+
+        try {
+            return Role.valueOf(requestedRole.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return Role.USER;
+        }
     }
 
     @Data
@@ -88,5 +117,6 @@ public class AuthController {
         private String name;
         private String email;
         private String password;
+        private String role;
     }
 }

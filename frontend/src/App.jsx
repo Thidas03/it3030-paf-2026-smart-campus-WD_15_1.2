@@ -1,88 +1,18 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import AuthCallback from './pages/AuthCallback.jsx';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+
+import { NotificationProvider } from './context/NotificationContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+
+import Dashboard from './pages/Dashboard.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import AuthCallback from './pages/AuthCallback.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import TechnicianTickets from './pages/TechnicianTickets.jsx';
 import TechnicianStatus from './pages/TechnicianStatus.jsx';
 import NotificationPage from './pages/NotificationPage.jsx';
 
-import { NotificationProvider } from './context/NotificationContext.jsx';
-
-const App = () => {
-    return (
-        <AuthProvider>
-            <NotificationProvider>
-                <BrowserRouter>
-                <Routes>
-                    {/* Protected dashboard home page */}
-                    <Route 
-                        path="/" 
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    
-                    {/* Protected admin panel */}
-                    <Route 
-                        path="/admin" 
-                        element={
-                            <ProtectedRoute>
-                                <AdminPanel />
-                            </ProtectedRoute>
-                        } 
-                    />
-
-                    {/* Protected technician tickets */}
-                    <Route 
-                        path="/technician/tickets" 
-                        element={
-                            <ProtectedRoute>
-                                <TechnicianTickets />
-                            </ProtectedRoute>
-                        } 
-                    />
-
-                    {/* Protected technician status */}
-                    <Route 
-                        path="/technician/status" 
-                        element={
-                            <ProtectedRoute>
-                                <TechnicianStatus />
-                            </ProtectedRoute>
-                        } 
-                    />
-
-                    {/* Login page */}
-                    <Route path="/login" element={<LoginPage />} />
-                    
-                    {/* OAuth2 Callback page */}
-                    <Route path="/auth/callback" element={<AuthCallback />} />
-                    
-                    {/* Protected notifications page */}
-                    <Route 
-                        path="/notifications" 
-                        element={
-                            <ProtectedRoute>
-                                <NotificationPage />
-                            </ProtectedRoute>
-                        } 
-                    />
-                </Routes>
-            </BrowserRouter>
-            </NotificationProvider>
-        </AuthProvider>
-    );
-};
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import Dashboard from './pages/Dashboard';
-import LoginPage from './pages/LoginPage';
 import RaiseTicket from './pages/RaiseTicket.jsx';
 import FacilitiesAssetsPage from './pages/FacilitiesAssetsPage';
 import StudentResourcesPage from './pages/StudentResourcesPage';
@@ -91,6 +21,7 @@ import StudentCalendar from './pages/student/StudentCalendar';
 import ResourceAvailabilityCalendar from './pages/admin/ResourceAvailabilityCalendar';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminTicketsPage from './pages/admin/AdminTicketsPage';
+import AdminUserManagement from './pages/admin/AdminUserManagement.jsx';
 import StudentTicketsPage from './pages/student/StudentTicketsPage';
 import BookingPage from "./pages/BookingPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
@@ -98,7 +29,7 @@ import AdminBookingsPage from "./pages/AdminBookingsPage";
 
 function App() {
   return (
-    <>
+    <NotificationProvider>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -111,20 +42,35 @@ function App() {
         }}
       />
       <Routes>
-        {/* Home */}
-        <Route path="/" element={<Dashboard />} />
-
         {/* Auth */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<LoginPage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+
+        {/* Public Dashboard */}
+        <Route path="/" element={<Dashboard />} />
+
+        {/* Admin Navigation */}
+        <Route path="/admin" element={<ProtectedRoute roles={['ADMIN']}><AdminPanel /></ProtectedRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUserManagement />} />
+          <Route path="resource-calendar" element={<ResourceAvailabilityCalendar />} />
+          <Route path="tickets" element={<AdminTicketsPage />} />
+        </Route>
+
+        {/* Technician Navigation */}
+        <Route path="/technician/tickets" element={<ProtectedRoute roles={['TECHNICIAN']}><TechnicianTickets /></ProtectedRoute>} />
+        <Route path="/technician/status" element={<ProtectedRoute roles={['TECHNICIAN']}><TechnicianStatus /></ProtectedRoute>} />
+
+        {/* Notifications */}
+        <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
 
         {/* Maintenance & Support */}
         <Route path="/raise-ticket" element={<RaiseTicket />} />
 
         {/* Facilities & Assets */}
         <Route path="/resources" element={<FacilitiesAssetsPage />} />
-        <Route path="/admin/resource-calendar" element={<ResourceAvailabilityCalendar />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/tickets" element={<AdminTicketsPage />} />
 
         {/* Student Resources */}
         <Route path="/student/resources" element={<StudentResourcesPage />} />
@@ -137,7 +83,7 @@ function App() {
         <Route path="/my-bookings" element={<MyBookingsPage />} />
         <Route path="/admin-bookings" element={<AdminBookingsPage />} />
       </Routes>
-    </>
+    </NotificationProvider>
   );
 }
 

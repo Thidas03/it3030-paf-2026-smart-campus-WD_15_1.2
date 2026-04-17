@@ -35,7 +35,12 @@ public class SecurityConfig {
                                 "/error",
                                 "/oauth2/**",
                                 "/api/auth/**",
-                                "/auth/callback"
+                                "/auth/callback",
+                                "/login/**",
+                                "/api/bookings/**", // TEMPORARY: allow all booking endpoints during local development/testing
+                                "/api/resources/**", // Allow resources for the public dashboard page
+                                "/api/tickets/**",
+                                "/api/notifications/**"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/technician/**").hasRole("TECHNICIAN")
@@ -45,16 +50,6 @@ public class SecurityConfig {
                         .successHandler(oauth2SuccessHandler)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
-                                "/login/**",
-                                "/api/auth/**"
-                        ).permitAll()
-
-                        // TEMPORARY: allow all booking endpoints during local development/testing
-                        .requestMatchers("/api/bookings/**").permitAll()
-
-                        .anyRequest().permitAll()
-                )
-                .oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }

@@ -7,6 +7,29 @@ const AuthCallback = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const normalizeSingleRole = (role) => {
+        if (typeof role === 'string') return role;
+        if (role && typeof role === 'object') {
+            return role.authority || role.role || role.name || '';
+        }
+        return '';
+    };
+
+    const normalizeRoles = (roles) => {
+        const roleList = Array.isArray(roles) ? roles : [roles];
+        return roleList
+            .map((role) => normalizeSingleRole(role))
+            .map((role) => String(role || '').trim().replace('ROLE_', '').toUpperCase())
+            .filter(Boolean);
+    };
+
+    const getRedirectPathByRole = (userData) => {
+        const roles = normalizeRoles(userData?.roles);
+        if (roles.includes('ADMIN')) return '/resources';
+        if (roles.includes('TECHNICIAN')) return '/technician/tickets';
+        return '/student/resources';
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const token = params.get('token');
@@ -16,8 +39,9 @@ const AuthCallback = () => {
         const roles = params.get('roles')?.split(',') || [];
 
         if (token) {
-            handleAuthSuccess({ email, name, picture, roles }, token);
-            navigate('/');
+            const authUser = { email, name, picture, roles };
+            handleAuthSuccess(authUser, token);
+            navigate(getRedirectPathByRole(authUser));
         } else {
             navigate('/login');
         }

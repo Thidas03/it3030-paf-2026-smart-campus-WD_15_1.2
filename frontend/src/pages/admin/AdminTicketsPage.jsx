@@ -16,7 +16,7 @@ const AdminTicketsPage = () => {
   const fetchTickets = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8081/api/tickets');
+      const response = await axios.get('/api/tickets');
       setTickets(response.data || []);
     } catch (error) {
       console.error('Error fetching tickets:', error);
@@ -30,7 +30,7 @@ const AdminTicketsPage = () => {
 
   const updateTicketStatus = async (id, newStatus) => {
     try {
-      await axios.patch(`http://localhost:8081/api/tickets/${id}/status`, { status: newStatus });
+      await axios.patch(`/api/tickets/${id}/status`, { status: newStatus });
       setTickets(tickets.map(t => t.id === id ? { ...t, status: newStatus } : t));
       toast.success('Ticket status updated successfully!', {
         style: { background: '#020617', color: '#f8fafc', border: '1px solid #1e293b' }

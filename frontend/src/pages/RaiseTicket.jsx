@@ -25,7 +25,7 @@ const RaiseTicket = () => {
     setLoading(true);
     try {
       const compiledLabName = `${resourceName} (${resourceType}) - ${resourceLocation}`;
-      const response = await axios.post('http://localhost:8081/api/tickets', {
+      const response = await axios.post('/api/tickets', {
         userId: 'demo-user-123',
         labName: compiledLabName,
         description,
@@ -42,7 +42,7 @@ const RaiseTicket = () => {
 
   const handleResolve = async () => {
     try {
-      const response = await axios.post(`http://localhost:8081/api/tickets/${ticket.id}/resolve`);
+      const response = await axios.post(`/api/tickets/${ticket.id}/resolve`);
       setTicket(response.data);
     } catch (err) {
       console.error('Error resolving ticket:', err);
@@ -51,7 +51,7 @@ const RaiseTicket = () => {
 
   const handleEscalate = async () => {
     try {
-      const response = await axios.post(`http://localhost:8081/api/tickets/${ticket.id}/escalate`);
+      const response = await axios.post(`/api/tickets/${ticket.id}/escalate`);
       setTicket(response.data);
     } catch (err) {
       console.error('Error escalating ticket:', err);

@@ -7,7 +7,7 @@ import { LayoutDashboard, CheckCircle2, Wrench, AlertTriangle, Layers } from 'lu
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:8080/api/resources';
+const API_BASE_URL = '/api/resources';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);

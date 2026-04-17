@@ -16,7 +16,7 @@ const StudentTicketsPage = () => {
   const fetchTickets = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8081/api/tickets/user/demo-user-123');
+      const response = await axios.get('/api/tickets/user/demo-user-123');
       setTickets(response.data || []);
     } catch (error) {
       console.error('Error fetching tickets:', error);

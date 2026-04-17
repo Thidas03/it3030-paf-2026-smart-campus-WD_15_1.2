@@ -16,14 +16,49 @@ import {
 
 const TechnicianTickets = () => {
     const { user, logout, hasRole } = useAuth();
-    const { unreadCount } = useNotifications();
-    const [tickets, setTickets] = useState([
-        { id: '#456', user: 'nami', issue: 'AC not working in Lab 1', status: 'Pending', priority: 'High', date: '2024-08-17' },
-        { id: '#457', user: 'thidas', issue: 'Projector flickering in BH-02', status: 'In Progress', priority: 'Medium', date: '2024-08-17' },
-        { id: '#458', user: 'janith', issue: 'Light bulb fused in corridor', status: 'Resolved', priority: 'Low', date: '2024-08-16' },
-        { id: '#459', user: 'chamika', issue: 'WiFi disconnection in Library', status: 'Pending', priority: 'High', date: '2024-08-16' },
-        { id: '#460', user: 'kavishka', issue: 'Power outlet not working in C-302', status: 'Pending', priority: 'Medium', date: '2024-08-15' },
-    ]);
+    const [tickets, setTickets] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchTickets();
+    }, []);
+
+    const fetchTickets = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const res = await fetch('/api/tickets', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setTickets(data);
+            }
+        } catch (err) {
+            console.error('Failed to fetch tickets:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleStatusChange = async (id, newStatus) => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const res = await fetch(`/api/tickets/${id}/status`, {
+                method: 'PATCH',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (res.ok) {
+                fetchTickets(); // Refresh the list
+            }
+        } catch (err) {
+            console.error('Failed to update status:', err);
+        }
+    };
 
     if (!user || !hasRole('TECHNICIAN')) {
         return <Navigate to="/" />;
@@ -112,33 +147,44 @@ const TechnicianTickets = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {tickets.map((ticket) => (
+                                {loading ? (
+                                    <tr><td colSpan="7" className="px-6 py-4 text-center text-gray-500">Loading tickets...</td></tr>
+                                ) : tickets.length === 0 ? (
+                                    <tr><td colSpan="7" className="px-6 py-4 text-center text-gray-500">No tickets found.</td></tr>
+                                ) : tickets.map((ticket) => (
                                     <tr key={ticket.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4 text-sm font-semibold text-[#004282]">{ticket.id}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-700 capitalize">{ticket.user}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">{ticket.issue}</td>
+                                        <td className="px-6 py-4 text-sm font-semibold text-[#004282]">{ticket.id ? ticket.id.substring(0, 6) : 'N/A'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-700 capitalize">{ticket.userId || 'User'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate" title={ticket.description}>{ticket.description}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                                                ticket.priority === 'High' ? 'bg-red-50 text-red-600' : 
-                                                ticket.priority === 'Medium' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
+                                                ticket.priority === 'HIGH' ? 'bg-red-50 text-red-600' : 
+                                                ticket.priority === 'MEDIUM' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
                                             }`}>
-                                                {ticket.priority}
+                                                {ticket.priority || 'LOW'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
                                                 <div className={`w-2 h-2 rounded-full mr-2 ${
-                                                    ticket.status === 'Pending' ? 'bg-yellow-400' : 
-                                                    ticket.status === 'In Progress' ? 'bg-blue-400' : 'bg-green-400'
+                                                    ticket.status === 'PENDING' ? 'bg-yellow-400' : 
+                                                    ticket.status === 'IN_PROGRESS' || ticket.status === 'ESCALATED' ? 'bg-blue-400' : 'bg-green-400'
                                                 }`}></div>
-                                                <span className="text-sm text-gray-700">{ticket.status}</span>
+                                                <span className="text-sm text-gray-700">{ticket.status || 'PENDING'}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{ticket.date}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{ticket.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : 'N/A'}</td>
                                         <td className="px-6 py-4 text-right">
-                                            <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
-                                                <MdMoreVert size={20} className="text-gray-400" />
-                                            </button>
+                                            <select 
+                                                className="p-1 border border-gray-300 rounded text-sm text-gray-700 outline-none focus:ring-1 focus:ring-blue-500"
+                                                value={ticket.status || 'PENDING'}
+                                                onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
+                                            >
+                                                <option value="PENDING">PENDING</option>
+                                                <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                                <option value="RESOLVED">RESOLVED</option>
+                                                <option value="ESCALATED">ESCALATED</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))}

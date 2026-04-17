@@ -6,11 +6,35 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const normalizeSingleRole = (role) => {
+    if (typeof role === 'string') return role;
+    if (role && typeof role === 'object') {
+      return role.authority || role.role || role.name || '';
+    }
+    return '';
+  };
+
+  const normalizeRoles = (roles = []) => {
+    const roleList = Array.isArray(roles) ? roles : [roles];
+    return roleList
+      .map((role) => normalizeSingleRole(role))
+      .map((role) => String(role || '').trim().replace('ROLE_', '').toUpperCase())
+      .filter(Boolean);
+  };
+
+  const normalizeUser = (userData) => {
+    if (!userData) return null;
+    return {
+      ...userData,
+      roles: normalizeRoles(userData.roles || []),
+    };
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('accessToken');
     if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
+      setUser(normalizeUser(JSON.parse(storedUser)));
     }
     setLoading(false);
   }, []);
@@ -29,7 +53,7 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         handleAuthSuccess(data.user, data.token);
-        return { success: true };
+        return { success: true, user: normalizeUser(data.user) };
       } else {
         const error = await response.text();
         return { success: false, error };
@@ -39,17 +63,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (name, email, password) => {
+  const signup = async (name, email, password, role = 'STUDENT') => {
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
       if (response.ok) {
         const data = await response.json();
         handleAuthSuccess(data.user, data.token);
-        return { success: true };
+        return { success: true, user: normalizeUser(data.user) };
       } else {
         const error = await response.text();
         return { success: false, error };
@@ -60,9 +84,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleAuthSuccess = (userData, token) => {
+    const normalizedUser = normalizeUser(userData);
     localStorage.setItem('accessToken', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
+    setUser(normalizedUser);
   };
 
   const logout = () => {
@@ -73,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const hasRole = (role) => {
-    return user?.roles?.includes(role);
+    return user?.roles?.includes(String(role || '').replace('ROLE_', '').toUpperCase());
   };
 
   return (
