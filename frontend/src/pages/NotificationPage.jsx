@@ -33,7 +33,7 @@ const NotificationPage = () => {
 
     const fetchNotifications = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken');
             const response = await axios.get('http://localhost:8081/api/notifications', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -47,7 +47,7 @@ const NotificationPage = () => {
 
     const markAsRead = async (id) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken');
             await axios.put(`http://localhost:8081/api/notifications/${id}/read`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -60,7 +60,7 @@ const NotificationPage = () => {
 
     const markAllRead = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken');
             await axios.put(`http://localhost:8081/api/notifications/read-all`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });

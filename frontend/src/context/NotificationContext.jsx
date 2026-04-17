@@ -11,7 +11,7 @@ export const NotificationProvider = ({ children }) => {
     const fetchUnreadCount = useCallback(async () => {
         if (!user) return;
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken');
             const response = await axios.get('http://localhost:8081/api/notifications/unread-count', {
                 headers: { Authorization: `Bearer ${token}` }
             });
