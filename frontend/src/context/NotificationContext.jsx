@@ -13,7 +13,7 @@ export const NotificationProvider = ({ children }) => {
     const fetchNotifications = useCallback(async () => {
         if (!user) return;
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken');
             const response = await axios.get('/api/notifications', {
                 headers: { Authorization: `Bearer ${token}` }
             });

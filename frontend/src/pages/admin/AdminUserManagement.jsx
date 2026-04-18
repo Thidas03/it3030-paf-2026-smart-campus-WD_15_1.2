@@ -31,17 +31,24 @@ const AdminUserManagement = () => {
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
+        localStorage.setItem('cachedAdminUsers', JSON.stringify(data));
       } else {
         toast.error('Failed to load users');
+        const cached = localStorage.getItem('cachedAdminUsers');
+        if (cached) setUsers(JSON.parse(cached));
       }
     } catch (err) {
       toast.error('Network error loading users');
+      const cached = localStorage.getItem('cachedAdminUsers');
+      if (cached) setUsers(JSON.parse(cached));
     } finally {
       setFetchingUsers(false);
     }
   };
 
   useEffect(() => {
+    const cached = localStorage.getItem('cachedAdminUsers');
+    if (cached) setUsers(JSON.parse(cached));
     fetchUsers();
   }, []);
 

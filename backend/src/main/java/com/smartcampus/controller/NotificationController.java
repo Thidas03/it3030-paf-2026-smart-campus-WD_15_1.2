@@ -34,7 +34,7 @@ public class NotificationController {
         Optional<User> user = userRepository.findByEmail(email);
         
         // Very basic mock check. Spring Security ideally handles the /api/admin/** prefix natively
-        if (user.isEmpty() || user.get().getRoles().stream().noneMatch(r -> r.name().equals("ADMIN"))) {
+        if (user.isEmpty() || user.get().getRolesAsString().stream().noneMatch(r -> r.equals("ADMIN"))) {
             return ResponseEntity.status(403).build();
         }
         

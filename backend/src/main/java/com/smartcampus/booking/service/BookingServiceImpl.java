@@ -55,7 +55,14 @@ public class BookingServiceImpl implements BookingService {
         booking.setResourceId(request.getResourceId());
         booking.setResourceName(request.getResourceName());
         booking.setUserEmail(userEmail);
-        booking.setUserName(userName);
+        
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        if (user != null) {
+            booking.setUserId(user.getId());
+            booking.setUserName(user.getName() != null ? user.getName() : userName);
+        } else {
+            booking.setUserName(userName);
+        }
         booking.setBookingDate(request.getBookingDate());
         booking.setStartTime(request.getStartTime());
         booking.setEndTime(request.getEndTime());
@@ -65,9 +72,9 @@ public class BookingServiceImpl implements BookingService {
 
         Booking saved = bookingRepository.save(booking);
 
-        userRepository.findByEmail(userEmail).ifPresent(user -> {
+        userRepository.findByEmail(userEmail).ifPresent(notifUser -> {
             notificationService.createNotification(
-                    user.getId(),
+                    notifUser.getId(),
                     "Your booking request for " + request.getResourceName() + " has been submitted and is processing.",
                     "BOOKING",
                     saved.getId()

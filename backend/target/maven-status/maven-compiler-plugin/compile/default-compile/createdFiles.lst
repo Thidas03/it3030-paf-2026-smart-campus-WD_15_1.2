@@ -8,6 +8,7 @@ com\smartcampus\booking\dto\BookingStatusUpdateRequest.class
 com\smartcampus\booking\model\Booking.class
 com\smartcampus\dto\ResourceResponseDTO.class
 com\smartcampus\dto\ResourceRequestDTO$ResourceRequestDTOBuilder.class
+com\smartcampus\controller\AdminUserController$UserResponseDTO.class
 com\smartcampus\model\Resource.class
 com\smartcampus\booking\dto\BookingResponse.class
 com\smartcampus\booking\service\BookingServiceImpl.class
@@ -41,6 +42,7 @@ com\smartcampus\service\TicketService.class
 com\smartcampus\dto\ResourceRequestDTO.class
 com\smartcampus\model\User$UserBuilder.class
 com\smartcampus\model\User.class
+com\smartcampus\controller\AdminUserController$UpdateUserRequest.class
 com\smartcampus\service\ResourceServiceImpl.class
 com\smartcampus\dto\ResourceDashboardStatsDTO.class
 com\smartcampus\controller\AuthController.class

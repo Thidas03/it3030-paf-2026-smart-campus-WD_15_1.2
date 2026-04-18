@@ -74,7 +74,12 @@ public class BookingController {
             @RequestHeader(value = "X-User-Role", required = false) String fallbackRole
     ) {
         String userEmail = extractUserEmail(authentication, fallbackEmail);
-        boolean isAdmin = "ADMIN".equalsIgnoreCase(fallbackRole);
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().contains("ADMIN") || a.getAuthority().contains("ROLE_ADMIN"));
+        
+        if (!isAdmin && fallbackRole != null) {
+            isAdmin = "ADMIN".equalsIgnoreCase(fallbackRole);
+        }
 
         return bookingService.cancelBooking(bookingId, userEmail, isAdmin, request.getReason());
     }
@@ -88,7 +93,7 @@ public class BookingController {
             return fallbackEmail;
         }
 
-        throw new RuntimeException("User identity not available");
+        throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.UNAUTHORIZED, "User identity not available");
     }
 
     private String extractUserName(Authentication authentication, String fallbackName) {

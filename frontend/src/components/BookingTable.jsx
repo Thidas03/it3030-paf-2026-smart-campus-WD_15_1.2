@@ -47,7 +47,7 @@ export default function BookingTable({
                 <div className="text-xs text-dark-muted">{booking.resourceId}</div>
               </td>
 
-              <td className="px-4 py-4">{booking.userEmail}</td>
+              <td className="px-4 py-4">{booking.userName || "Unknown User"}</td>
               <td className="px-4 py-4">{booking.bookingDate}</td>
               <td className="px-4 py-4">
                 {booking.startTime} - {booking.endTime}

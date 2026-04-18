@@ -13,6 +13,8 @@ const AdminNotifications = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const cached = localStorage.getItem('cachedAdminNotifications');
+        if (cached) setNotifications(JSON.parse(cached));
         fetchAdminNotifications();
     }, []);
 
@@ -23,8 +25,11 @@ const AdminNotifications = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setNotifications(response.data || []);
+            localStorage.setItem('cachedAdminNotifications', JSON.stringify(response.data || []));
         } catch (error) {
             console.error("Error fetching admin notifications", error);
+            const cached = localStorage.getItem('cachedAdminNotifications');
+            if (cached) setNotifications(JSON.parse(cached));
         } finally {
             setLoading(false);
         }

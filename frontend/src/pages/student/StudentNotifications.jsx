@@ -10,8 +10,10 @@ import {
     MdCheckCircleOutline,
     MdCancel
 } from 'react-icons/md';
+import { useNotifications } from '../../context/NotificationContext';
 
 const StudentNotifications = () => {
+    const { refreshUnreadCount } = useNotifications();
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -31,6 +33,10 @@ const StudentNotifications = () => {
             await axios.put('/api/notifications/read-all', {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+            
+            if (refreshUnreadCount) {
+                refreshUnreadCount();
+            }
         } catch (error) {
             console.error("Error fetching notifications", error);
         } finally {

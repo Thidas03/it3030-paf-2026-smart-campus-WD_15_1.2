@@ -18,6 +18,7 @@ public class Booking {
     private String resourceId;
     private String resourceName;
     private String userEmail;
+    private String userId;
     private String userName;
 
     private LocalDate bookingDate;
@@ -41,12 +42,13 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String resourceId, String resourceName, String userEmail, String userName,
+    public Booking(String resourceId, String resourceName, String userEmail, String userId, String userName,
                    LocalDate bookingDate, LocalTime startTime, LocalTime endTime,
                    String purpose, Integer expectedAttendees, BookingStatus status) {
         this.resourceId = resourceId;
         this.resourceName = resourceName;
         this.userEmail = userEmail;
+        this.userId = userId;
         this.userName = userName;
         this.bookingDate = bookingDate;
         this.startTime = startTime;
@@ -82,6 +84,14 @@ public class Booking {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

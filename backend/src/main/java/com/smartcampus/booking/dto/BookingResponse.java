@@ -13,6 +13,7 @@ public class BookingResponse {
     private String resourceId;
     private String resourceName;
     private String userEmail;
+    private String userId;
     private String userName;
     private LocalDate bookingDate;
     private LocalTime startTime;
@@ -31,6 +32,7 @@ public class BookingResponse {
         response.resourceId = booking.getResourceId();
         response.resourceName = booking.getResourceName();
         response.userEmail = booking.getUserEmail();
+        response.userId = booking.getUserId();
         response.userName = booking.getUserName();
         response.bookingDate = booking.getBookingDate();
         response.startTime = booking.getStartTime();
@@ -59,6 +61,10 @@ public class BookingResponse {
 
     public String getUserEmail() {
         return userEmail;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getUserName() {
