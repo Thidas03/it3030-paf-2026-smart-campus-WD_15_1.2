@@ -5,7 +5,10 @@ import com.smartcampus.booking.dto.BookingResponse;
 import com.smartcampus.booking.model.Booking;
 import com.smartcampus.booking.model.BookingStatus;
 import com.smartcampus.booking.repository.BookingRepository;
+import com.smartcampus.model.Resource;
+import com.smartcampus.model.ResourceStatus;
 import com.smartcampus.model.User;
+import com.smartcampus.repository.ResourceRepository;
 import com.smartcampus.repository.UserRepository;
 import com.smartcampus.service.NotificationService;
 import org.springframework.http.HttpStatus;
@@ -21,18 +24,28 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final ResourceRepository resourceRepository;
 
     public BookingServiceImpl(BookingRepository bookingRepository,
                               NotificationService notificationService,
-                              UserRepository userRepository) {
+                              UserRepository userRepository,
+                              ResourceRepository resourceRepository) {
         this.bookingRepository = bookingRepository;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
     public BookingResponse createBooking(BookingCreateRequest request, String userEmail, String userName) {
         validateTimeRange(request.getStartTime(), request.getEndTime());
+
+        Resource resource = resourceRepository.findById(request.getResourceId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+
+        if (resource.getStatus() != ResourceStatus.ACTIVE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Resource is currently unavailable for booking");
+        }
 
         boolean conflictExists = bookingRepository
                 .findByResourceIdAndBookingDate(request.getResourceId(), request.getBookingDate())

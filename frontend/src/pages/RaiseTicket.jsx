@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { HiOutlineArrowLeft, HiOutlineBolt, HiOutlineChatBubbleLeftEllipsis, HiOutlineCheckCircle, HiOutlineWrench } from 'react-icons/hi2';
+import { useAuth } from '../context/AuthContext';
+import axiosClient from '../api/axiosClient';
 
 const RaiseTicket = () => {
+  const { user } = useAuth();
   const [resourceName, setResourceName] = useState('');
   const [resourceType, setResourceType] = useState('');
   const [resourceLocation, setResourceLocation] = useState('');
@@ -25,8 +28,8 @@ const RaiseTicket = () => {
     setLoading(true);
     try {
       const compiledLabName = `${resourceName} (${resourceType}) - ${resourceLocation}`;
-      const response = await axios.post('/api/tickets', {
-        userId: 'demo-user-123',
+      const response = await axiosClient.post('/tickets', {
+        userId: user?.id || 'demo-user-123',
         labName: compiledLabName,
         description,
         priority
@@ -42,7 +45,7 @@ const RaiseTicket = () => {
 
   const handleResolve = async () => {
     try {
-      const response = await axios.post(`/api/tickets/${ticket.id}/resolve`);
+      const response = await axiosClient.post(`/tickets/${ticket.id}/resolve`);
       setTicket(response.data);
     } catch (err) {
       console.error('Error resolving ticket:', err);
@@ -51,7 +54,7 @@ const RaiseTicket = () => {
 
   const handleEscalate = async () => {
     try {
-      const response = await axios.post(`/api/tickets/${ticket.id}/escalate`);
+      const response = await axiosClient.post(`/tickets/${ticket.id}/escalate`);
       setTicket(response.data);
     } catch (err) {
       console.error('Error escalating ticket:', err);

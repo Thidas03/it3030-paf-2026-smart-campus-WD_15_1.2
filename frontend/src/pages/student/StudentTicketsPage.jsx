@@ -33,18 +33,6 @@ const StudentTicketsPage = () => {
           }
         }
 
-        // Fetch tickets logged under the legacy demo fallback
-        try {
-          const demoResponse = await axiosClient.get('/tickets/user/demo-user-123');
-          if (demoResponse.data) {
-            const userIds = new Set(allTickets.map(t => t.id));
-            const newDemoTickets = demoResponse.data.filter(t => !userIds.has(t.id));
-            allTickets = [...allTickets, ...newDemoTickets];
-          }
-        } catch (err) {
-          console.error('Failed to fetch demo tickets', err);
-        }
-
         // Sort by newest first
         allTickets.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 

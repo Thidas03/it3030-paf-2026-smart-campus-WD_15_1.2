@@ -14,15 +14,20 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     public Notification createNotification(String userId, String message, String type, String relatedId) {
-        Notification notification = Notification.builder()
-                .userId(userId)
-                .message(message)
-                .type(type)
-                .relatedId(relatedId)
-                .isRead(false)
-                .createdAt(LocalDateTime.now())
-                .build();
-        return notificationRepository.save(notification);
+        try {
+            Notification notification = Notification.builder()
+                    .userId(userId)
+                    .message(message)
+                    .type(type)
+                    .relatedId(relatedId)
+                    .isRead(false)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            return notificationRepository.save(notification);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Notification createSystemNotification(String message, String type, String relatedId) {
@@ -45,10 +50,14 @@ public class NotificationService {
     }
 
     public void markAllAsRead(String userId) {
-        List<Notification> unread = notificationRepository.findByUserIdOrderByCreatedAtDesc(userId)
-                .stream().filter(n -> !n.isRead()).toList();
-        unread.forEach(n -> n.setRead(true));
-        notificationRepository.saveAll(unread);
+        try {
+            List<Notification> unread = notificationRepository.findByUserIdOrderByCreatedAtDesc(userId)
+                    .stream().filter(n -> !n.isRead()).toList();
+            unread.forEach(n -> n.setRead(true));
+            notificationRepository.saveAll(unread);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public long getUnreadCount(String userId) {

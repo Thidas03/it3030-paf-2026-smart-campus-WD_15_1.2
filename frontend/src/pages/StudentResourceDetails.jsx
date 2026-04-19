@@ -256,9 +256,10 @@ const StudentResourceDetails = () => {
                         }
                         navigate(`/bookings${queryParams}`);
                       }}
-                      className="w-full bg-gradient-cyber hover:glow-primary text-white px-4 py-3 rounded-xl text-sm shadow-lg transition-all duration-300 font-semibold border border-white/10 hover:scale-[1.02] active:scale-[0.98]"
+                      disabled={resource.status === 'OUT_OF_SERVICE' || resource.status === 'MAINTENANCE'}
+                      className="w-full bg-gradient-cyber hover:glow-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:glow-none text-white px-4 py-3 rounded-xl text-sm shadow-lg transition-all duration-300 font-semibold border border-white/10 hover:scale-[1.02] active:scale-[0.98]"
                     >
-                        Go to Reservations
+                        {resource.status === 'ACTIVE' ? 'Go to Reservations' : 'Currently Unavailable'}
                     </button>
                 </div>
 
