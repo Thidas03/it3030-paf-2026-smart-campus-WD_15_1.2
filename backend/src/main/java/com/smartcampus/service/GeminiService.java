@@ -15,11 +15,16 @@ public class GeminiService {
     @Value("${gemini.api.key}")
     private String apiKey;
 
-    private final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    private final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
     public String getDiyFix(String description, String labName) {
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            return "AI Suggestion disabled: GEMINI_API_KEY is missing in .env";
+        }
+        
+        String cleanKey = apiKey.trim();
         RestTemplate restTemplate = new RestTemplate();
-        String url = API_URL + "?key=" + apiKey;
+        String url = API_URL + "?key=" + cleanKey;
 
         String prompt = """
                 Role: Act as a knowledgeable, friendly Campus IT Support Assistant. Your goal is to empower students to solve minor technical issues while ensuring they don't perform actions that could damage university property or compromise safety.

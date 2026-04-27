@@ -21,11 +21,17 @@ public class SmartCampusApplication {
 
     public static void main(String[] args) {
         Dotenv dotenv;
-        if (new java.io.File("../.env").exists()) {
+        String envPath = "./";
+        if (new java.io.File("./.env").exists()) {
+            dotenv = Dotenv.configure().directory("./").load();
+        } else if (new java.io.File("../.env").exists()) {
             dotenv = Dotenv.configure().directory("../").load();
+            envPath = "../";
         } else {
             dotenv = Dotenv.configure().ignoreIfMissing().load();
         }
+        
+        System.out.println(">>> Loading environment variables from: " + envPath + ".env");
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
         SpringApplication.run(SmartCampusApplication.class, args);
